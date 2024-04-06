@@ -1,15 +1,28 @@
 package ptud.Entity;
 
 import java.time.LocalDate;
+import java.util.Set;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Column; 
+@Entity
 public class KhachHang 
 {
 	// Author VoPhuocHau
+	@Id
+	@Column(name = "maKH")
 	String maKhachHang;
+	@Column(name = "tenKH")
 	String tenKhachHang;
+	@Column(name = "toChuc")
 	boolean isToChuc;
 	String email;
+	@Column(name = "dienThoai")
 	String sdt;
+	@OneToMany(mappedBy = "khachHang")
+	Set<HopDong> hopDongs;
 	public String getMaKhachHang() 
 	{
 		return maKhachHang;

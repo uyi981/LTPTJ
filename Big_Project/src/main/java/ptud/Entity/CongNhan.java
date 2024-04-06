@@ -6,14 +6,27 @@ package ptud.Entity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import ptud.DAO.DAO_CongNhan;
+import java.util.Set;
 
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import ptud.DAO.DAO_CongNhan;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import java.util.Set;
 /**
  *
  * @author TomTom
  */
+@jakarta.persistence.Entity
 public class CongNhan {
+	@Id
     private String maCN;
+	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+	@JoinColumn(name = "maBP")
     private BoPhan boPhan;
     private String ten;
     private boolean gioiTinh;
@@ -24,7 +37,12 @@ public class CongNhan {
     private boolean trangThai;
     private byte[] avatar;
     private boolean choPhanCong;
-
+    @OneToMany(mappedBy = "congNhan")
+    Set<BangDanhGiaCongNhan> bangDanhGiaCongNhans;
+    @OneToMany(mappedBy = "congNhan")
+    Set<PhieuChamCongCongNhan> phieuChamCongCongNhans;
+    @OneToMany(mappedBy = "congNhan")
+    Set<PhieuLuongCongNhan> phieuLuongCongNhans;
     public String getMaCN() {
         return maCN;
     }
