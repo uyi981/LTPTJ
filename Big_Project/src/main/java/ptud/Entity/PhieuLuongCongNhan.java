@@ -7,15 +7,23 @@ package ptud.Entity;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import ptud.DAO.DAO_PhieuChamCongCongNhan;
 
 /**
  * 
- * @author KHANH PC
+ * @author NguyenTrongPhuc
  */
-
+@Entity
+@Table(name = "PhieuLuongCongNhan")
 
 public class PhieuLuongCongNhan {
+	@Id
     private String maPL;     
     private int thang; 
     private int nam; 
@@ -25,6 +33,12 @@ public class PhieuLuongCongNhan {
     // private double thuong; 
     // private int soNgayLam; 
     // private double luongThucNhan; 
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "maCN")
+    
+    CongNhan congNhan;
+    
 
     public PhieuLuongCongNhan() {
     }
