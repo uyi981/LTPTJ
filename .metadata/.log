@@ -782,3 +782,6 @@ java.util.concurrent.TimeoutException
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2024-04-07 11:20:16.972
 !MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.genuitec.copilot4eclipse 4 0 2024-04-07 11:31:51.940
+!MESSAGE Timeout while checking Copilot status
