@@ -1,6 +1,19 @@
 package ptud.Entity;
 
-import ptud.Entity.CongNhan;
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -8,18 +21,30 @@ import ptud.Entity.CongNhan;
  */
 /**
  *
- * @author TomTom
+ * @author Hung
  */
-public class BangDanhGiaCongNhan {
 
-    private String id;
-    private CongNhan congNhan;
-    private int nam;
-    private float diemChuyenCan;
-    private float diemChuyenMon;
-    private float diemThaiDo;
-    private float diemHieuSuat;
-    private char bac;
+@Getter
+@Setter
+
+@AllArgsConstructor
+@ToString
+@Entity
+public class BangDanhGiaCongNhan implements java.io.Serializable {
+	@Id
+	@Column(name = "maBDG", columnDefinition = "VARCHAR(50)", nullable = false)
+	private String id;
+	private int nam;
+	private float diemChuyenCan;
+	private float diemThaiDo;
+	private float diemChuyenMon;
+	private float diemHieuSuat;
+	@Column(columnDefinition = "CHAR(1)")
+	private char bac;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "maCongNhan")
+	private CongNhan congNhan;
 
     public String getId() {
         return id;
