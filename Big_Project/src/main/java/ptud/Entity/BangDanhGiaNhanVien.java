@@ -19,12 +19,8 @@ import lombok.ToString;
 
 /**
  *
- * @author TomTom
+ * @author Hung
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "BangDanhGiaNhanVien")
 public class BangDanhGiaNhanVien {

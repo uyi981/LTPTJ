@@ -24,12 +24,9 @@ import lombok.ToString;
  * @author Hung
  */
 
-@Getter
-@Setter
 
-@AllArgsConstructor
-@ToString
 @Entity
+@Table(name = "BangDanhGiaCongNhan")
 public class BangDanhGiaCongNhan implements java.io.Serializable {
 	@Id
 	@Column(name = "maBDG", columnDefinition = "VARCHAR(50)", nullable = false)
