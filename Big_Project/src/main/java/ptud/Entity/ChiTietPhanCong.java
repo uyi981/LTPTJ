@@ -22,10 +22,6 @@ import lombok.ToString;
  * 
  * @author KHANH
  */
-@Setter
-@Getter
-@AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "ChiTietPhanCong")
 public class ChiTietPhanCong {
@@ -49,68 +45,70 @@ public class ChiTietPhanCong {
 //	 ChiTietPhanCong has many PhieuChamCongCongNhan
 	@OneToMany(mappedBy = "chiTietPhanCong")
 	private Set<PhieuChamCongCongNhan> phieuChamCongCongNhans;
+	private String maCD;
+	private String maCN;
 
 	public ChiTietPhanCong() {
 	};
 
-//    public ChiTietPhanCong(String maCTPC, String maCD, String maCN, LocalDate ngay, int soLuongCDGiao) {
-//        setMaCD(maCD);
-//        setMaCN(maCN);
-//        setMaCTPC(maCTPC);
-//        setNgay(ngay);
-//        setSoLuongCDGiao(soLuongCDGiao);
-//    }
+    public ChiTietPhanCong(String maCTPC, String maCD, String maCN, LocalDate ngay, int soLuongCDGiao) {
+        setMaCD(maCD);
+        setMaCN(maCN);
+        setMaCTPC(maCTPC);
+        setNgay(ngay);
+        setSoLuongCDGiao(soLuongCDGiao);
+    }
 
-//    public String getMaCTPC() {
-//        return maCTPC;
-//    }
-//
-//    public void setMaCTPC(String maCTPC) {
-//        this.maCTPC = maCTPC;
-//    }
-//
-//    public String getMaCD() {
-//        return maCD;
-//    }
-//
-//    public void setMaCD(String maCD) {
-//        this.maCD = maCD;
-//    }
-//
-//    public String getMaCN() {
-//        return maCN;
-//    }
-//
-//    public void setMaCN(String maCN) {
-//        this.maCN = maCN;
-//    }
-//
-//    public LocalDate getNgay() {
-//        return ngay;
-//    }
-//
-//    public void setNgay(LocalDate ngay) {
-//        this.ngay = ngay;
-//    }
-//
-//    public int getSoLuongCDGiao() {
-//        return soLuongCDGiao;
-//    }
-//
-//    public void setSoLuongCDGiao(int soLuongCDGiao) {
-//        this.soLuongCDGiao = soLuongCDGiao;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "ChiTietPhanCong{" +
-//                "maCTPC='" + maCTPC + '\'' +
-//                ", maCD='" + maCD + '\'' +
-//                ", maCN='" + maCN + '\'' +
-//                ", ngay=" + ngay +
-//                ", soLuongCDGiao=" + soLuongCDGiao +
-//                '}';
-//    }
+    public String getMaCTPC() {
+        return maCTPC;
+    }
+
+    public void setMaCTPC(String maCTPC) {
+        this.maCTPC = maCTPC;
+    }
+
+    public String getMaCD() {
+        return maCD;
+    }
+
+    public void setMaCD(String maCD) {
+        this.maCD = maCD;
+    }
+
+    public String getMaCN() {
+        return maCN;
+    }
+
+    public void setMaCN(String maCN) {
+        this.maCN = maCN;
+    }
+
+    public LocalDate getNgay() {
+        return ngay;
+    }
+
+    public void setNgay(LocalDate ngay) {
+        this.ngay = ngay;
+    }
+
+    public int getSoLuongCDGiao() {
+        return soLuongCDGiao;
+    }
+
+    public void setSoLuongCDGiao(int soLuongCDGiao) {
+       this.soLuongCDGiao = soLuongCDGiao;
+    }
+
+    @Override
+    public String toString() {
+        return "ChiTietPhanCong{" +
+                "maCTPC='" + maCTPC + '\'' +
+                ", maCD='" + maCD + '\'' +
+                ", maCN='" + maCN + '\'' +
+                ", ngay=" + ngay +
+                ", soLuongCDGiao=" + soLuongCDGiao +
+                '}';
+    }
 
 	@Override
 	public int hashCode() {

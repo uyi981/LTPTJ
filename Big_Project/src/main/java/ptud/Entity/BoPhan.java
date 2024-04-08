@@ -20,12 +20,8 @@ import lombok.ToString;
 
 /**
  *
- * @author KHANH PC
+ * @author Hung
  */
-@Setter
-@Getter
-@AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "BoPhan")
 public class BoPhan {
