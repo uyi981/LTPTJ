@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="ptud.Entity.HopDong"/>
     <fullyQualifiedTypeName name="ptud.Entity.KhachHang"/>
     <fullyQualifiedTypeName name="jakarta.persistence.OneToMany"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Id"/>
@@ -14,4 +13,6 @@
     <fullyQualifiedTypeName name="ptud.Entity.PhieuChamCongCongNhan"/>
     <fullyQualifiedTypeName name="java.util.Set"/>
     <fullyQualifiedTypeName name="ptud.Entity.PhieuLuongCongNhan"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.Entity"/>
+    <fullyQualifiedTypeName name="ptud.Entity.HopDong"/>
 </qualifiedTypeNameHistroy>

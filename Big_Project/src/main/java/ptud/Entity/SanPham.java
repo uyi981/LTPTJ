@@ -14,10 +14,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Set;
+@Entity
 public class SanPham 
 {
 	// Author VoPhuocHau
   @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+  HopDong hopDong;
   String maHD;
   DAO_CongDoan daocd = new DAO_CongDoan();
   ArrayList<CongDoan> congDoans = new ArrayList<>();
