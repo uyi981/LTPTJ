@@ -1,15 +1,27 @@
 package ptud.Entity;
 
 import java.util.ArrayList;
-import ptud.DAO.DAO_CongDoan;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import ptud.DAO.DAO_CongDoan;
+import ptud.Entity.CongDoan;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.Set;
 public class SanPham 
 {
 	// Author VoPhuocHau
+  @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
   String maHD;
   DAO_CongDoan daocd = new DAO_CongDoan();
   ArrayList<CongDoan> congDoans = new ArrayList<>();
-
+  
     public String getMaHD() 
     {
         return maHD;
@@ -19,11 +31,16 @@ public class SanPham
     {
         this.maHD = maHD;
     }
+  @Id
+  @Column(name = "maSP")
   String maSanPham;
+  @Column(name = "tenSP")
   String tenSanPham;
   int soLuong;
   double donGia;
   int tienDo;
+  @OneToMany(mappedBy = "sanPham")
+  Set<CongDoan> congDoan;
     public ArrayList<CongDoan> getCongDoans() {
         return congDoans;
     }

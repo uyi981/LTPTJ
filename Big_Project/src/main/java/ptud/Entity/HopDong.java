@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ptud.Entity;
-
 /**
  *
  * @author vohau
@@ -14,10 +13,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.JOptionPane;
+
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import ptud.DAO.DAO_SanPham;
+import ptud.Entity.SanPham;
+import ptud.Entity.KhachHang;
+import jakarta.persistence.Entity;
+import java.util.Set;
 // lưu ý khi đổ dữ liệu vào table thì phải set oldMaHD = maHD nằm cuối danh sách.
+@Entity
 public class HopDong {       
     // khai bao thuoc tinh
+	@Id
    private String maHD;
    private String tenHD;
    private LocalDate ngayBatDau;
@@ -26,7 +36,11 @@ public class HopDong {
    public static String oldMaHD = null;
    private double donGia; 
    private String maKH; 
-
+   @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+   @JoinColumn(name = "maKH")
+   KhachHang khachHang;
+   @OneToMany(mappedBy = "hopDong")
+   Set<SanPham> sanPham;
     public int getSoLuongSanPham() {
         return soLuongSanPham;
     }
