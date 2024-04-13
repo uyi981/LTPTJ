@@ -21,7 +21,6 @@ import lombok.ToString;
  *
  * @author Hung
  */
-
 @Entity
 @Table(name = "BangDanhGiaNhanVien")
 public class BangDanhGiaNhanVien {

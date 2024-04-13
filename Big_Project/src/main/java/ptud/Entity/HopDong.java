@@ -38,7 +38,7 @@ public class HopDong {
    private String maKH; 
    @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
    @JoinColumn(name = "maKH")
-   KhachHang khachHang; 
+   KhachHang khachHang;
    @OneToMany(mappedBy = "hopDong")
    Set<SanPham> sanPham;
     public int getSoLuongSanPham() {
@@ -51,7 +51,7 @@ public class HopDong {
        soLuongSanPham =  sanPhams.size();
     }
    private int soLuongSanPham;
-   ArrayList<SanPham> sanPhams = new ArrayList<>();
+  transient ArrayList<SanPham> sanPhams = new ArrayList<>();
 
     public ArrayList<SanPham> getSanPhams() {
         return sanPhams;

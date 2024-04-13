@@ -21,7 +21,6 @@ import java.util.Set;
  *
  * @author TomTom
  */
-
 @jakarta.persistence.Entity
 public class CongNhan {
 	@Id
@@ -41,7 +40,7 @@ public class CongNhan {
     @OneToMany(mappedBy = "congNhan")
     Set<BangDanhGiaCongNhan> bangDanhGiaCongNhans;
     @OneToMany(mappedBy = "congNhan")
-    Set<PhieuChamCongCongNhan> phieuChamCongCongNhans;
+    Set<ChiTietPhanCong> chiTietPhanCongs;
     @OneToMany(mappedBy = "congNhan")
     Set<PhieuLuongCongNhan> phieuLuongCongNhans;
     public String getMaCN() {

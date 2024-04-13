@@ -19,7 +19,7 @@ public class KhachHang
 	@Column(name = "toChuc")
 	boolean isToChuc;
 	String email;
-	@Column(name = "dienThoai") 
+	@Column(name = "dienThoai")
 	String sdt;
 	@OneToMany(mappedBy = "khachHang")
 	Set<HopDong> hopDongs;

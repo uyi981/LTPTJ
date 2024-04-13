@@ -40,7 +40,7 @@ public class NhanVien {
     @OneToMany(mappedBy = "nhanVien")
     Set<PhieuChamCongHanhChinh>chamCongHanhChinhs;
     @OneToMany(mappedBy = "nhanVien")
-    Set<PhieuLuongNhanVien> nhanViens; 
+    Set<PhieuLuongNhanVien> nhanViens;
     public String getMaNV() {
         return maNV;
     }

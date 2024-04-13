@@ -33,7 +33,7 @@ public class SanPham
     {
         this.maHD = maHD;
     }
-  @Id 
+  @Id
   @Column(name = "maSP")
   String maSanPham;
   @Column(name = "tenSP")

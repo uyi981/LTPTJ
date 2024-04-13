@@ -6,18 +6,39 @@ package ptud.Entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 /**
- *
- * @author TranLoc
- */
+*
+* @author NguyenTrongPhuc
+*/
+@Entity
+@Table(name = "PhieuChamCongHanhChinh")
 public class PhieuChamCongHanhChinh {
-    private String maPCCHC;
-    private String maNV;
-    private LocalDate ngay;
-    private boolean vang, diTre;
-    private int gioTangCa;
-    private double tienPhat;
-    private String noiDungTienPhat;
+	@Id
+   private String maPCCHC;
+   private String maNV;
+   @Column(name = "ngayChamCong")
+   private LocalDate ngay;
+   private boolean vang, diTre;
+   private int gioTangCa;
+   private double tienPhat;
+   @Column(name = "noiDungPhat")
+   private String noiDungTienPhat;
+
+   
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "maNV")
+   
+   NhanVien nhanVien;
+   
+   
 
     public PhieuChamCongHanhChinh(String maPCCHC, String maNV, LocalDate ngay, boolean vang, boolean diTre, int gioTangCa, double tienPhat, String noiDungTienPhat) {
         this.maPCCHC = maPCCHC;
