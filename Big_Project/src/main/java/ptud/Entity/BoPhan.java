@@ -4,13 +4,45 @@
  */
 package ptud.Entity;
 
+import java.io.Serializable;
+import java.util.Set;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  *
- * @author KHANH PC
+ * @author Hung
  */
+
+@Entity
+@Table(name = "BoPhan")
 public class BoPhan {
-    private String maBP; 
-    private String tenBP; 
+	@Id
+	@Column(name = "maBP", columnDefinition = "VARCHAR(50)", nullable = false)
+	private String maBP;
+	@Column(columnDefinition = "VARCHAR(30)")
+	private String tenBP;
+	
+	// BoPhan has many NhanVien
+	@OneToMany(mappedBy = "boPhan")
+	private Set<NhanVien> nhanViens;
+	
+	// BoPhan has many CongDoan
+	@OneToMany(mappedBy = "boPhan")
+	private Set<CongDoan> congDoans;
+	
+	// BoPhan has many CongNhan
+	@OneToMany(mappedBy = "boPhan")
+	private Set<CongNhan> congNhans; 
 
     public BoPhan() {
     }

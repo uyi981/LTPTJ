@@ -4,20 +4,41 @@
  */
 package ptud.Entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  *
- * @author TomTom
+ * @author Hung
  */
-public class BangDanhGiaNhanVien {
 
-    private String id;
-    private NhanVien nhanVien;
-    private int nam;
-    private float diemChuyenCan;
-    private float diemChuyenMon;
-    private float diemThaiDo;
-    private float diemHieuSuat;
-    private char bac;
+@Entity
+@Table(name = "BangDanhGiaNhanVien")
+public class BangDanhGiaNhanVien {
+	@Id
+    @Column(name = "maBDG", columnDefinition = "VARCHAR(50)", nullable = false)
+	private String id;
+	private int nam;
+	private float diemChuyenCan;
+	private float diemThaiDo;
+	private float diemChuyenMon;
+	private float diemHieuSuat;
+	@Column(columnDefinition = "CHAR(1)")
+	private char bac;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "maNV")
+	private NhanVien nhanVien;
 
     public String getId() {
         return id;

@@ -4,33 +4,15 @@
  */
 package ptud.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-
-/**
-*
-* @author NguyenTrongPhuc
-*/
-
-@Entity
-@Table(name = "TaiKhoan")
+/** 
+ *
+ * @author TranLoc-21100321
+ */
 public class TaiKhoan {
-	
-	@Id
-	private String maNV;
-   private String userName, matKhat;
-   private int vaiTro;
-   private boolean trangThai;
-   
-   @OneToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name = "maNV")
-   
-   NhanVien nhanVien;
-   
+    private String userName, maNV, matKhat;
+    private int vaiTro;
+    private boolean trangThai;
+
     public TaiKhoan() {
     }
 

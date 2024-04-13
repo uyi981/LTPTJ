@@ -1,9 +1,0 @@
-package test;
-
-public class TestGenerateDatabase
-{
-	public static void main(String[] args) {
-		 EntityManagerFactory emf = Persistence.createEntityManagerFactory("UserGroupJPA MSSQL");
-		 EntityManager em = emf.createEntityManager();
-	}
-}

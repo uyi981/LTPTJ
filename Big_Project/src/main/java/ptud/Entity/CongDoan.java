@@ -6,185 +6,225 @@ package ptud.Entity;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Set;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import ptud.DAO.DAO_ChiTietPhanCong;
 import ptud.DAO.DAO_CongDoan;
 import ptud.DAO.DAO_SanPham;
 
 /**
- *  
+ * 
  * @author KHANH PC
  */
+@Entity
+@Table(name = "CongDoan")
 public class CongDoan {
-    private String maCD; 
-    private String maSP; 
-    private String maBP;
-    private String tenCD; 
-    private double donGia; 
-    private boolean trangThai; 
-    private int soLuongChuanBiToiThieu;    
-    // private int soLuongChuanBi;     
-    // private int soLuongHoanThanh; 
-    private ArrayList<String> dsCDTQ; 
+	@Id
+	@Column(name = "maCD", columnDefinition = "VARCHAR(50)", nullable = false)
+	private String maCD;
+	@Column(columnDefinition = "VARCHAR(50)")
+	private String tenCD;
+	@Column(columnDefinition = "REAL NULL")
+	private double donGia;
+	@Column(columnDefinition = "BIT")
+	private boolean trangThai;
+	private int soLuongChuanBi;
+	private int soLuongChuanBiToiThieu;
+	private int soLuongHoanThanh;
 
-    public CongDoan() {
-    }
+	// CongDoan has one BoPhan
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "maBP")
+	private BoPhan boPhan;
 
-    public CongDoan(String maCD, String maSP, String maBP, String tenCD, double donGia, boolean trangThai, int soLuongChuanBiToiThieu, ArrayList<String> dsCDTQ) {
-        setMaCD(maCD);
-        setMaSP(maSP);
-        setMaBP(maBP);
-        setTenCD(tenCD);
-        setDonGia(donGia);
-        setTrangThai(trangThai);
-        setSoLuongChuanBiToiThieu(soLuongChuanBiToiThieu);
-        setDsCDTQ(dsCDTQ);
-    }
+	// CongDoan has many ChiTietPhanCong
+	@OneToMany(mappedBy = "congDoan")
+	private Set<ChiTietPhanCong> chiTietPhanCongs;
 
-    public String getMaCD() {
-        return maCD;
-    }
+	// CongDoan has many CongDoanTienQuyet
+//		@OneToMany(mappedBy = "congDoan")
+//		private Set<CongDoanTienQuyet> congDoanTienQuyets;
 
-    public String getMaSP() {
-        return maSP;
-    }
+	// CongDoan has one SanPham
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "maSP")
+	private SanPham sanPham;
+	
+	private String maSP;
+	private String maBP;
+	private ArrayList<String> dsCDTQ;
 
-    public String getMaBP() {
-        return maBP;
-    }
+	public CongDoan() {
+	}
 
-    public String getTenCD() {
-        return tenCD;
-    }
+	public CongDoan(String maCD, String maSP, String maBP, String tenCD, double donGia, boolean trangThai,
+			int soLuongChuanBiToiThieu, ArrayList<String> dsCDTQ) {
+		setMaCD(maCD);
+		setMaSP(maSP);
+		setMaBP(maBP);
+		setTenCD(tenCD);
+		setDonGia(donGia);
+		setTrangThai(trangThai);
+		setSoLuongChuanBiToiThieu(soLuongChuanBiToiThieu);
+		setDsCDTQ(dsCDTQ);
+	}
 
-    public double getDonGia() {
-        return donGia;
-    }
+	public String getMaCD() {
+		return maCD;
+	}
 
-    public boolean isTrangThai() {
-        return trangThai;
-    }
+	public String getMaSP() {
+		return maSP;
+	}
 
-    public int getSoLuongChuanBi() {
-        int soLuongChuanBi = 0;
+	public String getMaBP() {
+		return maBP;
+	}
 
-        DAO_CongDoan dao = DAO_CongDoan.getInstance();
-        if( dao.getDsCDTQ(maCD).isEmpty() ) {
-            // nếu không có cđtq, số lượng chuẩn bị là slsp
-            SanPham sp = DAO_SanPham.getInstance().get(this.maSP);
-            soLuongChuanBi=sp.getSoLuong(); 
-        } else {
-            // Lấy số lượng hoàn thành nhỏ nhất của công đoạn tiên quyết làm số lượng chuẩn bị
-            ArrayList<CongDoan> dsCDTQ = dao.getDsCDTQ(maCD);
-            int sum = 99999;
-            for (CongDoan cd : dsCDTQ) {
-                int slht = cd.getSoLuongHoanThanh(); 
-                sum = Math.min(sum, slht);
-            }
-            soLuongChuanBi=sum; 
-        }
+	public String getTenCD() {
+		return tenCD;
+	}
 
-        // trừ đi số lượng đã hoàn thành
-        soLuongChuanBi-=this.getSoLuongHoanThanh();
+	public double getDonGia() {
+		return donGia;
+	}
 
-        // trừ đi số lượng đã được giao trong hôm nay
-        soLuongChuanBi-=DAO_ChiTietPhanCong.getInstance().getSoLuongCongDoanDuocGiaoHomNay(this.maCD); 
+	public boolean isTrangThai() {
+		return trangThai;
+	}
 
-        return soLuongChuanBi;
-    }
+	public int getSoLuongChuanBi() {
+		int soLuongChuanBi = 0;
 
-    public int getSoLuongChuanBiToiThieu() {
-        return soLuongChuanBiToiThieu;
-    }
+		DAO_CongDoan dao = DAO_CongDoan.getInstance();
+		if (dao.getDsCDTQ(maCD).isEmpty()) {
+			// nếu không có cđtq, số lượng chuẩn bị là slsp
+			SanPham sp = DAO_SanPham.getInstance().get(this.maSP);
+			soLuongChuanBi = sp.getSoLuong();
+		} else {
+			// Lấy số lượng hoàn thành nhỏ nhất của công đoạn tiên quyết làm số lượng chuẩn
+			// bị
+			ArrayList<CongDoan> dsCDTQ = dao.getDsCDTQ(maCD);
+			int sum = 99999;
+			for (CongDoan cd : dsCDTQ) {
+				int slht = cd.getSoLuongHoanThanh();
+				sum = Math.min(sum, slht);
+			}
+			soLuongChuanBi = sum;
+		}
 
-    public int getSoLuongHoanThanh() {
-        int soLuongHoanThanh = 0;
-        // xử lý tính toán 
-        soLuongHoanThanh = DAO_CongDoan.getInstance().getSoLuongHoanThanh(this.maCD);
-        return soLuongHoanThanh;
-    }
+		// trừ đi số lượng đã hoàn thành
+		soLuongChuanBi -= this.getSoLuongHoanThanh();
 
-    public ArrayList<String> getDsCDTQ() {
-        return dsCDTQ;
-    }
+		// trừ đi số lượng đã được giao trong hôm nay
+		soLuongChuanBi -= DAO_ChiTietPhanCong.getInstance().getSoLuongCongDoanDuocGiaoHomNay(this.maCD);
 
-    public void setMaCD(String maCD) {
-        this.maCD = maCD;
-    }
+		return soLuongChuanBi;
+	}
 
-    public void setMaSP(String maSP) {
-        this.maSP = maSP;
-    }
+	public int getSoLuongChuanBiToiThieu() {
+		return soLuongChuanBiToiThieu;
+	}
 
-    public void setMaBP(String maBP) {
-        this.maBP = maBP;
-    }
+	public int getSoLuongHoanThanh() {
+		int soLuongHoanThanh = 0;
+		// xử lý tính toán
+		soLuongHoanThanh = DAO_CongDoan.getInstance().getSoLuongHoanThanh(this.maCD);
+		return soLuongHoanThanh;
+	}
 
-    public void setTenCD(String tenCD) {
-        this.tenCD = tenCD;
-    }
+	public ArrayList<String> getDsCDTQ() {
+		return dsCDTQ;
+	}
 
-    public void setDonGia(double donGia) {
-        this.donGia = donGia;
-    }
+	public void setMaCD(String maCD) {
+		this.maCD = maCD;
+	}
 
-    public void setTrangThai(boolean trangThai) {
-        this.trangThai = trangThai;
-    }
+	public void setMaSP(String maSP) {
+		this.maSP = maSP;
+	}
 
-    public void setSoLuongChuanBiToiThieu(int soLuongChuanBiToiThieu) {
-        this.soLuongChuanBiToiThieu = soLuongChuanBiToiThieu;
-    }
+	public void setMaBP(String maBP) {
+		this.maBP = maBP;
+	}
 
+	public void setTenCD(String tenCD) {
+		this.tenCD = tenCD;
+	}
 
-    public void setDsCDTQ(ArrayList<String> dsCDTQ) {
-        this.dsCDTQ = dsCDTQ;
-    }
-    
-    public void addCDTQ(String maCDTQ) {
-        if (dsCDTQ == null) {
-            dsCDTQ = new ArrayList<String>();
-        }
-        dsCDTQ.add(maCDTQ);
-    }
+	public void setDonGia(double donGia) {
+		this.donGia = donGia;
+	}
 
-    public void deleteCDTQ(String maCDTQ) {
-        if (dsCDTQ != null) {
-            dsCDTQ.remove(maCDTQ);
-        }
-    }
+	public void setTrangThai(boolean trangThai) {
+		this.trangThai = trangThai;
+	}
 
-    public void updateCDTQ(String maCDTQ, String maCDTQNew) {
-        if (dsCDTQ != null) {
-            int index = dsCDTQ.indexOf(maCDTQ);
-            if (index != -1) {
-                dsCDTQ.set(index, maCDTQNew);
-            }
-        }
-    }
+	public void setSoLuongChuanBiToiThieu(int soLuongChuanBiToiThieu) {
+		this.soLuongChuanBiToiThieu = soLuongChuanBiToiThieu;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.maCD);
-        return hash;
-    }
+	public void setDsCDTQ(ArrayList<String> dsCDTQ) {
+		this.dsCDTQ = dsCDTQ;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final CongDoan other = (CongDoan) obj;
-        return Objects.equals(this.maCD, other.maCD);
-    }
-    
-    
-    
+	public void addCDTQ(String maCDTQ) {
+		if (dsCDTQ == null) {
+			dsCDTQ = new ArrayList<String>();
+		}
+		dsCDTQ.add(maCDTQ);
+	}
+
+	public void deleteCDTQ(String maCDTQ) {
+		if (dsCDTQ != null) {
+			dsCDTQ.remove(maCDTQ);
+		}
+	}
+
+	public void updateCDTQ(String maCDTQ, String maCDTQNew) {
+		if (dsCDTQ != null) {
+			int index = dsCDTQ.indexOf(maCDTQ);
+			if (index != -1) {
+				dsCDTQ.set(index, maCDTQNew);
+			}
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 59 * hash + Objects.hashCode(this.maCD);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final CongDoan other = (CongDoan) obj;
+		return Objects.equals(this.maCD, other.maCD);
+	}
+
 }

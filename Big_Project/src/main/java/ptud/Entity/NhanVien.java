@@ -2,8 +2,13 @@ package ptud.Entity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import ptud.DAO.DAO_NhanVien;
+import java.util.Set;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import ptud.DAO.DAO_NhanVien;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -12,9 +17,13 @@ import ptud.DAO.DAO_NhanVien;
  *
  * @author TomTom
  */
+@Entity
 public class NhanVien {
 
+	@Id
     private String maNV;
+	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+	@jakarta.persistence.JoinColumn(name = "maBP")
     private BoPhan boPhan;
     private String ten;
     private boolean gioiTinh;
@@ -26,7 +35,12 @@ public class NhanVien {
     private byte[] avatar;
     private double luongCoBan;
     private double phuCap;
-
+    @OneToMany(mappedBy = "nhanVien")
+    Set<BangDanhGiaNhanVien> bangDanhGiaNhanViens;
+    @OneToMany(mappedBy = "nhanVien")
+    Set<PhieuChamCongHanhChinh>chamCongHanhChinhs;
+    @OneToMany(mappedBy = "nhanVien")
+    Set<PhieuLuongNhanVien> nhanViens; 
     public String getMaNV() {
         return maNV;
     }
