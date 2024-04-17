@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
 *
@@ -23,8 +24,10 @@ import jakarta.persistence.Table;
 public class PhieuChamCongHanhChinh {
 	@Id
    private String maPCCHC;
+    @Transient
    private String maNV;
-   @Column(name = "ngayChamCong")
+   @Column(name = "ngayChamCong",columnDefinition = "DATE")
+   @Transient
    private LocalDate ngay;
    private boolean vang, diTre;
    private int gioTangCa;

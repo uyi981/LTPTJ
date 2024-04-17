@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +46,9 @@ public class ChiTietPhanCong {
 //	 ChiTietPhanCong has many PhieuChamCongCongNhan
 	@OneToMany(mappedBy = "chiTietPhanCong")
 	private Set<PhieuChamCongCongNhan> phieuChamCongCongNhans;
+	@Transient
 	private String maCD;
+	@Transient
 	private String maCN;
 
 	public ChiTietPhanCong() {

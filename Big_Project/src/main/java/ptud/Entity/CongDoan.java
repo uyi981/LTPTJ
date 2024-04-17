@@ -17,7 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
+import jakarta.persistence.Transient;
 import ptud.DAO.DAO_ChiTietPhanCong;
 import ptud.DAO.DAO_CongDoan;
 import ptud.DAO.DAO_SanPham;
@@ -59,9 +59,11 @@ public class CongDoan {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "maSP")
 	private SanPham sanPham;
-	
+	@Transient
 	private String maSP;
+	@Transient
 	private String maBP;
+	@Transient
 	private ArrayList<String> dsCDTQ;
 
 	public CongDoan() {

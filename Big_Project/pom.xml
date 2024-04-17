@@ -30,10 +30,11 @@
 <scope>test</scope>
 </dependency>
 <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
+<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
 <dependency>
-    <groupId>com.microsoft.sqlserver</groupId>
+<groupId>com.microsoft.sqlserver</groupId>
     <artifactId>mssql-jdbc</artifactId>
-    <version>11.2.3.jre18</version>
+    <version>11.2.2.jre18</version>
 </dependency>
 
 <!--

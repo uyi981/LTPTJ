@@ -13,7 +13,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.NoArgsConstructor;
+
 import java.util.Set;
+@NoArgsConstructor
 @Entity
 public class SanPham 
 {
@@ -21,7 +25,7 @@ public class SanPham
   @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
   HopDong hopDong;
   String maHD;
-  DAO_CongDoan daocd = new DAO_CongDoan();
+  @Transient
   ArrayList<CongDoan> congDoans = new ArrayList<>();
   
     public String getMaHD() 
@@ -49,6 +53,7 @@ public class SanPham
 
     public void updateListCongDoans() 
     {
+    	DAO_CongDoan daocd = new DAO_CongDoan();
        for(CongDoan congDoan : daocd.getAll())
        {
            if(congDoan.getMaSP().compareToIgnoreCase(this.maSanPham)==0)

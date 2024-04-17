@@ -1,5 +1,6 @@
 package ptud.Entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -7,8 +8,10 @@ import java.util.Set;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import ptud.DAO.DAO_NhanVien;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -27,11 +30,20 @@ public class NhanVien {
     private BoPhan boPhan;
     private String ten;
     private boolean gioiTinh;
+    @Column(name = "ngaySinh",columnDefinition = "DATE")
+    @Transient
+    private Date ngaySinh1;
+    @Transient
     private LocalDate ngaySinh;
+    @Column(name = "ngayBatDauLam",columnDefinition = "DATE")
+    @Transient
+    private Date ngayBatDauLam1;
+    @Transient
     private LocalDate ngayBatDauLam;
     private String cccd;
     private String dienThoai;
     private boolean trangThai;
+    @Column(columnDefinition = "VARBINARY(MAX)")
     private byte[] avatar;
     private double luongCoBan;
     private double phuCap;

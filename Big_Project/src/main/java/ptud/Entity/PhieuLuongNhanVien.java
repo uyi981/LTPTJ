@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import ptud.DAO.DAO_NhanVien;
 import ptud.DAO.DAO_PhieuChamCongNhanVien;
 /**
@@ -27,6 +28,7 @@ public class PhieuLuongNhanVien {
     private String maPL;   
     private int thang; 
     private int nam; 
+    @Transient
     private String maNV; 
     private double phat; 
     // private double phuCap; 

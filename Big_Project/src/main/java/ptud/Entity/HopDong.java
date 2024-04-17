@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ptud.Entity;
+import java.sql.Date;
 /**
  *
  * @author vohau
@@ -18,9 +19,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import ptud.DAO.DAO_SanPham;
 import ptud.Entity.SanPham;
 import ptud.Entity.KhachHang;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import java.util.Set;
 // lưu ý khi đổ dữ liệu vào table thì phải set oldMaHD = maHD nằm cuối danh sách.
@@ -30,17 +33,28 @@ public class HopDong {
 	@Id
    private String maHD;
    private String tenHD;
+   @Column(name = "ngayBatDau",columnDefinition = "DATE")
+   @Transient
+   private Date ngayBatDau1;
+   @Column(name = "ngayKetThucDuKien",columnDefinition = "DATE")
+   @Transient
+   private Date ngayKetThucDuKien1;
+   @Transient
    private LocalDate ngayBatDau;
+   @Transient
    private LocalDate ngayKetThucDuKien;
    private String trangThai;
+   @Transient
    public static String oldMaHD = null;
    private double donGia; 
+   @Transient
    private String maKH; 
    @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
    @JoinColumn(name = "maKH")
    KhachHang khachHang;
-   @OneToMany(mappedBy = "hopDong")
-   Set<SanPham> sanPham;
+  // @OneToMany(mappedBy = "hopDong")
+  // @Transient
+   //Set<SanPham> sanPham;
     public int getSoLuongSanPham() {
         return soLuongSanPham;
     }
@@ -48,10 +62,11 @@ public class HopDong {
     public void setSoLuongSanPham() 
     {
        
-       soLuongSanPham =  sanPhams.size();
+      // soLuongSanPham =  sanPhams.size();
     }
    private int soLuongSanPham;
-  transient ArrayList<SanPham> sanPhams = new ArrayList<>();
+   @Transient
+   transient ArrayList<SanPham> sanPhams = new ArrayList<>();
 
     public ArrayList<SanPham> getSanPhams() {
         return sanPhams;
@@ -60,7 +75,7 @@ public class HopDong {
     public void setSanPhams(ArrayList<SanPham> sanPhams) {
         this.sanPhams = sanPhams;
     }
-    DAO_SanPham daosp = null;
+   // 
    
    
     public void setMaKH(String maKH) {
@@ -200,16 +215,12 @@ public class HopDong {
     }
 
     public void updateListSanPham() {
+    	DAO_SanPham daosp = null;
         daosp = new DAO_SanPham();
         sanPhams = null;
         sanPhams = new ArrayList<>();
         for (SanPham sanPham : daosp.getAll()) {
-            if (sanPham.getMaHD().compareToIgnoreCase(this.maHD) == 0) {  
-                if(!sanPhams.contains(sanPham))
-                {
-                     sanPhams.add(sanPham);
-                }              
-            }
+           
         }
     }
 

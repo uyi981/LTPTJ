@@ -4,6 +4,7 @@
  */
 package ptud.Entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -14,8 +15,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import ptud.DAO.DAO_CongNhan;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
+
 import java.util.Set;
 /**
  *
@@ -30,11 +34,19 @@ public class CongNhan {
     private BoPhan boPhan;
     private String ten;
     private boolean gioiTinh;
+    @Column(name = "ngaySinh",columnDefinition = "DATE")
+    @Transient
     private LocalDate ngaySinh;
+    
+    @Column(name = "ngayBatDauLam",columnDefinition = "DATE")
+    @Transient
+    private Date ngayBatDauLam1;
+    @Transient
     private LocalDate ngayBatDauLam;
     private String cccd;
     private String dienThoai;
     private boolean trangThai;
+    @Column(columnDefinition = "VARBINARY(MAX)")
     private byte[] avatar;
     private boolean choPhanCong;
     @OneToMany(mappedBy = "congNhan")
