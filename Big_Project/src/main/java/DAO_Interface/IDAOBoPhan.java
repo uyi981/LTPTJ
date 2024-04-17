@@ -1,2 +1,6 @@
-package DAO_Interface;public interface IDAOBoPhan {
+package DAO_Interface;
+
+import java.rmi.Remote;
+
+public interface IDAOBoPhan extends Remote {
 }
