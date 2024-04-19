@@ -6,9 +6,9 @@ import java.rmi.RemoteException;
 import ptud.Entity.CongNhan;
 
 public interface IDAOCongNhan extends Remote{
-	public boolean ThemCongNhan(CongNhan congNhan) throws RemoteException;
-	public boolean XoaCongNhan(String maCongNhan) throws RemoteException;
-	public void SuaCongNhan(String maCongNhan) throws RemoteException;
-	public CongNhan TimKiemCongNhan(String maCongNhan) throws RemoteException;
+	public boolean themCongNhan(CongNhan congNhan) throws RemoteException;
+	public boolean xoaCongNhan(String maCongNhan) throws RemoteException;
+	public void suaCongNhan(CongNhan congNhan) throws RemoteException;
+	public CongNhan timKiemCongNhan(String maCongNhan) throws RemoteException;
 	public List<CongNhan> layDanhSachCongNhan() throws RemoteException;
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
+import DAO_Implement.DAONhanVien;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import ptud.DAO.DAO_NhanVien;
@@ -180,7 +181,7 @@ public class NhanVien {
     }
 
     private String genMaNV(BoPhan boPhan,LocalDate ngayBatDauLam, boolean gioiTinh) {
-        DAO_NhanVien daoNhanVien = new DAO_NhanVien().getInstance();
+        DAONhanVien daoNhanVien = new DAONhanVien();
         int count = daoNhanVien.countAll();
 
         // Sử dụng DateTimeFormatter để lấy hai số cuối của năm

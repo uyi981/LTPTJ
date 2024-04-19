@@ -44,7 +44,7 @@ public class DAOSanPham extends UnicastRemoteObject  implements IDAOSanPham
 	}
 
 	@Override
-	public void layDanhSachSanPham() throws RemoteException {
+	public List<SanPham> layDanhSachSanPham() throws RemoteException {
 		// TODO Auto-generated method stub
 		
 	}

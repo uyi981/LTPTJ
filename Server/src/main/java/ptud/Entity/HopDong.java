@@ -15,12 +15,13 @@ import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 
+import DAO_Implement.DAOSanPham;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
-import ptud.DAO.DAO_SanPham;
+
 import ptud.Entity.SanPham;
 import ptud.Entity.KhachHang;
 import jakarta.persistence.Column;
@@ -214,12 +215,12 @@ public class HopDong {
         this.setMaKH(maKH);
     }
 
-    public void updateListSanPham() {
-    	DAO_SanPham daosp = null;
-        daosp = new DAO_SanPham();
+    public void updateListSanPham() throws Exception{
+    	DAOSanPham daosp = null;
+        daosp = new DAOSanPham();
         sanPhams = null;
         sanPhams = new ArrayList<>();
-        for (SanPham sanPham : daosp.getAll()) {
+        for (SanPham sanPham : daosp.layDanhSachSanPham()) {
            
         }
     }

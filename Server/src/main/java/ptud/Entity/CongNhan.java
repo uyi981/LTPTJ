@@ -158,7 +158,7 @@ public class CongNhan {
         this.choPhanCong = choPhanCong;
     }
 
-    public CongNhan(BoPhan boPhan, String ten, boolean gioiTinh, LocalDate ngaySinh, LocalDate ngayBatDauLam, String cccd, String dienThoai, boolean trangThai, byte[] avatar, boolean choPhanCong) {
+    public CongNhan(BoPhan boPhan, String ten, boolean gioiTinh, LocalDate ngaySinh, LocalDate ngayBatDauLam, String cccd, String dienThoai, boolean trangThai, byte[] avatar, boolean choPhanCong) throws Exception{
         this.maCN = genMaCN(boPhan, ngayBatDauLam, gioiTinh);
         this.boPhan = boPhan;
         this.ten = ten;
@@ -177,7 +177,7 @@ public class CongNhan {
     }
     
     
-    private String genMaCN(BoPhan boPhan, LocalDate ngayBatDauLam, boolean gioiTinh) {
+    private String genMaCN(BoPhan boPhan, LocalDate ngayBatDauLam, boolean gioiTinh) throws Exception{
         DAOCongNhan daoCongNhan = new DAOCongNhan();
         int count = daoCongNhan.countAll();
 
