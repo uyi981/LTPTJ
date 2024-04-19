@@ -215,12 +215,14 @@ public class HopDong {
     }
 
     public void updateListSanPham() {
-    	DAO_SanPham daosp = null;
-        daosp = new DAO_SanPham();
+    	DAO_SanPham daosp = new DAO_SanPham();
         sanPhams = null;
         sanPhams = new ArrayList<>();
         for (SanPham sanPham : daosp.getAll()) {
-           
+			if (sanPham.getMaHD().equals(maHD)) {
+				sanPhams.add(sanPham);
+			}
+         //S  sanPhams.add(sanPham);
         }
     }
 
