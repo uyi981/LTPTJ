@@ -8,7 +8,7 @@
 			<property name="jakarta.persistence.jdbc.driver"
 				value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 			<property name="jakarta.persistence.jdbc.url"
-				value="jdbc:sqlserver://localhost:1433;databaseName=QLLSP1;trustServerCertificate=true;encrypt=true;" />
+				value="jdbc:sqlserver://localhost:1433;databaseName=QLLSP;trustServerCertificate=true;encrypt=true;" />
 			<property name="jakarta.persistence.jdbc.user" value="sa" />
 			<property name="jakarta.persistence.jdbc.password"
 				value="12345678" />

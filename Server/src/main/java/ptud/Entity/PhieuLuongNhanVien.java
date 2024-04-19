@@ -106,16 +106,18 @@ public class PhieuLuongNhanVien {
         this.phat = phat;
     }
     
-    public double getPhuCap() {
-        double PhuCap = DAONhanVien.getInstance().get(maNV).getPhuCap(); 
+    public double getPhuCap() throws RemoteException {
+    	DAONhanVien daoNhanVien = new DAONhanVien();
+        double PhuCap = daoNhanVien.timKiemNhanVien(maNV).getPhuCap();
         return PhuCap;
     }
 
-    public double getLuong()  {
-        double luong = 0;
+    public double getLuong() throws RemoteException  {
+    	DAONhanVien daoNhanVien = new DAONhanVien();
+    	double luong = 0;
         // xử lý tính toán
         try {
-            luong = new DAOPhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam)*DAONhanVien.getInstance().get(maNV).getLuongCoBan()/24;
+            luong = new DAOPhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam)*daoNhanVien.timKiemNhanVien(maNV).getLuongCoBan()/24;
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -123,10 +125,11 @@ public class PhieuLuongNhanVien {
         return luong;
     }
 
-    public double getThuong()  {
+    public double getThuong()  throws RemoteException{
+    	DAONhanVien daoNhanVien = new DAONhanVien();
         double thuong = 0;
         // xử lý tính toán
-        double luongMoiGio = DAONhanVien.getInstance().get(maNV).getLuongCoBan()/(24*8); 
+        double luongMoiGio = daoNhanVien.timKiemNhanVien(maNV).getLuongCoBan()/(24*8); 
         float gioTangCa=0;
         try {
             gioTangCa = new DAOPhieuChamCongNhanVien().getTongGioTangCaTrongThang(maNV, thang, nam);
@@ -151,7 +154,7 @@ public class PhieuLuongNhanVien {
         return soNgayLam;
     }
 
-    public double getLuongThucNhan()  {
+    public double getLuongThucNhan() throws RemoteException  {
         double luongThucNhan = 0;
         // xử lý tính toán
         luongThucNhan = getLuong() + getThuong() + getPhuCap() - getPhat();
@@ -162,17 +165,23 @@ public class PhieuLuongNhanVien {
     @Override
     public String toString() {
 
-            return "PhieuLuong{" +
-                    "maPL='" + maPL + '\'' +
-                    ", thang=" + thang +
-                    ", nam=" + nam +
-                    ", maNV='" + maNV + '\'' +
-                    ", phat=" + phat +
-                    ", luong=" + getLuong() +
-                    ", thuong=" + getThuong() +
-                    ", soNgayLam=" + getSoNgayLam() +
-                    ", luongThucNhan=" + getLuongThucNhan() +
-                    '}';
+            try {
+				return "PhieuLuong{" +
+				        "maPL='" + maPL + '\'' +
+				        ", thang=" + thang +
+				        ", nam=" + nam +
+				        ", maNV='" + maNV + '\'' +
+				        ", phat=" + phat +
+				        ", luong=" + getLuong() +
+				        ", thuong=" + getThuong() +
+				        ", soNgayLam=" + getSoNgayLam() +
+				        ", luongThucNhan=" + getLuongThucNhan() +
+				        '}';
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return maNV;
     }
 
     @Override
