@@ -22,6 +22,9 @@ public class DAOPhieuLuongCongNhan implements IDAOPhieuLuongCongNhan {
 	public PhieuLuongCongNhan get(String id) throws RemoteException {
 		 return em.find(PhieuLuongCongNhan.class, id);
 	}
+	 public static DAOPhieuLuongCongNhan getInstance() throws RemoteException {
+	        return new DAOPhieuLuongCongNhan();
+	    }
 
 	@SuppressWarnings("unchecked")
 	@Override

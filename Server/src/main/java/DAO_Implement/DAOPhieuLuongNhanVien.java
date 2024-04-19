@@ -17,7 +17,9 @@ public class DAOPhieuLuongNhanVien implements IDAOPhieuLuongNhanVien	{
 	public DAOPhieuLuongNhanVien() throws RemoteException {
 	        em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	    }
-	
+	public static DAOPhieuLuongNhanVien getInstance() throws RemoteException {
+	        return new DAOPhieuLuongNhanVien();
+	    }
 	@Override
 	public PhieuLuongNhanVien get(String id) throws RemoteException {
 		return em.find(PhieuLuongNhanVien.class, id);

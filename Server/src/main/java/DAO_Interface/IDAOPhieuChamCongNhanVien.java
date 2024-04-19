@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import ptud.Entity.PhieuChamCongHanhChinh;
 
 public interface IDAOPhieuChamCongNhanVien extends Remote{
+	
+	
 	public boolean themPhieuChamCongNhanVien(PhieuChamCongHanhChinh PCCNV) throws RemoteException;
 
 	public int getSoNgayLam(String idNV, int thang, int nam) throws RemoteException;

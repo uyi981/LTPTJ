@@ -4,9 +4,11 @@
  */
 package ptud.Entity;
 
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import DAO_Implement.DAOPhieuChamCongCongNhan;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -14,7 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import ptud.DAO.DAO_PhieuChamCongCongNhan;
 
 /**
  * 
@@ -87,11 +88,11 @@ public class PhieuLuongCongNhan {
     public double getPhat() {
         double phat2 = 0; 
         try {
-            phat2 = DAO_PhieuChamCongCongNhan.getInstance().getTongTienPhatTrongThang(maCN, thang, nam);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            phat2 = DAOPhieuChamCongCongNhan.getInstance().getTongTienPhatTrongThang(maCN, thang, nam);
+        } catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         // xử lý tính toán
         return phat2;
     }
@@ -105,8 +106,8 @@ public class PhieuLuongCongNhan {
         double luong = 0;
         // xử lý tính toán
         try {
-            luong = DAO_PhieuChamCongCongNhan.getInstance().getTongTienCongTrongThang(maCN, thang, nam);
-        } catch (SQLException e) {
+            luong = DAOPhieuChamCongCongNhan.getInstance().getTongTienCongTrongThang(maCN, thang, nam);
+        } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -117,8 +118,8 @@ public class PhieuLuongCongNhan {
         double thuong = 0;
         // xử lý tính toán
         try {
-            thuong = DAO_PhieuChamCongCongNhan.getInstance().getTongTienCongTrongThang(maCN, thang, nam)*0.15;
-        } catch (SQLException e) {
+            thuong = DAOPhieuChamCongCongNhan.getInstance().getTongTienCongTrongThang(maCN, thang, nam)*0.15;
+        } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } 
@@ -130,8 +131,8 @@ public class PhieuLuongCongNhan {
         int soNgayLam = 0; 
         // xử lý tính toán
         try {
-            soNgayLam = DAO_PhieuChamCongCongNhan.getInstance().getSoNgayLam(maCN,  thang, nam);
-        } catch (SQLException e) {
+            soNgayLam = DAOPhieuChamCongCongNhan.getInstance().getSoNgayLam(maCN,  thang, nam);
+        } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -142,8 +143,8 @@ public class PhieuLuongCongNhan {
         double luongThucNhan = 0;
         // xử lý tính toán
         try {
-            luongThucNhan = DAO_PhieuChamCongCongNhan.getInstance().getTongTienCongTrongThang(maCN, thang, nam) + getThuong() - getPhat();
-        } catch (SQLException e) {
+            luongThucNhan = DAOPhieuChamCongCongNhan.getInstance().getTongTienCongTrongThang(maCN, thang, nam) + getThuong() - getPhat();
+        } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
