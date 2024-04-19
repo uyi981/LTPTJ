@@ -7,6 +7,7 @@ import java.rmi.server.UnicastRemoteObject;
 import DAO_Interface.IDAOSanPham;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 public class DAOSanPham extends UnicastRemoteObject  implements IDAOSanPham 
 {
     EntityManager em;
@@ -20,19 +21,50 @@ public class DAOSanPham extends UnicastRemoteObject  implements IDAOSanPham
 	 */
 	private static final long serialVersionUID = 3804424582259813759L;
 	@Override
-	public boolean themSanPham() throws RemoteException {
+	public boolean themSanPham(SanPham sanPham) throws RemoteException {
+		EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			em.persist(sanPham);
+			tx.commit();
+			return true;
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		}
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean tuaSanPham() throws RemoteException {
+	public boolean suaSanPham(SanPham sanPham) throws RemoteException {
+		EntityTransaction tx = em.getTransaction();
+		try {
+            tx.begin();
+            em.merge(sanPham);
+            tx.commit();
+            return true;
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
 		// TODO Auto-generated method stub
 		return false;
 	}
+	}
 
 	@Override
-	public boolean taoSanPham() throws RemoteException {
+	public boolean xoaSanPham(String maSanPham) throws RemoteException {
+		EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			SanPham sanPham = em.find(SanPham.class, maSanPham);
+			em.remove(sanPham);
+			tx.commit();
+			return true;
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		}
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -40,14 +72,15 @@ public class DAOSanPham extends UnicastRemoteObject  implements IDAOSanPham
 	@Override
 	public SanPham timKiemSanPham(String maSanPham) throws RemoteException {
 		// TODO Auto-generated method stub
-		return null;
+		return em.find(SanPham.class, maSanPham);
 	}
 
 	@Override
 	public List<SanPham> layDanhSachSanPham() throws RemoteException {
 		// TODO Auto-generated method stub
-		
+		return em.createQuery("SELECT sp FROM SanPham sp").getResultList();
 	}
+
 
 
 
