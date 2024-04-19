@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import ptud.DAO.DAO_CongDoan;
 import ptud.Entity.CongDoan;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +16,10 @@ import jakarta.persistence.Transient;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
+
+import DAO_Implement.DAOCongDoan;
+import DAO_Implement.DAOCongNhan;
+import DAO_Implement.DAOSanPham;
 @NoArgsConstructor
 @Entity
 public class SanPham 
@@ -51,9 +54,9 @@ public class SanPham
         return congDoans;
     }
 
-    public void updateListCongDoans() 
+    public void updateListCongDoans() throws Exception
     {
-    	DAO_CongDoan daocd = new DAO_CongDoan();
+    	DAOCongDoan daocd = new DAOCongDoan();
        for(CongDoan congDoan : daocd.getAll())
        {
            if(congDoan.getMaSP().compareToIgnoreCase(this.maSanPham)==0)
@@ -70,7 +73,7 @@ public class SanPham
         return tienDo;
     }
 
-    public void setTienDo() 
+    public void setTienDo() throws Exception
     {        
         updateListCongDoans();
         int tienDo;

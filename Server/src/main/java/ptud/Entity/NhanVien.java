@@ -8,7 +8,6 @@ import java.util.Set;
 import DAO_Implement.DAONhanVien;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import ptud.DAO.DAO_NhanVien;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -165,7 +164,7 @@ public class NhanVien {
         this.phuCap = phuCap;
     }
 
-    public NhanVien(BoPhan boPhan, String ten, boolean gioiTinh, LocalDate ngaySinh, LocalDate ngayBatDauLam, String cccd, String dienThoai, boolean trangThai, byte[] avatar, double luongCoBan, double phuCap) {
+    public NhanVien(BoPhan boPhan, String ten, boolean gioiTinh, LocalDate ngaySinh, LocalDate ngayBatDauLam, String cccd, String dienThoai, boolean trangThai, byte[] avatar, double luongCoBan, double phuCap) throws Exception{
         this.maNV = genMaNV(boPhan, ngayBatDauLam, gioiTinh);
         this.boPhan = boPhan;
         this.ten = ten;
@@ -180,7 +179,7 @@ public class NhanVien {
         this.phuCap = phuCap;
     }
 
-    private String genMaNV(BoPhan boPhan,LocalDate ngayBatDauLam, boolean gioiTinh) {
+    private String genMaNV(BoPhan boPhan,LocalDate ngayBatDauLam, boolean gioiTinh) throws Exception {
         DAONhanVien daoNhanVien = new DAONhanVien();
         int count = daoNhanVien.countAll();
 
