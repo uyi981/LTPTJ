@@ -4,9 +4,12 @@
  */
 package ptud.Entity;
 
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import DAO_Implement.DAONhanVien;
+import DAO_Implement.DAOPhieuChamCongNhanVien;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -14,8 +17,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import ptud.DAO.DAO_NhanVien;
-import ptud.DAO.DAO_PhieuChamCongNhanVien;
 /**
  * 
  * @author NguyenTrongPhuc
@@ -93,8 +94,8 @@ public class PhieuLuongNhanVien {
         double phat2 = 0; 
         // xử lý tính toán
         try {
-            phat2 = DAO_PhieuChamCongNhanVien.getInstance().getTongTienPhatTrongThang(maNV, thang, nam);
-        } catch (SQLException e) {
+            phat2 = DAOPhieuChamCongNhanVien.getInstance().getTongTienPhatTrongThang(maNV, thang, nam);
+        } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } 
@@ -105,31 +106,34 @@ public class PhieuLuongNhanVien {
         this.phat = phat;
     }
     
-    public double getPhuCap() {
-        double PhuCap = DAO_NhanVien.getInstance().get(maNV).getPhuCap(); 
+    public double getPhuCap() throws RemoteException {
+    	DAONhanVien daoNhanVien = new DAONhanVien();
+        double PhuCap = daoNhanVien.timKiemNhanVien(maNV).getPhuCap();
         return PhuCap;
     }
 
-    public double getLuong()  {
-        double luong = 0;
+    public double getLuong() throws RemoteException  {
+    	DAONhanVien daoNhanVien = new DAONhanVien();
+    	double luong = 0;
         // xử lý tính toán
         try {
-            luong = new DAO_PhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam)*DAO_NhanVien.getInstance().get(maNV).getLuongCoBan()/24;
-        } catch (SQLException e) {
+            luong = new DAOPhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam)*daoNhanVien.timKiemNhanVien(maNV).getLuongCoBan()/24;
+        } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return luong;
     }
 
-    public double getThuong()  {
+    public double getThuong()  throws RemoteException{
+    	DAONhanVien daoNhanVien = new DAONhanVien();
         double thuong = 0;
         // xử lý tính toán
-        double luongMoiGio = DAO_NhanVien.getInstance().get(maNV).getLuongCoBan()/(24*8); 
+        double luongMoiGio = daoNhanVien.timKiemNhanVien(maNV).getLuongCoBan()/(24*8); 
         float gioTangCa=0;
         try {
-            gioTangCa = new DAO_PhieuChamCongNhanVien().getTongGioTangCaTrongThang(maNV, thang, nam);
-        } catch (SQLException e) {
+            gioTangCa = new DAOPhieuChamCongNhanVien().getTongGioTangCaTrongThang(maNV, thang, nam);
+        } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } 
@@ -142,15 +146,15 @@ public class PhieuLuongNhanVien {
         int soNgayLam = 0; 
         // xử lý tính toán
         try {
-            soNgayLam = new DAO_PhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam);
-        } catch (SQLException e) {
+            soNgayLam = new DAOPhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam);
+        } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } 
         return soNgayLam;
     }
 
-    public double getLuongThucNhan()  {
+    public double getLuongThucNhan() throws RemoteException  {
         double luongThucNhan = 0;
         // xử lý tính toán
         luongThucNhan = getLuong() + getThuong() + getPhuCap() - getPhat();
@@ -161,17 +165,23 @@ public class PhieuLuongNhanVien {
     @Override
     public String toString() {
 
-            return "PhieuLuong{" +
-                    "maPL='" + maPL + '\'' +
-                    ", thang=" + thang +
-                    ", nam=" + nam +
-                    ", maNV='" + maNV + '\'' +
-                    ", phat=" + phat +
-                    ", luong=" + getLuong() +
-                    ", thuong=" + getThuong() +
-                    ", soNgayLam=" + getSoNgayLam() +
-                    ", luongThucNhan=" + getLuongThucNhan() +
-                    '}';
+            try {
+				return "PhieuLuong{" +
+				        "maPL='" + maPL + '\'' +
+				        ", thang=" + thang +
+				        ", nam=" + nam +
+				        ", maNV='" + maNV + '\'' +
+				        ", phat=" + phat +
+				        ", luong=" + getLuong() +
+				        ", thuong=" + getThuong() +
+				        ", soNgayLam=" + getSoNgayLam() +
+				        ", luongThucNhan=" + getLuongThucNhan() +
+				        '}';
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return maNV;
     }
 
     @Override

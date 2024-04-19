@@ -29,6 +29,10 @@ public class DAOPhieuChamCongNhanVien implements DAO_Interface.IDAOPhieuChamCong
 	        String formattedDate = date.format(DateTimeFormatter.ofPattern("ddMMyyyy"));
 	        return "PCCHC" + formattedDate + idNV;
 	    }
+	 
+	 public static DAOPhieuChamCongNhanVien getInstance() throws RemoteException {
+	        return new DAOPhieuChamCongNhanVien();
+	    }
 	
 	@Override
 	public boolean themPhieuChamCongNhanVien(PhieuChamCongHanhChinh PCCNV) throws RemoteException {

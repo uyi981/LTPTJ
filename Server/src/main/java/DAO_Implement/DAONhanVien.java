@@ -24,6 +24,9 @@ public class DAONhanVien extends UnicastRemoteObject implements DAO_Interface.ID
 	{
 		return em.createQuery("select a from NhanVien a", NhanVien.class).getResultList().size();
 	}
+	 public static DAONhanVien getInstance() throws RemoteException {
+	        return new DAONhanVien();
+	    }
 
 	@Override
 	public boolean themNhanVien(NhanVien nhanVien) throws RemoteException {

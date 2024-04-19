@@ -26,6 +26,10 @@ public class DAOPhieuChamCongCongNhan implements DAO_Interface.IDAOPhieuChamCong
 	        String formattedDate = date.format(DateTimeFormatter.ofPattern("ddMMyy"));
 	        return formattedDate + idCN;
 	    }
+	    
+	    public static DAOPhieuChamCongCongNhan getInstance() throws RemoteException {
+	        return new DAOPhieuChamCongCongNhan();
+	    }
 
 	@Override
 	public boolean themPhieuChamCongCongNhan(PhieuChamCongCongNhan PCCCN) throws RemoteException {
