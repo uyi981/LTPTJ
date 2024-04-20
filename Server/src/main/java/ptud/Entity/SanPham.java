@@ -27,6 +27,7 @@ public class SanPham
 	// Author VoPhuocHau
   @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
   HopDong hopDong;
+  @Transient
   String maHD;
   @Transient
   ArrayList<CongDoan> congDoans = new ArrayList<>();
@@ -47,9 +48,13 @@ public class SanPham
   String tenSanPham;
   int soLuong;
   double donGia;
+  @Transient
   int tienDo;
   @OneToMany(mappedBy = "sanPham")
   Set<CongDoan> congDoan;
+	@Column(name ="hinhAnh",columnDefinition = "VARBINARY(MAX)"
+			,nullable = true)
+	private byte[] avatar;
     public ArrayList<CongDoan> getCongDoans() {
         return congDoans;
     }

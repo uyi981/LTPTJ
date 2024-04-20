@@ -33,21 +33,19 @@ public class CongNhan {
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
 	@JoinColumn(name = "maBP")
     private BoPhan boPhan;
+	@Column(name = "tenCN",columnDefinition = "NVARCHAR(100)")
     private String ten;
     private boolean gioiTinh;
     @Column(name = "ngaySinh",columnDefinition = "DATE")
-    @Transient
     private LocalDate ngaySinh;
     
     @Column(name = "ngayBatDauLam",columnDefinition = "DATE")
-    @Transient
-    private Date ngayBatDauLam1;
-    @Transient
     private LocalDate ngayBatDauLam;
+    @Column(name = "CCCD",columnDefinition = "VARCHAR(20)")
     private String cccd;
     private String dienThoai;
     private boolean trangThai;
-    @Column(columnDefinition = "VARBINARY(MAX)")
+    @Column(name = "hinhAnh",columnDefinition = "VARBINARY(MAX)")
     private byte[] avatar;
     private boolean choPhanCong;
     @OneToMany(mappedBy = "congNhan")

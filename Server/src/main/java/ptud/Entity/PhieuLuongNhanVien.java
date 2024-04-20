@@ -32,11 +32,11 @@ public class PhieuLuongNhanVien {
     @Transient
     private String maNV; 
     private double phat; 
-    // private double phuCap; 
-    // private double luong; 
-    // private double thuong; 
-    // private int soNgayLam; 
-    // private double luongThucNhan; 
+     private double phuCap; 
+     private double luong; 
+     private double thuong; 
+     private int soNgayLam; 
+     private double luongThucNhan; 
 
     
     @ManyToOne(fetch = FetchType.LAZY)

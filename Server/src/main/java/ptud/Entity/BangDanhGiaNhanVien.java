@@ -34,7 +34,6 @@ public class BangDanhGiaNhanVien {
 	private float diemHieuSuat;
 	@Column(columnDefinition = "CHAR(1)")
 	private char bac;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "maNV")
 	private NhanVien nhanVien;

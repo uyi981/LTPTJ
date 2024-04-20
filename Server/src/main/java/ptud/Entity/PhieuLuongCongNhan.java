@@ -32,17 +32,16 @@ public class PhieuLuongCongNhan {
     @Transient
     private String maCN; 
     private double phat; 
-    // private double luong; 
-    // private double thuong; 
-    // private int soNgayLam; 
-    // private double luongThucNhan; 
+     private double luong; 
+     private double thuong; 
+     private int soNgayLam; 
+     private double luongThucNhan; 
 
     public PhieuLuongCongNhan() {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "maCN")
-    
+    @JoinColumn(name = "maCN")   
     CongNhan congNhan;
 
     public PhieuLuongCongNhan(String maPL, int thang, int nam, String maCN, double phat) {

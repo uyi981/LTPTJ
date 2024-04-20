@@ -28,12 +28,6 @@ public class HopDong {
 	@Id
    private String maHD;
    private String tenHD;
-   @Column(name = "ngayBatDau",columnDefinition = "DATE")
-   @Transient
-   private Date ngayBatDau1;
-   @Column(name = "ngayKetThucDuKien",columnDefinition = "DATE")
-   @Transient
-   private Date ngayKetThucDuKien1;
    private LocalDate ngayBatDau;
    private LocalDate ngayKetThucDuKien;
    private String trangThai;
