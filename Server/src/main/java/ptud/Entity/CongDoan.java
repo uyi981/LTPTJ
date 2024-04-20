@@ -4,7 +4,6 @@
  */
 package ptud.Entity;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
@@ -17,6 +16,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -61,6 +62,15 @@ public class CongDoan {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "maSP")
 	private SanPham sanPham;
+	
+
+	 @ManyToMany
+	    @JoinTable(
+	        name = "CongDoanTienQuyet",
+	        joinColumns = @JoinColumn(name = "maCDTQ"),
+	        inverseJoinColumns = @JoinColumn(name = "maCD")
+	    )
+	 private Set<CongDoan> dsCDTQs;
 	@Transient
 	private String maSP;
 	@Transient
