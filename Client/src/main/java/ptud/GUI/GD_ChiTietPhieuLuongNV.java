@@ -6,20 +6,28 @@ package ptud.GUI;
 
 import java.text.DecimalFormat;
 
+import DAO_Interface.IDAONhanVien;
+import client.Client;
 import ptud.DAO.DAO_NhanVien;
 import ptud.Entity.NhanVien;
 import ptud.Entity.PhieuLuongNhanVien;
 import java.awt.*;
 import java.awt.print.*;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 /**
  *
- * @author KHANH PC
+ * @author Hung
  */
 public class GD_ChiTietPhieuLuongNV extends javax.swing.JPanel {
 
     /**
      * Creates new form GD_ChiTietPhieuLuongNV
      */
+	private IDAONhanVien daoNhanVien;
+	
     public GD_ChiTietPhieuLuongNV() {
         initComponents();
     }
@@ -32,6 +40,13 @@ public class GD_ChiTietPhieuLuongNV extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+    	
+    	try {
+			daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         jButton1 = new javax.swing.JButton();
         jPanelContainer = new javax.swing.JPanel();
@@ -358,7 +373,14 @@ public class GD_ChiTietPhieuLuongNV extends javax.swing.JPanel {
         DecimalFormat decimalFormat = new DecimalFormat("#,###.##đ");
         jLabelThangNam.setText(plnv.getThang() + "/" + plnv.getNam());
         jLabelMaPhieuLuong.setText(plnv.getMaPL());
-        NhanVien nv = DAO_NhanVien.getInstance().get(plnv.getMaNV());
+//        NhanVien nv = DAO_NhanVien.getInstance().get(plnv.getMaNV());
+        NhanVien nv = null;
+        try {
+			daoNhanVien.get(plnv.getMaNV());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         jLabelTen.setText(nv.getTen());
         jLabelMaNV.setText(nv.getMaNV());
         jLabelBoPhan.setText(nv.getBoPhan().getTenBP()); 
