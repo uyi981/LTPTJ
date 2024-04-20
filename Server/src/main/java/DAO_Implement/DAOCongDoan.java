@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class DAOCongDoan extends UnicastRemoteObject implements IDAOCongDoan {
 
     private EntityManager em;
-
+    
     public DAOCongDoan() throws Exception {
         em = Persistence.createEntityManagerFactory("MSSQL")
                 .createEntityManager();

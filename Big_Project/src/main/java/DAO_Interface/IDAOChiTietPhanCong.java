@@ -15,16 +15,10 @@ public interface IDAOChiTietPhanCong extends Remote {
     public boolean deleteById(String id) throws Exception;
     public void updateChoPhanCong(String maCN, boolean trangThai) throws Exception;
     public int getSoLuongCongDoanDuocGiaoHomNay(String maCD) throws Exception;
-    public static int getSoLuongCongDoanGiaoByMaCongNHan(String maCN) throws Exception {
-        return 0;
-    }
+    public int getSoLuongCongDoanGiaoByMaCongNHan(String maCN) throws Exception ;
     public void updateSoLuongGiaoHomNayByMaCN(String maCN, int soLuong) throws Exception;
     public void deleteHomNayByMaCN(String maCN) throws Exception;
-    public static String getMaChiTietPhanCongBymaCN(String maCN) throws Exception {
-        return null;
-    }
-    public static String getMaCongDoanBymaCTPC(String maCTPC) throws Exception {
-        return null;
-    }
+    public String getMaChiTietPhanCongBymaCN(String maCN) throws Exception;
+    public String getMaCongDoanBymaCTPC(String maCTPC) throws Exception;
     public int getSoLuongCongDoanHoanThanhByMaCongNhan(String maCN, LocalDate date) throws Exception;
 }
