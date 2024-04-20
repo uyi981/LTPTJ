@@ -5,6 +5,7 @@
 package ptud.GUI.GUI_HD;
 
 import java.awt.CardLayout;
+import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -12,9 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import ptud.DAO.DAO_HopDong;
-import ptud.DAO.DAO_KhachHang;
-import ptud.DAO.DAO_SanPham;
+
+import DAO_Interface.IDAOHopDong;
+import DAO_Interface.IDAOKhachHang;
+import DAO_Interface.IDAOSanPham;
 import ptud.Entity.HopDong;
 import ptud.Entity.KhachHang;
 import ptud.Entity.SanPham;
@@ -26,9 +28,9 @@ import ptud.GUI.GD_QLHD;
  */
 public class GD_TaoHopDong extends javax.swing.JPanel {
 
-    DAO_HopDong daohd = new DAO_HopDong();
-    DAO_SanPham daosp = new DAO_SanPham();
-    DAO_KhachHang daokh = new DAO_KhachHang();
+    IDAOHopDong daohd;
+    IDAOSanPham daosp;
+    IDAOKhachHang daokh;
     GD_QLHD gd_QLHD;
     DefaultTableModel modelSanPham;
     HopDong hopDong;
@@ -44,11 +46,17 @@ public class GD_TaoHopDong extends javax.swing.JPanel {
     }
     public void addListKH()
     {
-        jComboBoxMaKH.removeAllItems();
-        for(KhachHang khachHang : daokh.getAll())
-        {
-            jComboBoxMaKH.addItem(khachHang.getMaKhachHang());
-        }
+    	try {
+    		 jComboBoxMaKH.removeAllItems();
+    	        for(KhachHang khachHang : daokh.LayDanhSachKhachHang())
+    	        {
+    	            jComboBoxMaKH.addItem(khachHang.getMaKhachHang());
+    	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+       
     }
     public void receiveGD_QLHD(GD_QLHD gd_qlhd) {
         gd_QLHD = gd_qlhd;
@@ -74,8 +82,8 @@ public class GD_TaoHopDong extends javax.swing.JPanel {
                 tenKH = jTextFieldTenKH.getText();
                 sdt = jTextFieldSDT.getText();
                 email = jTextFieldMail.getText();
-                KhachHang khachHang = new KhachHang(daokh.getAll().size() + 1, tenKH, jRadioButtonToChuc.isEnabled(), email, sdt);
-                daokh.insert(khachHang);
+                KhachHang khachHang = new KhachHang(daokh.LayDanhSachKhachHang().size() + 1, tenKH, jRadioButtonToChuc.isEnabled(), email, sdt);
+                daokh.themKhachHang(khachHang);
                 gd_QLHD.updateTable();
                 addListKH();
             }
@@ -174,13 +182,13 @@ void createHopDong() {
                     String tenHD = jTextFieldTenHD.getText();
 
                     int stt = 1;
-                    for (HopDong hopDong : daohd.getAll()) {
+                    for (HopDong hopDong : daohd.layDanhSachHopDong()) {
                         if (hopDong.getNgayBatDau().equals(ngayBD)) {
                             stt++;
                         }
                     }
                     hopDong = new HopDong(stt, tenHD, ngayBD, ngayKT, giaTri, jComboBoxMaKH.getSelectedItem().toString(), "chờ xác nhận");
-                    daohd.insert(hopDong);
+                    daohd.themHopDong(hopDong);
                 } catch (Exception e) {
                     JOptionPane.showConfirmDialog(this, "Lỗi tạo hợp đồng!");
                 }
@@ -200,12 +208,19 @@ void createHopDong() {
 
 
     void changeObjectToEnity(Object[] rowData, int stt) {
-        double donGia;
-        int soLuong = Integer.parseInt(rowData[1].toString());
-        donGia = Double.parseDouble(rowData[2].toString());
-        String tenSP = rowData[0].toString();
-        SanPham sanPham = new SanPham(stt, tenSP, soLuong, donGia, hopDong.getMaHD());
-        daosp.insert(sanPham);
+    	 double donGia;
+         int soLuong = Integer.parseInt(rowData[1].toString());
+         donGia = Double.parseDouble(rowData[2].toString());
+         String tenSP = rowData[0].toString();
+         SanPham sanPham = new SanPham(stt, tenSP, soLuong, donGia, hopDong.getMaHD());
+    	try {
+    		daosp.themSanPham(sanPham);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+       
+        
     }
 
     /**

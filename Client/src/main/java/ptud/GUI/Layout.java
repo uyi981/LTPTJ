@@ -6,9 +6,10 @@ package ptud.GUI;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.rmi.RemoteException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import ptud.Connection.ConnectDB;
 import ptud.Entity.PhieuChamCongCongNhan;
 import ptud.Entity.PhieuLuongCongNhan;
 import ptud.Entity.PhieuLuongNhanVien;
@@ -59,10 +60,16 @@ public class Layout extends javax.swing.JFrame {
     private CardLayout cardLayout;
     public static Layout instance;
     public Layout(int userRole) {
-        if (userRole == 1)
-            initComponents();
-        else 
-            initComponents2(userRole);
+    	try {
+    		  if (userRole == 1)
+    	            initComponents();
+    	        else 
+    	            initComponents2(userRole);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+      
         instance = this;
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         avatarImage.setIcon(ImageCus.getScaledImageIcon("/assets/images/avataruser1.jpg", 160, 160));
@@ -76,7 +83,7 @@ public class Layout extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents() throws Exception {
 
         Aside = new javax.swing.JPanel();
         avatar = new javax.swing.JPanel();
@@ -315,7 +322,7 @@ public class Layout extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
       // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
-    private void initComponents2(int userRole) {
+    private void initComponents2(int userRole) throws Exception {
 
         Aside = new javax.swing.JPanel();
         avatar = new javax.swing.JPanel();

@@ -5,6 +5,7 @@
 package ptud.GUI.GUI_HD;
 
 import java.awt.CardLayout;
+import java.rmi.RemoteException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -17,10 +18,10 @@ import java.util.regex.Pattern;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import ptud.DAO.DAOInterface;
-import ptud.DAO.DAO_CongDoan;
-import ptud.DAO.DAO_HopDong;
-import ptud.DAO.DAO_KhachHang;
+
+import DAO_Interface.IDAOHopDong;
+import DAO_Interface.IDAOKhachHang;
+import DAO_Interface.IDAOSanPham;
 import ptud.Entity.HopDong;
 import ptud.Entity.KhachHang;
 import ptud.Entity.SanPham;
@@ -28,7 +29,6 @@ import ptud.GUI.GD_QLHD;
 import java.time.temporal.ChronoField;
 import java.util.HashSet;
 import java.util.Set;
-import ptud.DAO.DAO_SanPham;
 
 /**
  *
@@ -40,9 +40,9 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
     private GD_QLHD gD_QLHD;
     private DefaultTableModel sanPhamModel, tienDoModel;
     // khoi tao cac DAO 
-    private DAO_HopDong daohd = new DAO_HopDong(); 
-    private DAO_KhachHang daokh = new DAO_KhachHang();
-    private DAO_SanPham daosp = new DAO_SanPham();
+    private IDAOHopDong daohd;
+    private IDAOKhachHang daokh;
+    private IDAOSanPham daosp;
     CardLayout cardLayout;
 
     /**
@@ -120,7 +120,13 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
         String tenSP = rowData[0].toString();
         SanPham sanPham = new SanPham(stt, tenSP, soLuong, donGia, hopDong.getMaHD());
         if (!hopDong.getSanPhams().contains(sanPham)) {
-            daosp.insert(sanPham);
+        	try {
+        		 daosp.themSanPham(sanPham);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				// TODO: handle exception
+			}
+           
         }
     }
     // tao hop dong va them hopdong vao database
@@ -153,7 +159,7 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
                     String maKH = maKHmaHDTextField.getText();
                     hopDong.setTenHD(tenHD);
                     hopDong.setMaKH(maKH);
-                    daohd.update(hopDong);
+                    daohd.suaHopDong(hopDong);
 
                 } catch (Exception e) {
                     JOptionPane.showConfirmDialog(this, "Lỗi tạo hợp đồng!");
@@ -173,7 +179,12 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
         rowData[3] = sanPham.getDonGia();
         Object[] tienDoData = new Object[3];
         tienDoData[0] = sanPham.getTenSanPham();
-        sanPham.setTienDo();
+        try {
+        	  sanPham.setTienDo();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+      
         tienDoData[1] = (int)((100.0*sanPham.getTienDo())/sanPham.getSoLuong()); 
         tienDoData[2] = ""+sanPham.getTienDo()+"/"+sanPham.getSoLuong();
         System.out.println("tienDo"+tienDoData[1].toString());
@@ -253,7 +264,12 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
         int sum = 0;
         int sumMax = 0;
         for (SanPham sanPham : hopDong.getSanPhams()) {
-            sanPham.setTienDo();
+        	try {
+        		  sanPham.setTienDo();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+          
             sum += sanPham.getTienDo();
             sumMax += sanPham.getSoLuong();
         }
@@ -294,9 +310,15 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
     // chuyen trang thai hopDong
     public void thayDoiTrangThaiHopDong(String trangThai) {
         hopDong.setTrangThai(trangThai);
-        if (!daohd.update(hopDong)) {
-            JOptionPane.showConfirmDialog(this, "Xác nhận thất bại,vui lòng thử lại sau ít phút!");
-        }
+        try {
+        	 if (!daohd.suaHopDong(hopDong)) {
+                 JOptionPane.showConfirmDialog(this, "Xác nhận thất bại,vui lòng thử lại sau ít phút!");
+             }
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+       
     }
 // lam moi table
     void updateTable() {
@@ -325,8 +347,11 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
     }
 
     void fillHopDongTable() {
-
-        hopDong.updateListSanPham();
+    	try {
+            hopDong.updateListSanPham();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
         for (SanPham sanPham : hopDong.getSanPhams()) {
             changeEnityToObject(sanPham);
         }
@@ -1016,6 +1041,8 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
                 if (JOptionPane.showConfirmDialog(this, "Hợp đồng đã xác nhận sẽ không thể cập nhật thông tin. Vui lòng xác nhận!") == 0) {
                     thayDoiTrangThaiHopDong("đang thực hiện");
                     gD_QLHD.updateTable();
+					
+                  
                 }
             }
 
@@ -1091,7 +1118,11 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
 
     private void buttonXoaSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonXoaSanPhamActionPerformed
         int rowIndex = sanPhamTable.getSelectedRow();
-        daosp.deleteById(sanPhamModel.getValueAt(rowIndex, 0).toString());
+        try {
+        	 daosp.xoaSanPham(sanPhamModel.getValueAt(rowIndex, 0).toString());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}       
         sanPhamModel.removeRow(rowIndex);
 
 
