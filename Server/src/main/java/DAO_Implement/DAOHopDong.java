@@ -6,12 +6,14 @@ import java.util.List;
 import DAO_Interface.IDAOHopDong;
 import ptud.Entity.HopDong;	
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.EntityTransaction;
 public class DAOHopDong extends UnicastRemoteObject implements DAO_Interface.IDAOHopDong{
      EntityManager em;
 	public DAOHopDong() throws RemoteException {
-		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("MSSQL");
+		em = emf.createEntityManager();
 		// TODO Auto-generated constructor stub
 	}
 

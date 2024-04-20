@@ -220,7 +220,9 @@ public class HopDong {
         sanPhams = null;
         sanPhams = new ArrayList<>();
         for (SanPham sanPham : daosp.layDanhSachSanPham()) {
-           
+			if (sanPham.getMaHD().equals(maHD)) {
+				sanPhams.add(sanPham);
+			}
         }
     }
 
