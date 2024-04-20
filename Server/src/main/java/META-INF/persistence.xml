@@ -11,10 +11,10 @@
 				value="jdbc:sqlserver://localhost:1433;databaseName=QLLSP;trustServerCertificate=true;encrypt=true;" />
 			<property name="jakarta.persistence.jdbc.user" value="sa" />
 			<property name="jakarta.persistence.jdbc.password"
-				value="12345678" />
+				value="sapassword" />
 			<property name="jakarta.persistence.jdbc.dialect"
 				value="org.hibernate.dialect.SQLServerDialect" />
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 
