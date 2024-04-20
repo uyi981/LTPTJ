@@ -13,19 +13,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
-import javax.swing.JOptionPane;
 
 import DAO_Implement.DAOSanPham;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
-import ptud.Entity.SanPham;
-import ptud.Entity.KhachHang;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import java.util.Set;
 // lưu ý khi đổ dữ liệu vào table thì phải set oldMaHD = maHD nằm cuối danh sách.
 @Entity
 public class HopDong {       
@@ -39,9 +34,7 @@ public class HopDong {
    @Column(name = "ngayKetThucDuKien",columnDefinition = "DATE")
    @Transient
    private Date ngayKetThucDuKien1;
-   @Transient
    private LocalDate ngayBatDau;
-   @Transient
    private LocalDate ngayKetThucDuKien;
    private String trangThai;
    @Transient
@@ -64,6 +57,7 @@ public class HopDong {
        
       // soLuongSanPham =  sanPhams.size();
     }
+   @Column(nullable = true)
    private int soLuongSanPham;
    @Transient
    transient ArrayList<SanPham> sanPhams = new ArrayList<>();
