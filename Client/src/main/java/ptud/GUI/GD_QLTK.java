@@ -6,6 +6,10 @@ package ptud.GUI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -14,8 +18,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import ptud.DAO.DAO_NhanVien;
-import ptud.DAO.DAO_TaiKhoan;
+import javax.swing.text.html.HTMLDocument.RunElement;
+
+import DAO_Implement.DAONhanVien;
+import DAO_Implement.DAOTaiKhoan;
+import DAO_Interface.IDAOTaiKhoan;
+import client.Client;
 import ptud.Entity.NhanVien;
 import ptud.Entity.TaiKhoan;
 
@@ -27,32 +35,39 @@ public class GD_QLTK extends javax.swing.JPanel {
 
     /**
      * Creates new form GD_QLTK
+     * @throws RemoteException 
      */
-    public GD_QLTK() {
+    public GD_QLTK() throws RemoteException {
         initComponents();
         try {
             loadDataTable();
-        } catch (SQLException ex) {
+        } catch (RemoteException ex) {
             Logger.getLogger(GD_QLTK.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void loadDataTable() throws SQLException {
+    public void loadDataTable() throws RemoteException {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        DAO_TaiKhoan tk = new DAO_TaiKhoan();
+        IDAOTaiKhoan tk = null;
+		try {
+			tk = (IDAOTaiKhoan) Naming.lookup(Client.URL + "DAOTaiKhoan");
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         ArrayList<TaiKhoan> ds = tk.getAll();
         int stt = 1;
         for (TaiKhoan tkk : ds) {
             model.addRow(new Object[]{stt, tkk.getMaNV(), tkk.getUserName(), tkk.getMatKhat()});
-            stt = stt + 1;
+            stt = stt + 1; 
         }
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         jTable1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
     }
 
-    public void loadDetailDataAcount() {
+    public void loadDetailDataAcount() throws RemoteException {
         try {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             int index = jTable1.getSelectedRow();
@@ -60,7 +75,7 @@ public class GD_QLTK extends javax.swing.JPanel {
             String userName = model.getValueAt(index, 2).toString();
             String passWord = model.getValueAt(index, 3).toString();
 
-            DAO_TaiKhoan tk = new DAO_TaiKhoan();
+            DAOTaiKhoan tk = new DAOTaiKhoan();
             jTextField3.setText(maNV);
             jTextField1.setText(userName);
             jTextField2.setText(passWord);
@@ -126,12 +141,12 @@ public class GD_QLTK extends javax.swing.JPanel {
                 default:
                     throw new AssertionError();
             }
-        } catch (SQLException ex) {
+        } catch (RemoteException ex) {
             Logger.getLogger(GD_QLTK.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void updateTaiKhoan() {
+    public void updateTaiKhoan() throws RemoteException, MalformedURLException, NotBoundException{
         try {
             int row = jTable1.getSelectedRow();
             String oldPassWord = jTable1.getValueAt(row, 3).toString();
@@ -140,7 +155,8 @@ public class GD_QLTK extends javax.swing.JPanel {
             if (oldPassWord.equals(newPassWord)) {
                 curPassWord = oldPassWord;
             } else {
-                curPassWord = DAO_TaiKhoan.hashPassword(newPassWord, 16);
+                IDAOTaiKhoan daoTaiKhoan = (IDAOTaiKhoan) Naming.lookup(Client.URL + "DAOTaiKhoan");
+                curPassWord = daoTaiKhoan.hashPassword(newPassWord, 16);
             }
             int userRole = 0, cnt = 0;
             if (jcb1.isSelected()) {
@@ -171,14 +187,16 @@ public class GD_QLTK extends javax.swing.JPanel {
                 userRole = 1;
             }
             TaiKhoan tk = new TaiKhoan(jTextField1.getText(), jTable1.getValueAt(row, 1).toString(), curPassWord, userRole, true);
-            DAO_TaiKhoan.updateTaiKhoan(tk);
+            IDAOTaiKhoan daoTaiKhoan = (IDAOTaiKhoan) Naming.lookup(Client.URL + "DAOTaiKhoan");
+            daoTaiKhoan.updateTaiKhoan(tk);
             loadDataTable();
-        } catch (SQLException ex) {
+        } catch (RemoteException ex) {
             Logger.getLogger(GD_QLTK.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void createTaiKhoan() {
+    public void createTaiKhoan() throws RemoteException, MalformedURLException, NotBoundException {
+        IDAOTaiKhoan daoTaiKhoan = (IDAOTaiKhoan) Naming.lookup(Client.URL + "DAOTaiKhoan");
         String maNV = jTextField3.getText().toString();
         String userName = jTextField1.getText().toString();
         String passWord = jTextField2.getText().toString();
@@ -189,8 +207,8 @@ public class GD_QLTK extends javax.swing.JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        DAO_NhanVien daoNV = new DAO_NhanVien();
-        NhanVien NV = daoNV.get(maNV);
+        DAONhanVien daoNV = new DAONhanVien();
+        NhanVien NV = daoNV.timKiemNhanVien(maNV);
         if (NV == null) {
             JOptionPane.showMessageDialog(this,
                     "Mã Nhân viên không tồn tại",
@@ -234,7 +252,8 @@ public class GD_QLTK extends javax.swing.JPanel {
             return;
         }
         TaiKhoan tk = new TaiKhoan(userName, maNV, passWord, userRole, true);
-        DAO_TaiKhoan.createTaiKhoan(tk);      
+        
+        daoTaiKhoan.createTaiKhoan(tk);      
     }
 
     /**
@@ -650,38 +669,42 @@ public class GD_QLTK extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        try {
-            createTaiKhoan();
-            loadDataTable();
-        } catch (SQLException ex) {
-            Logger.getLogger(GD_QLTK.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) throws RemoteException, MalformedURLException, NotBoundException {//GEN-FIRST:event_jButton1MouseClicked
+        createTaiKhoan();
+		try {
+			loadDataTable();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }//GEN-LAST:event_jButton1MouseClicked
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        loadDetailDataAcount();
+        try {
+			loadDetailDataAcount();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        try {
-            // TODO add your handling code here:
-            updateTaiKhoan();
-            loadDataTable();
-        } catch (SQLException ex) {
-            Logger.getLogger(GD_QLTK.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) throws RemoteException, MalformedURLException, NotBoundException, SQLException {//GEN-FIRST:event_jButton2MouseClicked
+        // TODO add your handling code here:
+		updateTaiKhoan();
+		try {
+			loadDataTable();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }//GEN-LAST:event_jButton2MouseClicked
 
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-        try {
-            // TODO add your handling code here:
-            DAO_TaiKhoan.deleteTaiKhoanByID(jTextField3.getText().toString());
-            loadDataTable();
-        } catch (SQLException ex) {
-            Logger.getLogger(GD_QLTK.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) throws RemoteException, MalformedURLException, NotBoundException {//GEN-FIRST:event_jButton3MouseClicked
+        // TODO add your handling code here:
+		IDAOTaiKhoan daoTaiKhoan = (IDAOTaiKhoan) Naming.lookup(Client.URL + "DAOTaiKhoan");
+		daoTaiKhoan.deleteTaiKhoanByID(jTextField3.getText().toString());
+		loadDataTable();
     }//GEN-LAST:event_jButton3MouseClicked
 
 
