@@ -7,9 +7,13 @@ package ptud.GUI;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.lang.invoke.MethodHandles;
+import java.rmi.Naming;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import DAO_Interface.IDAOHopDong;
 import ptud.DAO.DAO_HopDong;
 import ptud.DAO.DAO_KhachHang;
 import ptud.Entity.HopDong;
@@ -24,7 +28,7 @@ import ptud.ults.ImageCus;
 public class GD_QLHD extends javax.swing.JPanel {
 
   
-    DAO_HopDong daoHongDong = new DAO_HopDong();
+    IDAOHopDong daoHongDong = Naming.lookup("rmi://localhost:1099/DAOHopDong");
     DAO_KhachHang daoKhachHang = new DAO_KhachHang();
     DefaultTableModel hopDongModel;
     DefaultTableModel khacHangModel;
