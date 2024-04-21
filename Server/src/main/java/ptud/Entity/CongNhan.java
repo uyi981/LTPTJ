@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
+import DAO_Implement.DAOBoPhan;
 import DAO_Implement.DAOCongNhan;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.FetchType;
@@ -104,6 +105,8 @@ public class CongNhan {
     
     public void setBoPhan(BoPhan boPhan) {
     	this.boPhan = boPhan;
+
+    
     }
 
     public void setTen(String ten) {

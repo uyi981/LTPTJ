@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import DAO_Implement.DAOKhachHang;
 import DAO_Implement.DAOSanPham;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -67,11 +68,16 @@ public class HopDong {
    
    
     public void setMaKH(String maKH) {
-        if (maKH.trim().equals("")) 
-        {
-            maKH = "Khong xac dinh!";
-        }
         this.maKH = maKH;
+        try 
+        {
+        	 DAOKhachHang daokh = new DAOKhachHang();
+             khachHang = daokh.timKiemKhachHang(maKH);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+       
     }
 
     public void setMaHD(String maHD) {

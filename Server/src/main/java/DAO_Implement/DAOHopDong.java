@@ -80,7 +80,7 @@ public class DAOHopDong extends UnicastRemoteObject implements DAO_Interface.IDA
 	@Override
 	public HopDong timKiemHopDong(String maHD) throws RemoteException {
 		// TODO Auto-generated method stub
-		return em.find(HopDong.class, "maHD");
+		return em.find(HopDong.class, maHD);
 	}
 	
 	@Override

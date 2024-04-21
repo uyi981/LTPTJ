@@ -5,36 +5,31 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import DAO_Implement.DAOHopDong;
+import DAO_Implement.DAOSanPham;
 import ptud.Entity.HopDong;
+import ptud.Entity.SanPham;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TestDAOHopDong {
-	DAOHopDong daoHopDong;
-	HopDong hopDong = new HopDong("AAAA", "A", LocalDate.of(2020, 10, 30), LocalDate.of(2021,10,30),10000,"231002","Chờ xác nhận");
+class TestDAOSanPham {
 
+	DAOSanPham daoSanPham;
+	SanPham sanPham = new SanPham("aaaaaa", "Chén sứ dát vàng", 10, 150, "AAAA");
 	
 	@Test
 	void test() throws Exception{
-		daoHopDong = new DAOHopDong();
-		daoHopDong.themHopDong(hopDong);
-		if (daoHopDong.timKiemHopDong(hopDong.getMaHD()) == null)
+		daoSanPham = new DAOSanPham();
+		daoSanPham.themSanPham(sanPham);
+		if (daoSanPham.timKiemSanPham(sanPham.getMaSanPham()) == null)
 		{
 			fail("Chưa thêm được hợp đồng");
 		}		
 	}
-	@Test
-	void testXoaHopDong() throws  Exception
-	{
-		
-	}
     @AfterAll
     void shutup() throws Exception
     {
-    	//daoHopDong.xoaHopDong(hopDong.getMaHD());
+    	//daoSanPham.xoaSanPham(sanPham.getMaSanPham());
     }
-
 }

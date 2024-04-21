@@ -19,6 +19,7 @@ import java.util.Set;
 
 import DAO_Implement.DAOCongDoan;
 import DAO_Implement.DAOCongNhan;
+import DAO_Implement.DAOHopDong;
 import DAO_Implement.DAOSanPham;
 @NoArgsConstructor
 @Entity
@@ -40,7 +41,14 @@ public class SanPham
 
     public void setMaHD(String maHD) 
     {
-        this.maHD = maHD;
+    	try {
+    	    this.maHD = maHD;
+            DAOHopDong daoHopDong = new DAOHopDong();
+            hopDong = daoHopDong.timKiemHopDong(maHD);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    
     }
   @Id
   @Column(name = "maSP")
