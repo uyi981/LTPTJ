@@ -89,12 +89,12 @@ public class DAOCongNhan extends UnicastRemoteObject implements DAO_Interface.ID
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	  public int countAll() {
+	@Override
+	  public int countAll() throws RemoteException {
 	       return em.createQuery("SELECT COUNT(c) FROM CongNhan c", Integer.class).getSingleResult();
 	    }
-	     
-	     public ArrayList<CongNhan> search(String searchText, String searchCriteria) {
+	  @Override	     
+	     public ArrayList<CongNhan> search(String searchText, String searchCriteria) throws RemoteException {
 	        ArrayList<CongNhan> dsCongNhan = new ArrayList<>();
 	        try {
 	            String query = "";

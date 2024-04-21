@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import DAO_Implement.DAONhanVien;
 import DAO_Implement.DAOPhieuChamCongNhanVien;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -32,10 +33,15 @@ public class PhieuLuongNhanVien {
     @Transient
     private String maNV; 
     private double phat; 
+    @Column(nullable = true)
      private double phuCap; 
-     private double luong; 
+    @Column(nullable = true)
+     private double luong;
+    @Column(nullable = true)
      private double thuong; 
+    @Column(nullable = true)
      private int soNgayLam; 
+    @Column(nullable = true)
      private double luongThucNhan; 
 
     

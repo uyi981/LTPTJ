@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 import DAO_Implement.DAOPhieuChamCongCongNhan;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -32,9 +33,13 @@ public class PhieuLuongCongNhan {
     @Transient
     private String maCN; 
     private double phat; 
+    @Column(nullable = true)
      private double luong; 
+    @Column(nullable = true)
      private double thuong; 
+    @Column(nullable = true)
      private int soNgayLam; 
+    @Column(nullable = true)
      private double luongThucNhan; 
 
     public PhieuLuongCongNhan() {
