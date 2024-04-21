@@ -28,6 +28,7 @@ public class TaiKhoan {
    private boolean trangThai;
    @Id
    @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "maNV")
    NhanVien nhanVien;
    
     public TaiKhoan() {

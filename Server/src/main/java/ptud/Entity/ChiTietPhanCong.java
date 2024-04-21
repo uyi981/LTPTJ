@@ -31,6 +31,7 @@ public class ChiTietPhanCong {
 	private String maCTPC;
 	@Column(columnDefinition = "DATE")
 	private LocalDate ngay;
+	@Column(nullable = true)
 	private int soLuongCDGiao;
 
 	// ChiTietPhanCong has one CongNhan

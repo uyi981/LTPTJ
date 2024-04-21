@@ -62,7 +62,7 @@ public class CongDoan {
 //		private Set<CongDoanTienQuyet> congDoanTienQuyets;
 
 	// CongDoan has one SanPham
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "maSP")
 	private SanPham sanPham;
 	

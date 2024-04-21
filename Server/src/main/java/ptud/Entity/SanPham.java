@@ -26,6 +26,7 @@ public class SanPham
 {
 	// Author VoPhuocHau
   @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+  @jakarta.persistence.JoinColumn(name = "maHD")
   HopDong hopDong;
   @Transient
   String maHD;
