@@ -8,9 +8,8 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 
 import DAO_Interface.IDAOCongNhan;
+import DAO_Interface.IDAONhanVien;
 import client.Client;
-import ptud.DAO.DAO_CongNhan;
-import ptud.DAO.DAO_NhanVien;
 import ptud.Entity.CongNhan;
 import ptud.Entity.NhanVien;
 import ptud.ults.ImageCus;
@@ -23,9 +22,9 @@ public class GD_XemChiTietNS extends javax.swing.JPanel {
 
     /**
      * Creates new form GD_XemChiTietNS
-     * @throws RemoteException 
+     * 
      */
-    private void handlerBtnBack() throws RemoteException {
+    private void handlerBtnBack() {
         Layout.instance.showLayout("tabNS");
         GD_QLNS.instance.updateData();
     }
@@ -34,32 +33,42 @@ public class GD_XemChiTietNS extends javax.swing.JPanel {
         System.out.println("id: " + id);
         System.out.println("type: " + type);
         if (type.equals("cn")) {
-        	IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
-            CongNhan congNhan = daoCongNhan.timKiemCongNhan(id);
-            avtImage.setIcon(ImageCus.getScaledImageIconByte(congNhan.getAvatar(), 260, 400));
-            lblCode.setText("Mã công nhân:");
-            txtCode.setText(congNhan.getMaCN());
-            txtBoPhan.setText(congNhan.getBoPhan().getTenBP());
-            txtName.setText(congNhan.getTen());
-            txtCccd.setText(congNhan.getCccd());
-            txtDienThoai.setText(congNhan.getDienThoai());
-            txtGioiTinh.setText(congNhan.isGioiTinh() ? "Nam" : "Nữ");
-            txtNgaySinh.setText(congNhan.getNgaySinh().toString());
-            txtNgayBatDauLam.setText(congNhan.getNgayBatDauLam().toString());
+        	try {
+        		IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
+                CongNhan congNhan = daoCongNhan.timKiemCongNhan(id);
+                avtImage.setIcon(ImageCus.getScaledImageIconByte(congNhan.getAvatar(), 260, 400));
+                lblCode.setText("Mã công nhân:");
+                txtCode.setText(congNhan.getMaCN());
+                txtBoPhan.setText(congNhan.getBoPhan().getTenBP());
+                txtName.setText(congNhan.getTen());
+                txtCccd.setText(congNhan.getCccd());
+                txtDienThoai.setText(congNhan.getDienThoai());
+                txtGioiTinh.setText(congNhan.isGioiTinh() ? "Nam" : "Nữ");
+                txtNgaySinh.setText(congNhan.getNgaySinh().toString());
+                txtNgayBatDauLam.setText(congNhan.getNgayBatDauLam().toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        	
 
         } else if (type.equals("nv")) {
-        	IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
-            NhanVien nhanVien = daoNhanVien.get(id);
-            avtImage.setIcon(ImageCus.getScaledImageIconByte(nhanVien.getAvatar(), 260, 400));
-            lblCode.setText("Mã nhân viên:");
-            txtCode.setText(nhanVien.getMaNV());
-            txtBoPhan.setText(nhanVien.getBoPhan().getTenBP());
-            txtName.setText(nhanVien.getTen());
-            txtCccd.setText(nhanVien.getCccd());
-            txtDienThoai.setText(nhanVien.getDienThoai());
-            txtGioiTinh.setText(nhanVien.isGioiTinh() ? "Nam" : "Nữ");
-            txtNgaySinh.setText(nhanVien.getNgaySinh().toString());
-            txtNgaySinh.setText(nhanVien.getNgayBatDauLam().toString());
+        	try {
+        		IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
+                NhanVien nhanVien = daoNhanVien.timKiemNhanVien(id);
+                avtImage.setIcon(ImageCus.getScaledImageIconByte(nhanVien.getAvatar(), 260, 400));
+                lblCode.setText("Mã nhân viên:");
+                txtCode.setText(nhanVien.getMaNV());
+                txtBoPhan.setText(nhanVien.getBoPhan().getTenBP());
+                txtName.setText(nhanVien.getTen());
+                txtCccd.setText(nhanVien.getCccd());
+                txtDienThoai.setText(nhanVien.getDienThoai());
+                txtGioiTinh.setText(nhanVien.isGioiTinh() ? "Nam" : "Nữ");
+                txtNgaySinh.setText(nhanVien.getNgaySinh().toString());
+                txtNgaySinh.setText(nhanVien.getNgayBatDauLam().toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        	
         }
 
     }

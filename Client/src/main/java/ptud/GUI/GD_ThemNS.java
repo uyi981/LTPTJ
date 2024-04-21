@@ -22,9 +22,7 @@ import DAO_Interface.IDAOBoPhan;
 import DAO_Interface.IDAOCongNhan;
 import DAO_Interface.IDAONhanVien;
 import client.Client;
-import ptud.DAO.DAO_BoPhan;
-import ptud.DAO.DAO_CongNhan;
-import ptud.DAO.DAO_NhanVien;
+
 import ptud.Entity.BoPhan;
 import ptud.Entity.CongNhan;
 import ptud.Entity.NhanVien;
@@ -278,7 +276,12 @@ public class GD_ThemNS extends javax.swing.JPanel {
         btnConfirm.setPreferredSize(new java.awt.Dimension(150, 30));
         btnConfirm.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnConfirmMouseClicked(evt);
+                try {
+					btnConfirmMouseClicked(evt);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         btnConfirm.addActionListener(new java.awt.event.ActionListener() {
@@ -601,7 +604,7 @@ public class GD_ThemNS extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnConfirmActionPerformed
 
-    private void btnConfirmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmMouseClicked
+    private void btnConfirmMouseClicked(java.awt.event.MouseEvent evt) throws Exception {//GEN-FIRST:event_btnConfirmMouseClicked
         if (validateForm()) {
             try {
                 // Lấy thông tin từ giao diện

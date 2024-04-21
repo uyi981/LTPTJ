@@ -20,7 +20,7 @@ import DAO_Interface.IDAONhanVien;
 import DAO_Interface.IDAOPhieuLuongCongNhan;
 import DAO_Interface.IDAOPhieuLuongNhanVien;
 import client.Client;
-import ptud.DAO.*;
+
 import ptud.Entity.ChiTietPhanCong;
 import ptud.Entity.CongDoan;
 import ptud.Entity.CongNhan;
@@ -36,7 +36,7 @@ import java.text.MessageFormat;
 import javax.swing.JTable;
 /**
  *
- * @author Khanh
+ * @author Phuc
  */
 public class GD_TinhLuong extends javax.swing.JPanel {
 
@@ -59,8 +59,13 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     private void init() throws SQLException {
 //        dsNhanVien = DAO_NhanVien.getInstance().getAll();
 //        dsCongNhan = DAO_CongNhan.getInstance().getAll();
-    	IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
-    	IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
+    	try {
+    		IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
+        	IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
     	
         loadJcomboBoxBoPhan();
         loadJcomboBoxBoPhan2();
@@ -69,78 +74,95 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     }
 
     private void loadJcomboBoxBoPhan() {
-    	IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
-        daoBoPhan.getAll().forEach((bp) -> {
-            String maBP = bp.getMaBP();
-            if (maBP.startsWith("HC")) {
-                jComboBoxBoPhan.addItem(bp.getTenBP());
-            }
-        });
+    	
+    	try {
+    		IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+            daoBoPhan.getAll().forEach((bp) -> {
+                String maBP = bp.getMaBP();
+                if (maBP.startsWith("HC")) {
+                    jComboBoxBoPhan.addItem(bp.getTenBP());
+                }
+            });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     private void loadJcomboBoxBoPhan2() {
-    	IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
-        daoBoPhan.getAll().forEach((bp) -> {
-            String maBP = bp.getMaBP();
-            if (maBP.startsWith("SX")) {
-                // jComboBoxBoPhan2.addItem(bp.getTenBP());
-                jComboBoxBoPhan3.addItem(bp.getTenBP());
-            }
-        });
+    	try {
+    		IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+            daoBoPhan.getAll().forEach((bp) -> {
+                String maBP = bp.getMaBP();
+                if (maBP.startsWith("SX")) {
+                    // jComboBoxBoPhan2.addItem(bp.getTenBP());
+                    jComboBoxBoPhan3.addItem(bp.getTenBP());
+                }
+            });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
     }
 
     private void loadDataPhieuLuongNhanVien() {
         // thêm dsNhanVien vào jTablePhieuLuongNhanVien
         int thang = jMonthChooser1.getMonth() + 1;
         int nam = jYearChooser1.getYear();
-        IDAOPhieuLuongNhanVien daoPhieuLuongNhanVien = (IDAOPhieuLuongNhanVien) Naming.lookup(Client.URL + "DAOPhieuLuongNhanVien");
-        dsPhieuLuongNhanVien = daoPhieuLuongNhanVien.getAllByThangNam(thang, nam);
-        DefaultTableModel model = (DefaultTableModel) jTablePhieuLuongNhanVien.getModel();
-        model.setRowCount(0);
-        String tenBP = jComboBoxBoPhan.getSelectedItem().toString();
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        try {
+        	IDAOPhieuLuongNhanVien daoPhieuLuongNhanVien = (IDAOPhieuLuongNhanVien) Naming.lookup(Client.URL + "DAOPhieuLuongNhanVien");
+            dsPhieuLuongNhanVien = daoPhieuLuongNhanVien.getAllByThangNam(thang, nam);
+            DefaultTableModel model = (DefaultTableModel) jTablePhieuLuongNhanVien.getModel();
+            model.setRowCount(0);
+            String tenBP = jComboBoxBoPhan.getSelectedItem().toString();
+            DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
-        if (dsPhieuLuongNhanVien.isEmpty()) {
-            for (NhanVien nv : dsNhanVien) {
-                if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
-                    Object[] row = { nv.getMaNV(), nv.getTen(), decimalFormat.format(nv.getLuongCoBan()),
-                            decimalFormat.format(nv.getPhuCap()), 0 };
-                    model.addRow(row);
+            if (dsPhieuLuongNhanVien.isEmpty()) {
+                for (NhanVien nv : dsNhanVien) {
+                    if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
+                        Object[] row = { nv.getMaNV(), nv.getTen(), decimalFormat.format(nv.getLuongCoBan()),
+                                decimalFormat.format(nv.getPhuCap()), 0 };
+                        model.addRow(row);
+                    }
+                }
+            } else {
+                // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
+                for (PhieuLuongNhanVien plnv : dsPhieuLuongNhanVien) {
+                    String maNV = plnv.getMaNV();
+                    IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
+                    NhanVien nv = daoNhanVien.timKiemNhanVien(maNV);
+                    double luongCoBan = nv.getLuongCoBan();
+                    double phuCap = nv.getPhuCap();
+                    if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
+
+                        Object[] row = { maNV, nv.getTen(),
+                                decimalFormat.format(luongCoBan),
+                                decimalFormat.format(phuCap),
+                                decimalFormat.format(plnv.getLuongThucNhan()) };
+                        model.addRow(row);
+                    }
+
                 }
             }
-        } else {
-            // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
-            for (PhieuLuongNhanVien plnv : dsPhieuLuongNhanVien) {
-                String maNV = plnv.getMaNV();
-                IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
-                NhanVien nv = daoNhanVien.timKiemNhanVien(maNV);
-                double luongCoBan = nv.getLuongCoBan();
-                double phuCap = nv.getPhuCap();
-                if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
 
-                    Object[] row = { maNV, nv.getTen(),
-                            decimalFormat.format(luongCoBan),
-                            decimalFormat.format(phuCap),
-                            decimalFormat.format(plnv.getLuongThucNhan()) };
-                    model.addRow(row);
-                }
+            // tính tổng col cuối của tất cả các row trong jTablePhieuLuongNhanVien 
+            double total = 0;
+            int rowCount = jTablePhieuLuongNhanVien.getRowCount();
+            int lastColumnIndex = jTablePhieuLuongNhanVien.getColumnCount() - 1;
 
+            for (int i = 0; i < rowCount; i++) {
+                String str = jTablePhieuLuongNhanVien.getValueAt(i, lastColumnIndex).toString();
+                // bỏ hết các ký tự không phải số khỏi str 
+                str = str.replaceAll("[^0-9]", "");
+                double value = Double.parseDouble(str);
+                total += value;
             }
-        }
-
-        // tính tổng col cuối của tất cả các row trong jTablePhieuLuongNhanVien 
-        double total = 0;
-        int rowCount = jTablePhieuLuongNhanVien.getRowCount();
-        int lastColumnIndex = jTablePhieuLuongNhanVien.getColumnCount() - 1;
-
-        for (int i = 0; i < rowCount; i++) {
-            String str = jTablePhieuLuongNhanVien.getValueAt(i, lastColumnIndex).toString();
-            // bỏ hết các ký tự không phải số khỏi str 
-            str = str.replaceAll("[^0-9]", "");
-            double value = Double.parseDouble(str);
-            total += value;
-        }
-        jTextField1.setText(decimalFormat.format(total));
+            jTextField1.setText(decimalFormat.format(total));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+        
+        
         
     }
 
@@ -148,47 +170,52 @@ public class GD_TinhLuong extends javax.swing.JPanel {
         // thêm dsNhanVien vào jTablePhieuLuongNhanVien
         int thang = jMonthChooser2.getMonth() + 1;
         int nam = jYearChooser2.getYear();
-        IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
-        dsPhieuLuongCongNhan = daoPhieuLuongCongNhan.getAllByThangNam(thang, nam);
-        
-        DefaultTableModel model = (DefaultTableModel) jTablePhieuLuongCongNhan.getModel();
-        model.setRowCount(0);
+        try {
+        	IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
+            dsPhieuLuongCongNhan = daoPhieuLuongCongNhan.getAllByThangNam(thang, nam);
+            
+            DefaultTableModel model = (DefaultTableModel) jTablePhieuLuongCongNhan.getModel();
+            model.setRowCount(0);
 
-        String tenBP = jComboBoxBoPhan3.getSelectedItem().toString();
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        if (dsPhieuLuongCongNhan.isEmpty()) {
-            // DecimalFormat decimalFormat = new DecimalFormat("#,###");
-            for (CongNhan nv : dsCongNhan) {
-                if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
-                    Object[] row = { nv.getMaCN(), nv.getTen(), 0,
-                            0, 0, 0, 0 };
-                    model.addRow(row);
+            String tenBP = jComboBoxBoPhan3.getSelectedItem().toString();
+            DecimalFormat decimalFormat = new DecimalFormat("#,###");
+            if (dsPhieuLuongCongNhan.isEmpty()) {
+                // DecimalFormat decimalFormat = new DecimalFormat("#,###");
+                for (CongNhan nv : dsCongNhan) {
+                    if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
+                        Object[] row = { nv.getMaCN(), nv.getTen(), 0,
+                                0, 0, 0, 0 };
+                        model.addRow(row);
+                    }
+                }
+            } else {
+                // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
+                for (PhieuLuongCongNhan plnv : dsPhieuLuongCongNhan) {
+                    String maCN = plnv.getMaCN();
+                    IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
+                    CongNhan nv = daoCongNhan.timKiemCongNhan(maCN);
+                    if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
+                        Object[] row = { maCN, nv.getTen(),
+                                decimalFormat.format(plnv.getLuong()),
+                             decimalFormat.format(plnv.getLuongThucNhan()) };
+                        model.addRow(row);
+                    }
                 }
             }
-        } else {
-            // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
-            for (PhieuLuongCongNhan plnv : dsPhieuLuongCongNhan) {
-                String maCN = plnv.getMaCN();
-                IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
-                CongNhan nv = daoCongNhan.timKiemCongNhan(maCN);
-                if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
-                    Object[] row = { maCN, nv.getTen(),
-                            decimalFormat.format(plnv.getLuong()),
-                         decimalFormat.format(plnv.getLuongThucNhan()) };
-                    model.addRow(row);
-                }
+            double total = 0; 
+            int rowCount = jTablePhieuLuongCongNhan.getRowCount();
+            int lastColumnIndex = jTablePhieuLuongCongNhan.getColumnCount() - 1;
+            for (int i = 0; i < rowCount; i++) {
+                String str = jTablePhieuLuongCongNhan.getValueAt(i, lastColumnIndex).toString();
+                str = str.replaceAll("[^0-9]", "");
+                double value = Double.parseDouble(str);
+                total += value;
             }
-        }
-        double total = 0; 
-        int rowCount = jTablePhieuLuongCongNhan.getRowCount();
-        int lastColumnIndex = jTablePhieuLuongCongNhan.getColumnCount() - 1;
-        for (int i = 0; i < rowCount; i++) {
-            String str = jTablePhieuLuongCongNhan.getValueAt(i, lastColumnIndex).toString();
-            str = str.replaceAll("[^0-9]", "");
-            double value = Double.parseDouble(str);
-            total += value;
-        }
-        jTextField2.setText(decimalFormat.format(total));
+            jTextField2.setText(decimalFormat.format(total));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
     }
 
 
@@ -609,28 +636,33 @@ public class GD_TinhLuong extends javax.swing.JPanel {
 
     private void jButtonTinhLuongMouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonTinhLuongMouseReleased
         // TODO add your handling code here:
-    	IDAOPhieuLuongNhanVien daoPhieuLuongNhanVien = (IDAOPhieuLuongNhanVien) Naming.lookup(Client.URL + "DAOPhieuLuongNhanVien");
-        if (jButtonTinhLuong.isEnabled()) {
-            int thang = jMonthChooser1.getMonth() + 1;
-            int nam = jYearChooser1.getYear();
-            for (NhanVien nv : dsNhanVien) {
-                // tạo phiếu lương nhân viên theo thang, nam nv
-                // public PhieuLuongNhanVien(String maPL, int thang, int nam, String maNV,
-                // double phat) {
-                // mã phiếu lương là mã bộ phận + tháng + năm + mã nhân viên
-                String maPL = thang + "" + nam + nv.getMaNV();
-                PhieuLuongNhanVien plnv = new PhieuLuongNhanVien(maPL, thang, nam, nv.getMaNV(), 0);
+    	try {
+    		IDAOPhieuLuongNhanVien daoPhieuLuongNhanVien = (IDAOPhieuLuongNhanVien) Naming.lookup(Client.URL + "DAOPhieuLuongNhanVien");
+            if (jButtonTinhLuong.isEnabled()) {
+                int thang = jMonthChooser1.getMonth() + 1;
+                int nam = jYearChooser1.getYear();
+                for (NhanVien nv : dsNhanVien) {
+                    // tạo phiếu lương nhân viên theo thang, nam nv
+                    // public PhieuLuongNhanVien(String maPL, int thang, int nam, String maNV,
+                    // double phat) {
+                    // mã phiếu lương là mã bộ phận + tháng + năm + mã nhân viên
+                    String maPL = thang + "" + nam + nv.getMaNV();
+                    PhieuLuongNhanVien plnv = new PhieuLuongNhanVien(maPL, thang, nam, nv.getMaNV(), 0);
 
-                // kiểm tra pl đã tồn tại trong database chưa 
-                if( daoPhieuLuongNhanVien.get(maPL) == null){
-                    daoPhieuLuongNhanVien.insert(plnv);
-                } else 
-                    daoPhieuLuongNhanVien.update(plnv);
-                
+                    // kiểm tra pl đã tồn tại trong database chưa 
+                    if( daoPhieuLuongNhanVien.get(maPL) == null){
+                        daoPhieuLuongNhanVien.insert(plnv);
+                    } else 
+                        daoPhieuLuongNhanVien.update(plnv);
+                    
 
+                }
+                loadDataPhieuLuongNhanVien();
             }
-            loadDataPhieuLuongNhanVien();
-        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
     }// GEN-LAST:event_jButtonTinhLuongMouseReleased
 
     private void jMonthChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {// GEN-FIRST:event_jMonthChooser1PropertyChange
@@ -682,25 +714,30 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     private void jButtonTinhLuong2MouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonTinhLuong2MouseReleased
         // TODO add your handling code here:
         // TODO add your handling code here:
-    	IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
-        if (jButtonTinhLuong2.isEnabled()) {
-            int thang = jMonthChooser2.getMonth() + 1;
-            int nam = jYearChooser2.getYear();
-            for (CongNhan nv : dsCongNhan) {
-                String maPL = thang + "" + nam + nv.getMaCN();
-                PhieuLuongCongNhan plcn = new PhieuLuongCongNhan(maPL, thang, nam, nv.getMaCN(), 0);
-                if( daoPhieuLuongCongNhan.get(maPL) == null){
-                    daoPhieuLuongCongNhan.insert(plcn);
-                } else
-                    daoPhieuLuongCongNhan.update(plcn);
+    	try {
+    		IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
+            if (jButtonTinhLuong2.isEnabled()) {
+                int thang = jMonthChooser2.getMonth() + 1;
+                int nam = jYearChooser2.getYear();
+                for (CongNhan nv : dsCongNhan) {
+                    String maPL = thang + "" + nam + nv.getMaCN();
+                    PhieuLuongCongNhan plcn = new PhieuLuongCongNhan(maPL, thang, nam, nv.getMaCN(), 0);
+                    if( daoPhieuLuongCongNhan.get(maPL) == null){
+                        daoPhieuLuongCongNhan.insert(plcn);
+                    } else
+                        daoPhieuLuongCongNhan.update(plcn);
+                }
+                try {
+                    loadDataPhieuLuongCongNhan();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
-            try {
-                loadDataPhieuLuongCongNhan();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
     }// GEN-LAST:event_jButtonTinhLuong2MouseReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
