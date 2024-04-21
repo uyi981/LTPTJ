@@ -5,6 +5,7 @@
 package ptud.GUI;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -44,7 +45,12 @@ public class GD_DanhGia extends javax.swing.JPanel {
 
 	private void handlerBtnBack() {
 		Layout.instance.showLayout("tabNS");
-		GD_QLNS.instance.updateData();
+		try {
+			GD_QLNS.instance.updateData();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 //  tab NV
@@ -52,10 +58,22 @@ public class GD_DanhGia extends javax.swing.JPanel {
 		DefaultTableModel model = (DefaultTableModel) tableNV.getModel();
 		model.setRowCount(0); // Clear existing data
 
-		ArrayList<NhanVien> danhSachNhanVien = (ArrayList<NhanVien>) daoNhanVien.layDanhSachNhanVien();
+		ArrayList<NhanVien> danhSachNhanVien = new ArrayList<>();
+		try {
+			danhSachNhanVien = (ArrayList<NhanVien>) daoNhanVien.layDanhSachNhanVien();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		for (NhanVien nhanVien : danhSachNhanVien) {
-			BangDanhGiaNhanVien bangDanhGia = daoBangDanhGiaNhanVien.getBangDanhGiaCuaNhanVien(nhanVien.getMaNV(), yearNV);
+			BangDanhGiaNhanVien bangDanhGia = null;
+			try {
+				bangDanhGia = daoBangDanhGiaNhanVien.getBangDanhGiaCuaNhanVien(nhanVien.getMaNV(), yearNV);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			model.addRow(new Object[] { nhanVien.getMaNV(), nhanVien.getTen(),
 					bangDanhGia == null ? "" : bangDanhGia.getDiemHieuSuat() + "",
 					bangDanhGia == null ? "" : bangDanhGia.getDiemChuyenMon() + "",
@@ -86,8 +104,14 @@ public class GD_DanhGia extends javax.swing.JPanel {
 
 					double tongDiem = diemHieuSuat + diemChuyenMon + diemThaiDo + diemChuyenCan;
 
-					BangDanhGiaNhanVien bangDanhGiaNhanVien = new BangDanhGiaNhanVien(daoNhanVien.timKiemNhanVien(maNV), row,
-							diemChuyenCan, diemChuyenMon, diemHieuSuat, diemThaiDo);
+					BangDanhGiaNhanVien bangDanhGiaNhanVien = null;
+					try {
+						bangDanhGiaNhanVien = new BangDanhGiaNhanVien(daoNhanVien.timKiemNhanVien(maNV), row,
+								diemChuyenCan, diemChuyenMon, diemHieuSuat, diemThaiDo);
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 					model.setValueAt(tongDiem + "", row, 6);
 					model.setValueAt(bangDanhGiaNhanVien.getBac(), row, 7);
@@ -144,10 +168,22 @@ public class GD_DanhGia extends javax.swing.JPanel {
 		DefaultTableModel model = (DefaultTableModel) tableCN.getModel();
 		model.setRowCount(0); // Clear existing data
 
-		ArrayList<CongNhan> danhSachCongNhan = (ArrayList<CongNhan>) daoCongNhan.layDanhSachCongNhan();
+		ArrayList<CongNhan> danhSachCongNhan = new ArrayList<>();
+		try {
+			danhSachCongNhan = (ArrayList<CongNhan>) daoCongNhan.layDanhSachCongNhan();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		for (CongNhan congNhan : danhSachCongNhan) {
-			BangDanhGiaCongNhan bangDanhGia = daoBangDanhGiaCongNhan.getBangDanhGiaCuaCongNhan(congNhan.getMaCN(), yearCN);
+			BangDanhGiaCongNhan bangDanhGia = null;
+			try {
+				bangDanhGia = daoBangDanhGiaCongNhan.getBangDanhGiaCuaCongNhan(congNhan.getMaCN(), yearCN);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			model.addRow(new Object[] { congNhan.getMaCN(), congNhan.getTen(),
 					bangDanhGia == null ? "" : bangDanhGia.getDiemHieuSuat() + "",
 					bangDanhGia == null ? "" : bangDanhGia.getDiemchuyenMon() + "",
@@ -179,8 +215,14 @@ public class GD_DanhGia extends javax.swing.JPanel {
 
 					double tongDiem = diemHieuSuat + diemChuyenMon + diemThaiDo + diemChuyenCan;
 
-					BangDanhGiaCongNhan bangDanhGiaCongNhan = new BangDanhGiaCongNhan(daoCongNhan.timKiemCongNhan(maCN), row,
-							diemChuyenCan, diemChuyenMon, diemHieuSuat, diemThaiDo);
+					BangDanhGiaCongNhan bangDanhGiaCongNhan = null;
+					try {
+						bangDanhGiaCongNhan = new BangDanhGiaCongNhan(daoCongNhan.timKiemCongNhan(maCN), row,
+								diemChuyenCan, diemChuyenMon, diemHieuSuat, diemThaiDo);
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 					model.setValueAt(tongDiem + "", row, 6);
 					model.setValueAt(bangDanhGiaCongNhan.getBac(), row, 7);

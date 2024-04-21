@@ -455,7 +455,7 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
 //        CongNhan nv = DAO_CongNhan.getInstance().get(plcn.getMaCN()); 
         CongNhan nv = null;
         try {
-        	nv = daoCongNhan.TimKiemCongNhan(plcn.getMaCN());
+        	nv = daoCongNhan.timKiemCongNhan(plcn.getMaCN());
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
