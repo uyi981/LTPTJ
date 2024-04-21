@@ -364,7 +364,12 @@ public class GD_QLTK extends javax.swing.JPanel {
         jTable1.setRowHeight(30);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+            	try {
+            		   jTable1MouseClicked(evt);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+             
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -547,7 +552,12 @@ public class GD_QLTK extends javax.swing.JPanel {
         jButton1.setText("Tạo mới");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+            	try {
+            		jButton1MouseClicked(evt);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+                
             }
         });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -559,7 +569,12 @@ public class GD_QLTK extends javax.swing.JPanel {
         jButton2.setText("Cập nhật");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+            	try {
+            		jButton2MouseClicked(evt);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+                
             }
         });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -571,7 +586,12 @@ public class GD_QLTK extends javax.swing.JPanel {
         jButton3.setText("Xóa tài khoản");
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+            	try {
+            		 jButton3MouseClicked(evt);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+               
             }
         });
         jButton3.addActionListener(new java.awt.event.ActionListener() {

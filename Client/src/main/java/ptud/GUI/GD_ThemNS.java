@@ -37,12 +37,18 @@ public class GD_ThemNS extends javax.swing.JPanel {
 
     private void updateCboBoPhan(String filter) {
         cboBoPhan.removeAllItems();
-        IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DaoBoPhan");
-//        daoBoPhan daoBoPhan = DAO_BoPhan.getInstance();
-        ArrayList<BoPhan> danhSachBoPhan = daoBoPhan.filter(filter);
-        for (BoPhan boPhan : danhSachBoPhan) {
-            cboBoPhan.addItem(boPhan.getMaBP() + "-" + boPhan.getTenBP());
-        }
+        try {
+        	 IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DaoBoPhan");
+//           daoBoPhan daoBoPhan = DAO_BoPhan.getInstance();
+           ArrayList<BoPhan> danhSachBoPhan = daoBoPhan.filter(filter);
+           for (BoPhan boPhan : danhSachBoPhan) {
+               cboBoPhan.addItem(boPhan.getMaBP() + "-" + boPhan.getTenBP());
+           }
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+       
     }
 
     private boolean validateForm() {
