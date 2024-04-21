@@ -17,10 +17,6 @@ import DAO_Interface.IDAOBangDanhGiaNhanVien;
 import DAO_Interface.IDAOCongNhan;
 import DAO_Interface.IDAONhanVien;
 import client.Client;
-import ptud.DAO.DAO_BangDanhGiaCongNhan;
-import ptud.DAO.DAO_BangDanhGiaNhanVien;
-import ptud.DAO.DAO_CongNhan;
-import ptud.DAO.DAO_NhanVien;
 import ptud.Entity.BangDanhGiaCongNhan;
 import ptud.Entity.BangDanhGiaNhanVien;
 import ptud.Entity.CongNhan;
@@ -56,12 +52,10 @@ public class GD_DanhGia extends javax.swing.JPanel {
 		DefaultTableModel model = (DefaultTableModel) tableNV.getModel();
 		model.setRowCount(0); // Clear existing data
 
-		DAO_NhanVien daoNhanVien = DAO_NhanVien.getInstance();
-		ArrayList<NhanVien> danhSachNhanVien = daoNhanVien.getAll();
+		ArrayList<NhanVien> danhSachNhanVien = (ArrayList<NhanVien>) daoNhanVien.layDanhSachNhanVien();
 
 		for (NhanVien nhanVien : danhSachNhanVien) {
-			DAO_BangDanhGiaNhanVien daoBangDanhGia = DAO_BangDanhGiaNhanVien.getInstance();
-			BangDanhGiaNhanVien bangDanhGia = daoBangDanhGia.getBangDanhGiaCuaNhanVien(nhanVien.getMaNV(), yearNV);
+			BangDanhGiaNhanVien bangDanhGia = daoBangDanhGiaNhanVien.getBangDanhGiaCuaNhanVien(nhanVien.getMaNV(), yearNV);
 			model.addRow(new Object[] { nhanVien.getMaNV(), nhanVien.getTen(),
 					bangDanhGia == null ? "" : bangDanhGia.getDiemHieuSuat() + "",
 					bangDanhGia == null ? "" : bangDanhGia.getDiemChuyenMon() + "",
@@ -92,7 +86,7 @@ public class GD_DanhGia extends javax.swing.JPanel {
 
 					double tongDiem = diemHieuSuat + diemChuyenMon + diemThaiDo + diemChuyenCan;
 
-					BangDanhGiaNhanVien bangDanhGiaNhanVien = new BangDanhGiaNhanVien(daoNhanVien.get(maNV), row,
+					BangDanhGiaNhanVien bangDanhGiaNhanVien = new BangDanhGiaNhanVien(daoNhanVien.timKiemNhanVien(maNV), row,
 							diemChuyenCan, diemChuyenMon, diemHieuSuat, diemThaiDo);
 
 					model.setValueAt(tongDiem + "", row, 6);
@@ -126,7 +120,7 @@ public class GD_DanhGia extends javax.swing.JPanel {
 				float diemChuyenCan = Float.parseFloat(model.getValueAt(row, 5).toString());
 				char bac = model.getValueAt(row, 7).toString().charAt(0);
 
-				BangDanhGiaNhanVien bangDanhGiaNhanVien = new BangDanhGiaNhanVien(daoNhanVien.get(maNV), yearNV,
+				BangDanhGiaNhanVien bangDanhGiaNhanVien = new BangDanhGiaNhanVien(daoNhanVien.timKiemNhanVien(maNV), yearNV,
 						diemChuyenCan, diemChuyenMon, diemThaiDo, diemHieuSuat, bac);
 
 				daoBangDanhGiaNhanVien.addOrUpdate(bangDanhGiaNhanVien);
@@ -150,12 +144,10 @@ public class GD_DanhGia extends javax.swing.JPanel {
 		DefaultTableModel model = (DefaultTableModel) tableCN.getModel();
 		model.setRowCount(0); // Clear existing data
 
-		DAO_CongNhan daoCongNhan = DAO_CongNhan.getInstance();
-		ArrayList<CongNhan> danhSachCongNhan = daoCongNhan.getAll();
+		ArrayList<CongNhan> danhSachCongNhan = (ArrayList<CongNhan>) daoCongNhan.layDanhSachCongNhan();
 
 		for (CongNhan congNhan : danhSachCongNhan) {
-			DAO_BangDanhGiaCongNhan daoBangDanhGia = DAO_BangDanhGiaCongNhan.getInstance();
-			BangDanhGiaCongNhan bangDanhGia = daoBangDanhGia.getBangDanhGiaCuaCongNhan(congNhan.getMaCN(), yearCN);
+			BangDanhGiaCongNhan bangDanhGia = daoBangDanhGiaCongNhan.getBangDanhGiaCuaCongNhan(congNhan.getMaCN(), yearCN);
 			model.addRow(new Object[] { congNhan.getMaCN(), congNhan.getTen(),
 					bangDanhGia == null ? "" : bangDanhGia.getDiemHieuSuat() + "",
 					bangDanhGia == null ? "" : bangDanhGia.getDiemchuyenMon() + "",
@@ -187,7 +179,7 @@ public class GD_DanhGia extends javax.swing.JPanel {
 
 					double tongDiem = diemHieuSuat + diemChuyenMon + diemThaiDo + diemChuyenCan;
 
-					BangDanhGiaCongNhan bangDanhGiaCongNhan = new BangDanhGiaCongNhan(daoCongNhan.get(maCN), row,
+					BangDanhGiaCongNhan bangDanhGiaCongNhan = new BangDanhGiaCongNhan(daoCongNhan.timKiemCongNhan(maCN), row,
 							diemChuyenCan, diemChuyenMon, diemHieuSuat, diemThaiDo);
 
 					model.setValueAt(tongDiem + "", row, 6);
@@ -222,7 +214,7 @@ public class GD_DanhGia extends javax.swing.JPanel {
 				float diemChuyenCan = Float.parseFloat(model.getValueAt(row, 5).toString());
 				char bac = model.getValueAt(row, 7).toString().charAt(0);
 
-				BangDanhGiaCongNhan bangDanhGiaCongNhan = new BangDanhGiaCongNhan(daoCongNhan.get(maCN), yearCN,
+				BangDanhGiaCongNhan bangDanhGiaCongNhan = new BangDanhGiaCongNhan(daoCongNhan.timKiemCongNhan(maCN), yearCN,
 						diemChuyenCan, diemChuyenMon, diemThaiDo, diemHieuSuat, bac);
 
 				daoBangDanhGiaCongNhan.addOrUpdate(bangDanhGiaCongNhan);

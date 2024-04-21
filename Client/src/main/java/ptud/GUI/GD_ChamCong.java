@@ -22,17 +22,12 @@ import javax.swing.table.DefaultTableModel;
 import DAO_Implement.DAOPhieuChamCongCongNhan;
 import DAO_Interface.IDAOBoPhan;
 import DAO_Interface.IDAOChiTietPhanCong;
+import DAO_Interface.IDAOCongDoan;
 import DAO_Interface.IDAONhanVien;
 import DAO_Interface.IDAOPhieuChamCongCongNhan;
 import DAO_Interface.IDAOPhieuChamCongNhanVien;
 import client.Client;
-import ptud.DAO.DAO_BoPhan;
-import ptud.DAO.DAO_ChiTietPhanCong;
-import ptud.DAO.DAO_CongDoan;
-import ptud.DAO.DAO_NhanVien;
-import ptud.DAO.DAO_PhieuChamCongCongNhan;
-import ptud.DAO.DAO_PhieuChamCongNhanVien;
-import ptud.DAO.DAO_TaiKhoan;
+
 import ptud.Entity.BoPhan;
 import ptud.Entity.CongDoan;
 import ptud.Entity.NhanVien;
@@ -56,6 +51,7 @@ public class GD_ChamCong extends javax.swing.JPanel {
 	IDAOPhieuChamCongNhanVien daoPhieuChamCongNhanVien;
 	IDAOChiTietPhanCong daoChiTietPhanCong;
 	IDAOPhieuChamCongCongNhan daoPhieuChamCongCongNhan;
+	IDAOCongDoan daoCongDoan;
 
 	public GD_ChamCong() throws RemoteException {
 		initGUI();
@@ -135,6 +131,7 @@ public class GD_ChamCong extends javax.swing.JPanel {
 			daoPhieuChamCongNhanVien = (IDAOPhieuChamCongNhanVien) Naming.lookup(Client.URL + "DaoPhieuChamCongNhanVien");
 			daoChiTietPhanCong = (IDAOChiTietPhanCong) Naming.lookup(Client.URL + "DaoChiTietPhanCong");
 			daoPhieuChamCongCongNhan = (IDAOPhieuChamCongCongNhan) Naming.lookup(Client.URL + "DaoPhieuChamCongCongNhan");
+			daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DaoCongDoan");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -637,7 +634,7 @@ public class GD_ChamCong extends javax.swing.JPanel {
 			int soCDGiao = (int) model.getValueAt(i, 4);
 			boolean isVang = (Boolean) (jTable3.getValueAt(i, 2));
 			String maCD = daoChiTietPhanCong.getMaCongDoanBymaCTPC(maCTPC);
-			int donGiaCongDoan = (int) DAO_CongDoan.getInstance().get(maCD).getDonGia();
+			int donGiaCongDoan = (int) daoCongDoan.get(maCD).getDonGia();
 
 			phieuChamCongCongNhan.setMaPCCCN("PCCCN" + maCTPC);
 			phieuChamCongCongNhan.setMaCTPC(maCTPC);
@@ -657,7 +654,9 @@ public class GD_ChamCong extends javax.swing.JPanel {
 					JOptionPane.showMessageDialog(this, "Số lượng nhập công đoạn vượt quá số lượng giao!", "Cảnh báo",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					boolean kq = DAO_PhieuChamCongCongNhan.getInstance().insert(phieuChamCongCongNhan);
+//					boolean kq = DAO_PhieuChamCongCongNhan.getInstance().insert(phieuChamCongCongNhan);
+					boolean kq = daoPhieuChamCongCongNhan.themPhieuChamCongCongNhan(phieuChamCongCongNhan);
+					
 //					DAO_ChiTietPhanCong.getInstance().updateChoPhanCong(maCN, true);
 					daoChiTietPhanCong.updateChoPhanCong(maCN, true);
 				}

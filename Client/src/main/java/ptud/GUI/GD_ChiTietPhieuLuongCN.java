@@ -15,14 +15,11 @@ import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
+import DAO_Interface.IDAOCongDoan;
 import DAO_Interface.IDAOCongNhan;
 import DAO_Interface.IDAONhanVien;
 import DAO_Interface.IDAOPhieuChamCongCongNhan;
 import client.Client;
-import ptud.DAO.DAO_CongDoan;
-import ptud.DAO.DAO_CongNhan;
-import ptud.DAO.DAO_NhanVien;
-import ptud.DAO.DAO_PhieuChamCongCongNhan;
 import ptud.Entity.ChamCongDTO;
 import ptud.Entity.CongDoan;
 import ptud.Entity.CongNhan;
@@ -43,6 +40,7 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
 	private IDAONhanVien daoNhanVien;
 	private IDAOCongNhan daoCongNhan;
 	private IDAOPhieuChamCongCongNhan daoPhieuChamCongCongNhan;
+	private IDAOCongDoan daoCongDoan;
     public GD_ChiTietPhieuLuongCN() {
         initComponents();
     }
@@ -60,6 +58,7 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
 			daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
 			daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
 			daoPhieuChamCongCongNhan = (IDAOPhieuChamCongCongNhan) Naming.lookup(Client.URL + "DAOPhieuChamCongCongNhan");
+			daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -456,7 +455,7 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
 //        CongNhan nv = DAO_CongNhan.getInstance().get(plcn.getMaCN()); 
         CongNhan nv = null;
         try {
-			nv = daoCongNhan.get(plcn.getMaCN());
+        	nv = daoCongNhan.TimKiemCongNhan(plcn.getMaCN());
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -480,7 +479,14 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
         model.setRowCount(0);
         double sum = 0; 
         for (ChamCongDTO cc : dsChamCong) {
-            CongDoan cd = DAO_CongDoan.getInstance().get(cc.getMaCD());
+//            CongDoan cd = DAO_CongDoan.getInstance().get(cc.getMaCD());
+        	CongDoan cd = null;
+        	try {
+				daoCongDoan.get(cc.getMaCD());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             model.addRow(new Object[]{cc.getMaCD(), cd.getTenCD(), cc.getTongSoLuongCD(), cc.getTongSoLuongCDTangCa(), 
                     decimalFormat.format(cc.getTongSoLuongCDTangCa()*cd.getDonGia()*1.2 + cc.getTongSoLuongCD()*cd.getDonGia()) });
             sum += cc.getTongSoLuongCDTangCa()*cd.getDonGia()*1.2 + cc.getTongSoLuongCD()*cd.getDonGia(); 

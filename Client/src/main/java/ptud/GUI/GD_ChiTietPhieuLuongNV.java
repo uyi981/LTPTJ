@@ -8,7 +8,6 @@ import java.text.DecimalFormat;
 
 import DAO_Interface.IDAONhanVien;
 import client.Client;
-import ptud.DAO.DAO_NhanVien;
 import ptud.Entity.NhanVien;
 import ptud.Entity.PhieuLuongNhanVien;
 import java.awt.*;
@@ -369,14 +368,16 @@ public class GD_ChiTietPhieuLuongNV extends javax.swing.JPanel {
         Layout.instance.showLayout("tabTL");
     }//GEN-LAST:event_backMouseReleased
 
-    public void updateData(PhieuLuongNhanVien plnv) {
+    public void updateData(PhieuLuongNhanVien plnv) throws RemoteException {
         DecimalFormat decimalFormat = new DecimalFormat("#,###.##đ");
         jLabelThangNam.setText(plnv.getThang() + "/" + plnv.getNam());
         jLabelMaPhieuLuong.setText(plnv.getMaPL());
 //        NhanVien nv = DAO_NhanVien.getInstance().get(plnv.getMaNV());
         NhanVien nv = null;
         try {
-			daoNhanVien.get(plnv.getMaNV());
+//			daoNhanVien.get(plnv.getMaNV());
+        	nv = daoNhanVien.timKiemNhanVien(plnv.getMaNV());
+      
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
