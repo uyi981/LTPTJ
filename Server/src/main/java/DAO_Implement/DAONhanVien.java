@@ -20,7 +20,8 @@ public class DAONhanVien extends UnicastRemoteObject implements DAO_Interface.ID
 	 * 
 	 */
 	private static final long serialVersionUID = 6272268639921122950L;
-	public int countAll()
+	@Override
+	public int countAll() throws RemoteException
 	{
 		return em.createQuery("select a from NhanVien a", NhanVien.class).getResultList().size();
 	}

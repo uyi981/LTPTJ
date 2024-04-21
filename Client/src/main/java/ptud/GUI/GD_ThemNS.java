@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.rmi.Naming;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -16,6 +17,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import DAO_Interface.IDAOBoPhan;
+import DAO_Interface.IDAOCongNhan;
+import DAO_Interface.IDAONhanVien;
+import client.Client;
 import ptud.DAO.DAO_BoPhan;
 import ptud.DAO.DAO_CongNhan;
 import ptud.DAO.DAO_NhanVien;
@@ -31,11 +37,18 @@ public class GD_ThemNS extends javax.swing.JPanel {
 
     private void updateCboBoPhan(String filter) {
         cboBoPhan.removeAllItems();
-        DAO_BoPhan daoBoPhan = DAO_BoPhan.getInstance();
-        ArrayList<BoPhan> danhSachBoPhan = daoBoPhan.filter(filter);
-        for (BoPhan boPhan : danhSachBoPhan) {
-            cboBoPhan.addItem(boPhan.getMaBP() + "-" + boPhan.getTenBP());
-        }
+        try {
+        	 IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DaoBoPhan");
+//           daoBoPhan daoBoPhan = DAO_BoPhan.getInstance();
+           ArrayList<BoPhan> danhSachBoPhan = daoBoPhan.filter(filter);
+           for (BoPhan boPhan : danhSachBoPhan) {
+               cboBoPhan.addItem(boPhan.getMaBP() + "-" + boPhan.getTenBP());
+           }
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+       
     }
 
     private boolean validateForm() {
@@ -605,16 +618,19 @@ public class GD_ThemNS extends javax.swing.JPanel {
 
                 if (rdoCongNhan.isSelected()) {
                     CongNhan congNhan = new CongNhan(boPhan, ten, rdoNam.isSelected(), ngaySinh, ngayBatDauLam, cccd, dienThoai, true, avatar, true);
-                    DAO_CongNhan daoCongNhan = DAO_CongNhan.getInstance();
-                    daoCongNhan.insert(congNhan);
+
+//                    DAO_CongNhan daoCongNhan = DAO_CongNhan.getInstance();
+                    IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
+                    daoCongNhan.themCongNhan(congNhan);
                     JOptionPane.showMessageDialog(null, "Thêm công nhân thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
                     Layout.instance.showChiTietCN(congNhan.getMaCN());
                 } else {
                     double luongCoBan = Double.parseDouble(txtLuongCoBan.getText());
                     double thuong = Double.parseDouble(txtThuong.getText());
                     NhanVien nhanVien = new NhanVien(boPhan, ten, rdoNam.isSelected(), ngaySinh, ngayBatDauLam, cccd, dienThoai, true, avatar, luongCoBan, thuong);
-                    DAO_NhanVien daoNhanVien = DAO_NhanVien.getInstance();
-                    daoNhanVien.insert(nhanVien);
+//                    DAO_NhanVien daoNhanVien = DAO_NhanVien.getInstance();
+                    IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
+                    daoNhanVien.themNhanVien(nhanVien);
                     JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
                     Layout.instance.showChiTietNV(nhanVien.getMaNV());
                 }

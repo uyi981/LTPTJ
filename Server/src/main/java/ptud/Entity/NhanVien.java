@@ -29,22 +29,19 @@ public class NhanVien {
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
 	@jakarta.persistence.JoinColumn(name = "maBP")
     private BoPhan boPhan;
+	@Column(name = "tenNV")
     private String ten;
     private boolean gioiTinh;
     @Column(name = "ngaySinh",columnDefinition = "DATE")
-    @Transient
-    private Date ngaySinh1;
-    @Transient
     private LocalDate ngaySinh;
     @Column(name = "ngayBatDauLam",columnDefinition = "DATE")
-    @Transient
-    private Date ngayBatDauLam1;
-    @Transient
     private LocalDate ngayBatDauLam;
+    @Column(name = "CCCD")
     private String cccd;
     private String dienThoai;
     private boolean trangThai;
-    @Column(columnDefinition = "VARBINARY(MAX)")
+    @Column(name ="hinhAnh",columnDefinition = "VARBINARY(MAX)"
+    		,nullable = true)
     private byte[] avatar;
     private double luongCoBan;
     private double phuCap;

@@ -4,12 +4,20 @@
  */
 package ptud.GUI;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import ptud.DAO.DAO_CongNhan;
-import ptud.DAO.DAO_NhanVien;
+import DAO_Implement.DAOCongNhan;
+import DAO_Implement.DAONhanVien;
+import DAO_Interface.IDAONhanVien;
+import client.Client;
 import ptud.Entity.CongNhan;
 import ptud.Entity.NhanVien;
 import ptud.ults.ImageCus;
@@ -23,18 +31,18 @@ public class GD_QLNS extends javax.swing.JPanel {
     public static GD_QLNS instance;
 //  cập nhật lại khi mở lại tab này
 
-    public void updateData() {
+    public void updateData() throws RemoteException {
         populateNhanVienTable();
         populatCongNhanTable();
     }
 
 //  thêm NV vào table
-    private void populateNhanVienTable() {
+    private void populateNhanVienTable() throws RemoteException, MalformedURLException, NotBoundException {
         DefaultTableModel model = (DefaultTableModel) tblNV.getModel();
         model.setRowCount(0); // Clear existing data
 
-        DAO_NhanVien daoNhanVien = DAO_NhanVien.getInstance();
-        ArrayList<NhanVien> danhSachNhanVien = daoNhanVien.getAll();
+        IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
+        List<NhanVien> danhSachNhanVien = daoNhanVien.layDanhSachNhanVien();
 
         for (NhanVien nhanVien : danhSachNhanVien) {
             // Add each NhanVien object to the table
@@ -44,9 +52,9 @@ public class GD_QLNS extends javax.swing.JPanel {
         }
     }
 
-    private void handlerBtnThoiViecNV() {
+    private void handlerBtnThoiViecNV() throws RemoteException, MalformedURLException, NotBoundException {
         DefaultTableModel model = (DefaultTableModel) tblNV.getModel();
-        DAO_NhanVien daoNhanVien = DAO_NhanVien.getInstance();
+        IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
         int[] selectedRows = tblNV.getSelectedRows();
 
         if (selectedRows.length > 0) {
@@ -56,7 +64,7 @@ public class GD_QLNS extends javax.swing.JPanel {
                 // Xóa từng dòng được chọn
                 for (int i = selectedRows.length - 1; i >= 0; i--) {
                     String maNV = (String) model.getValueAt(selectedRows[i], 0);
-                    daoNhanVien.deleteById(maNV);
+                    daoNhanVien.xoaNhanVien(maNV);
                 }
 
                 // Cập nhật lại bảng sau khi xóa
@@ -71,12 +79,12 @@ public class GD_QLNS extends javax.swing.JPanel {
     }
 //  thêm CN vào table
 
-    private void populatCongNhanTable() {
+    private void populatCongNhanTable() throws RemoteException {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         model.setRowCount(0); // Clear existing data
 
-        DAO_CongNhan daoCongNhan = DAO_CongNhan.getInstance();
-        ArrayList<CongNhan> danhSachCongNhan = daoCongNhan.getAll();
+        DAOCongNhan daoCongNhan = DAOCongNhan.getInstance();
+        List<CongNhan> danhSachCongNhan = daoCongNhan.layDanhSachCongNhan();
 
         for (CongNhan congNhan : danhSachCongNhan) {
             // Add each NhanVien object to the table
@@ -86,9 +94,9 @@ public class GD_QLNS extends javax.swing.JPanel {
         }
     }
 
-    private void handlerBtnThoiViecCN() {
+    private void handlerBtnThoiViecCN() throws RemoteException {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        DAO_CongNhan daoCongNhan = DAO_CongNhan.getInstance();
+        DAOCongNhan daoCongNhan = DAOCongNhan.getInstance();
         int[] selectedRows = jTable2.getSelectedRows();
 
         if (selectedRows.length > 0) {
@@ -98,7 +106,7 @@ public class GD_QLNS extends javax.swing.JPanel {
                 // Xóa từng dòng được chọn
                 for (int i = selectedRows.length - 1; i >= 0; i--) {
                     String maCN = (String) model.getValueAt(selectedRows[i], 0);
-                    daoCongNhan.deleteById(maCN);
+                    daoCongNhan.xoaCongNhan(maCN);
                 }
 
                 // Cập nhật lại bảng sau khi xóa
@@ -109,7 +117,7 @@ public class GD_QLNS extends javax.swing.JPanel {
         }
     }
 
-    private void handlerBtnSearchCN() {
+    private void handlerBtnSearchCN() throws RemoteException {
         String searchText = txtSearchCN.getText().trim();
         String searchCriteria = (String) cboTieuChiCN.getSelectedItem();
 
@@ -120,7 +128,7 @@ public class GD_QLNS extends javax.swing.JPanel {
         }
 
         // Thực hiện tìm kiếm dựa trên tiêu chí
-        DAO_CongNhan daoCongNhan = DAO_CongNhan.getInstance();
+        DAOCongNhan daoCongNhan = DAOCongNhan.getInstance();
         ArrayList<CongNhan> dsKetQuaTimKiem = new ArrayList<>();
 
         switch (searchCriteria) {
@@ -253,7 +261,12 @@ public class GD_QLNS extends javax.swing.JPanel {
         btnThoiViecCN.setPreferredSize(new java.awt.Dimension(150, 30));
         btnThoiViecCN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnThoiViecCNMouseClicked(evt);
+                try {
+					btnThoiViecCNMouseClicked(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -277,7 +290,12 @@ public class GD_QLNS extends javax.swing.JPanel {
         btnSearchCN.setPreferredSize(new java.awt.Dimension(30, 30));
         btnSearchCN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnSearchCNMouseClicked(evt);
+                try {
+					btnSearchCNMouseClicked(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -437,7 +455,18 @@ public class GD_QLNS extends javax.swing.JPanel {
         btnThoiViecNV.setPreferredSize(new java.awt.Dimension(150, 30));
         btnThoiViecNV.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnThoiViecNVMouseClicked(evt);
+                try {
+					btnThoiViecNVMouseClicked(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotBoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -550,15 +579,15 @@ public class GD_QLNS extends javax.swing.JPanel {
         Layout.instance.showLayout("themNS");
     }//GEN-LAST:event_jButton1MouseClicked
 
-    private void btnThoiViecCNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThoiViecCNMouseClicked
+    private void btnThoiViecCNMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {//GEN-FIRST:event_btnThoiViecCNMouseClicked
         handlerBtnThoiViecCN();
     }//GEN-LAST:event_btnThoiViecCNMouseClicked
 
-    private void btnThoiViecNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThoiViecNVMouseClicked
+    private void btnThoiViecNVMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException, MalformedURLException, NotBoundException {//GEN-FIRST:event_btnThoiViecNVMouseClicked
         handlerBtnThoiViecNV();
     }//GEN-LAST:event_btnThoiViecNVMouseClicked
 
-    private void btnSearchCNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchCNMouseClicked
+    private void btnSearchCNMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {//GEN-FIRST:event_btnSearchCNMouseClicked
         handlerBtnSearchCN();
     }//GEN-LAST:event_btnSearchCNMouseClicked
 

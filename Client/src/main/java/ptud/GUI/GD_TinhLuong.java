@@ -14,6 +14,12 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import DAO_Interface.IDAOBoPhan;
+import DAO_Interface.IDAOCongNhan;
+import DAO_Interface.IDAONhanVien;
+import DAO_Interface.IDAOPhieuLuongCongNhan;
+import DAO_Interface.IDAOPhieuLuongNhanVien;
+import client.Client;
 import ptud.DAO.*;
 import ptud.Entity.ChiTietPhanCong;
 import ptud.Entity.CongDoan;
@@ -25,6 +31,7 @@ import ptud.Entity.PhieuLuongNhanVien;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.print.*;
+import java.rmi.Naming;
 import java.text.MessageFormat;
 import javax.swing.JTable;
 /**
@@ -50,8 +57,11 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     public ArrayList<PhieuLuongCongNhan> dsPhieuLuongCongNhan;
 
     private void init() throws SQLException {
-        dsNhanVien = DAO_NhanVien.getInstance().getAll();
-        dsCongNhan = DAO_CongNhan.getInstance().getAll();
+//        dsNhanVien = DAO_NhanVien.getInstance().getAll();
+//        dsCongNhan = DAO_CongNhan.getInstance().getAll();
+    	IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
+    	IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
+    	
         loadJcomboBoxBoPhan();
         loadJcomboBoxBoPhan2();
         loadDataPhieuLuongNhanVien();
@@ -59,7 +69,8 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     }
 
     private void loadJcomboBoxBoPhan() {
-        DAO_BoPhan.getInstance().getAll().forEach((bp) -> {
+    	IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+        daoBoPhan.getAll().forEach((bp) -> {
             String maBP = bp.getMaBP();
             if (maBP.startsWith("HC")) {
                 jComboBoxBoPhan.addItem(bp.getTenBP());
@@ -68,7 +79,8 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     }
 
     private void loadJcomboBoxBoPhan2() {
-        DAO_BoPhan.getInstance().getAll().forEach((bp) -> {
+    	IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+        daoBoPhan.getAll().forEach((bp) -> {
             String maBP = bp.getMaBP();
             if (maBP.startsWith("SX")) {
                 // jComboBoxBoPhan2.addItem(bp.getTenBP());
@@ -81,7 +93,8 @@ public class GD_TinhLuong extends javax.swing.JPanel {
         // thêm dsNhanVien vào jTablePhieuLuongNhanVien
         int thang = jMonthChooser1.getMonth() + 1;
         int nam = jYearChooser1.getYear();
-        dsPhieuLuongNhanVien = DAO_PhieuLuongNhanVien.getInstance().getAllByThangNam(thang, nam);
+        IDAOPhieuLuongNhanVien daoPhieuLuongNhanVien = (IDAOPhieuLuongNhanVien) Naming.lookup(Client.URL + "DAOPhieuLuongNhanVien");
+        dsPhieuLuongNhanVien = daoPhieuLuongNhanVien.getAllByThangNam(thang, nam);
         DefaultTableModel model = (DefaultTableModel) jTablePhieuLuongNhanVien.getModel();
         model.setRowCount(0);
         String tenBP = jComboBoxBoPhan.getSelectedItem().toString();
@@ -99,7 +112,8 @@ public class GD_TinhLuong extends javax.swing.JPanel {
             // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
             for (PhieuLuongNhanVien plnv : dsPhieuLuongNhanVien) {
                 String maNV = plnv.getMaNV();
-                NhanVien nv = DAO_NhanVien.getInstance().get(maNV);
+                IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
+                NhanVien nv = daoNhanVien.timKiemNhanVien(maNV);
                 double luongCoBan = nv.getLuongCoBan();
                 double phuCap = nv.getPhuCap();
                 if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
@@ -134,7 +148,8 @@ public class GD_TinhLuong extends javax.swing.JPanel {
         // thêm dsNhanVien vào jTablePhieuLuongNhanVien
         int thang = jMonthChooser2.getMonth() + 1;
         int nam = jYearChooser2.getYear();
-        dsPhieuLuongCongNhan = DAO_PhieuLuongCongNhan.getInstance().getAllByThangNam(thang, nam);
+        IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
+        dsPhieuLuongCongNhan = daoPhieuLuongCongNhan.getAllByThangNam(thang, nam);
         
         DefaultTableModel model = (DefaultTableModel) jTablePhieuLuongCongNhan.getModel();
         model.setRowCount(0);
@@ -154,7 +169,8 @@ public class GD_TinhLuong extends javax.swing.JPanel {
             // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
             for (PhieuLuongCongNhan plnv : dsPhieuLuongCongNhan) {
                 String maCN = plnv.getMaCN();
-                CongNhan nv = DAO_CongNhan.getInstance().get(maCN);
+                IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
+                CongNhan nv = daoCongNhan.timKiemCongNhan(maCN);
                 if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
                     Object[] row = { maCN, nv.getTen(),
                             decimalFormat.format(plnv.getLuong()),
@@ -593,6 +609,7 @@ public class GD_TinhLuong extends javax.swing.JPanel {
 
     private void jButtonTinhLuongMouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonTinhLuongMouseReleased
         // TODO add your handling code here:
+    	IDAOPhieuLuongNhanVien daoPhieuLuongNhanVien = (IDAOPhieuLuongNhanVien) Naming.lookup(Client.URL + "DAOPhieuLuongNhanVien");
         if (jButtonTinhLuong.isEnabled()) {
             int thang = jMonthChooser1.getMonth() + 1;
             int nam = jYearChooser1.getYear();
@@ -605,10 +622,10 @@ public class GD_TinhLuong extends javax.swing.JPanel {
                 PhieuLuongNhanVien plnv = new PhieuLuongNhanVien(maPL, thang, nam, nv.getMaNV(), 0);
 
                 // kiểm tra pl đã tồn tại trong database chưa 
-                if( DAO_PhieuLuongNhanVien.getInstance().get(maPL) == null){
-                    DAO_PhieuLuongNhanVien.getInstance().insert(plnv);
+                if( daoPhieuLuongNhanVien.get(maPL) == null){
+                    daoPhieuLuongNhanVien.insert(plnv);
                 } else 
-                    DAO_PhieuLuongNhanVien.getInstance().update(plnv);
+                    daoPhieuLuongNhanVien.update(plnv);
                 
 
             }
@@ -665,16 +682,17 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     private void jButtonTinhLuong2MouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonTinhLuong2MouseReleased
         // TODO add your handling code here:
         // TODO add your handling code here:
+    	IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
         if (jButtonTinhLuong2.isEnabled()) {
             int thang = jMonthChooser2.getMonth() + 1;
             int nam = jYearChooser2.getYear();
             for (CongNhan nv : dsCongNhan) {
                 String maPL = thang + "" + nam + nv.getMaCN();
                 PhieuLuongCongNhan plcn = new PhieuLuongCongNhan(maPL, thang, nam, nv.getMaCN(), 0);
-                if( DAO_PhieuLuongCongNhan.getInstance().get(maPL) == null){
-                    DAO_PhieuLuongCongNhan.getInstance().insert(plcn);
+                if( daoPhieuLuongCongNhan.get(maPL) == null){
+                    daoPhieuLuongCongNhan.insert(plcn);
                 } else
-                    DAO_PhieuLuongCongNhan.getInstance().update(plcn);
+                    daoPhieuLuongCongNhan.update(plcn);
             }
             try {
                 loadDataPhieuLuongCongNhan();

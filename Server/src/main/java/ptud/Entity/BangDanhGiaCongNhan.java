@@ -40,7 +40,7 @@ public class BangDanhGiaCongNhan implements java.io.Serializable {
 	private char bac;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "maCongNhan")
+	@JoinColumn(name = "maCN")
 	private CongNhan congNhan;
 
     public String getId() {

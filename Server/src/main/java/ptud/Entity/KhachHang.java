@@ -23,6 +23,9 @@ public class KhachHang
 	String sdt;
 	@OneToMany(mappedBy = "khachHang")
 	Set<HopDong> hopDongs;
+	@Column(name ="hinhAnh",columnDefinition = "VARBINARY(MAX)"
+			,nullable = true)
+	private byte[] avatar;
 	public String getMaKhachHang() 
 	{
 		return maKhachHang;
@@ -108,4 +111,5 @@ public class KhachHang
          this.setToChuc(isToChuc);
          this.setMaKhachHang(stt);
 	}
+	
 }

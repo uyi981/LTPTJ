@@ -41,8 +41,11 @@ public class CongDoan {
 	private double donGia;
 	@Column(columnDefinition = "BIT")
 	private boolean trangThai;
+	  @Column(nullable = true)
 	private int soLuongChuanBi;
+	  @Column(nullable = true)
 	private int soLuongChuanBiToiThieu;
+	  @Column(nullable = true)
 	private int soLuongHoanThanh;
 
 	// CongDoan has one BoPhan

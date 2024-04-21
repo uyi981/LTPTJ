@@ -27,7 +27,6 @@ public class PhieuChamCongHanhChinh {
     @Transient
    private String maNV;
    @Column(name = "ngayChamCong",columnDefinition = "DATE")
-   @Transient
    private LocalDate ngay;
    private boolean vang, diTre;
    private int gioTangCa;

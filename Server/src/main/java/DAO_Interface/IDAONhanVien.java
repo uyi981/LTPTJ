@@ -10,5 +10,6 @@ public boolean suaNhanVien(NhanVien nhanVien)throws RemoteException;
 public boolean xoaNhanVien(String maNV)throws RemoteException;
 public NhanVien timKiemNhanVien(String maNV)throws RemoteException;
 public List<NhanVien> layDanhSachNhanVien()throws RemoteException;
+public int countAll() throws RemoteException;
 
 }

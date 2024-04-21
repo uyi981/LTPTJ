@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
 *
@@ -20,12 +21,12 @@ import jakarta.persistence.Table;
 @Table(name = "TaiKhoan")
 public class TaiKhoan {
 	
-	@Id
+	@Transient
 	private String maNV;
-   private String userName, matKhat;
+   private String userName, matKhau;
    private int vaiTro;
    private boolean trangThai;
-   
+   @Id
    @OneToOne(fetch = FetchType.LAZY)
    NhanVien nhanVien;
    
@@ -36,7 +37,7 @@ public class TaiKhoan {
     public TaiKhoan(String userName, String maNV, String matKhat, int vaiTro, boolean trangThai) {
         this.userName = userName;
         this.maNV = maNV;
-        this.matKhat = matKhat;
+        this.matKhau = matKhat;
         this.vaiTro = vaiTro;
         this.trangThai = trangThai;
     }
@@ -58,11 +59,11 @@ public class TaiKhoan {
     }
 
     public String getMatKhat() {
-        return matKhat;
+        return matKhau;
     }
 
     public void setMatKhat(String matKhat) {
-        this.matKhat = matKhat;
+        this.matKhau = matKhat;
     }
 
     public int getVaiTro() {
