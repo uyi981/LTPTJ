@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public interface IDAOBangDanhGiaNhanVien extends Remote {
     public BangDanhGiaNhanVien get(String id) throws RemoteException;
-
     public ArrayList<BangDanhGiaNhanVien> getAll() throws RemoteException;
     public boolean insert(BangDanhGiaNhanVien bangDanhGia) throws RemoteException;
     public boolean update(BangDanhGiaNhanVien bangDanhGia) throws RemoteException;

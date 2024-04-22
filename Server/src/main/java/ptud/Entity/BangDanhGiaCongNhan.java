@@ -1,7 +1,5 @@
 package ptud.Entity;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,11 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -89,6 +82,7 @@ public class BangDanhGiaCongNhan implements java.io.Serializable {
 
     public void setDiemChuyenCan(float diemChuyenCan) {
         this.diemChuyenCan = diemChuyenCan;
+        tinhBac();
     }
 
     public void setDiemchuyenMon(float diemchuyenMon) {
@@ -123,6 +117,30 @@ public class BangDanhGiaCongNhan implements java.io.Serializable {
     public BangDanhGiaCongNhan() {
     }
 
+    public BangDanhGiaCongNhan(CongNhan congNhan, int nam, float diemChuyenCan, 
+    		float diemChuyenMon, float diemThaiDo, float diemHieuSuat, char bac) {
+        this.id = genMaBDG(congNhan.getMaCN(), nam);
+        this.congNhan = congNhan;
+        this.nam = nam;
+        this.diemChuyenCan = diemChuyenCan;
+        this.diemChuyenMon = diemChuyenMon;
+        this.diemThaiDo = diemThaiDo;
+        this.diemHieuSuat = diemHieuSuat;
+        tinhBac();
+    }
+
+	public BangDanhGiaCongNhan(String id, CongNhan congNhan, int nam, float diemChuyenCan, 
+    		float diemchuyenMon, float diemThaiDo, float diemHieuSuat, char bac) {
+        this.id = id;
+        this.congNhan = congNhan;
+        this.nam = nam;
+        this.diemChuyenCan = diemChuyenCan;
+        this.diemChuyenMon = diemchuyenMon;
+        this.diemThaiDo = diemThaiDo;
+        this.diemHieuSuat = diemHieuSuat;
+        tinhBac();
+    }
+	
     public BangDanhGiaCongNhan(CongNhan congNhan, int nam, float diemChuyenCan, float diemChuyenMon, float diemThaiDo, float diemHieuSuat) {
         this.id = genMaBDG(congNhan.getMaCN(), nam);
         this.congNhan = congNhan;
@@ -134,34 +152,17 @@ public class BangDanhGiaCongNhan implements java.io.Serializable {
         tinhBac();
     }
 
-    public BangDanhGiaCongNhan(String id, CongNhan congNhan, int nam, float diemChuyenCan, float diemchuyenMon, float diemThaiDo, float diemHieuSuat, char bac) {
-        this.id = id;
-        this.congNhan = congNhan;
-        this.nam = nam;
-        this.diemChuyenCan = diemChuyenCan;
-        this.diemChuyenMon = diemchuyenMon;
-        this.diemThaiDo = diemThaiDo;
-        this.diemHieuSuat = diemHieuSuat;
-        this.bac = bac;
-    }
-
-    public BangDanhGiaCongNhan(CongNhan congNhan, int nam, float diemChuyenCan, float diemchuyenMon, float diemThaiDo, float diemHieuSuat, char bac) {
-        this.id = genMaBDG(congNhan.getMaCN(), nam);
-        this.congNhan = congNhan;
-        this.nam = nam;
-        this.diemChuyenCan = diemChuyenCan;
-        this.diemChuyenMon = diemchuyenMon;
-        this.diemThaiDo = diemThaiDo;
-        this.diemHieuSuat = diemHieuSuat;
-        this.bac = bac;
-    }
 
     private String genMaBDG(String maCongNhan, int nam) {
         return maCongNhan + nam;
     }
 
-    @Override
-    public String toString() {
-        return "BangDanhGia{" + "id=" + id + ", congNhan=" + congNhan + ", nam=" + nam + ", diemChuyenCan=" + diemChuyenCan + ", diemchuyenMon=" + diemChuyenMon + ", diemThaiDo=" + diemThaiDo + ", diemHieuSuat=" + diemHieuSuat + ", bac=" + bac + '}';
-    }
+	@Override
+	public String toString() {
+		return "BangDanhGiaCongNhan [id=" + id + ", nam=" + nam + ", diemChuyenCan=" + diemChuyenCan + ", diemThaiDo="
+				+ diemThaiDo + ", diemChuyenMon=" + diemChuyenMon + ", diemHieuSuat=" + diemHieuSuat + ", bac=" + bac
+				+ "]";
+	}
+
+    
 }

@@ -32,11 +32,11 @@ public class DAOChiTietPhanCong extends UnicastRemoteObject implements IDAOChiTi
 	}
 
 	@Override
-	public ArrayList<ChiTietPhanCong> getAllByNgay(LocalDate ngay) throws Exception {
-		// Use NativeQuery
+	public ArrayList<ChiTietPhanCong> getAllByNgay(LocalDate day) throws Exception {
+
 		ArrayList<ChiTietPhanCong> resultList = (ArrayList<ChiTietPhanCong>) em
-				.createNativeQuery("SELECT * FROM ChiTietPhanCong WHERE Ngay = ?ngay", ChiTietPhanCong.class)
-				.setParameter("ngay", ngay).getResultList();
+				.createNativeQuery("SELECT * FROM ChiTietPhanCong WHERE ngay = ?", ChiTietPhanCong.class)
+				.setParameter(1, day).getResultList();
 		return resultList;
 	}
 
@@ -144,11 +144,6 @@ public class DAOChiTietPhanCong extends UnicastRemoteObject implements IDAOChiTi
 
 	@Override
 	public int getSoLuongCongDoanHoanThanhByMaCongNhan(String maCN, LocalDate date) throws Exception {
-//        String fotmatNgay = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//        String query = "select sum(p.soLuongCD + p.soLuongCDTangCa) as soLuong\n" +
-//                "from [dbo].[PhieuChamCongCongNhan] p\n" +
-//                "join [dbo].[ChiTietPhanCong] c on p.maCTPC = c.maCTPC\n" +
-//                "where c.maCN = ? and p.ngayChamCong = ?";
 		try {
 			return (int) em
 					.createNativeQuery("SELECT SUM(p.soLuongCD + p.soLuongCDTangCa) as soLuong\n"

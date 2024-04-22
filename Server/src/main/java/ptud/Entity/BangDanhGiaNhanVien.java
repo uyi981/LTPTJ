@@ -155,9 +155,12 @@ public class BangDanhGiaNhanVien {
         return maNhanVien + nam;
     }
 
-    @Override
-    public String toString() {
-        return "BangDanhGia{" + "id=" + id + ", nhanVien=" + nhanVien + ", nam=" + nam + ", diemChuyenCan=" + diemChuyenCan + ", diemchuyenMon=" + diemChuyenMon + ", diemThaiDo=" + diemThaiDo + ", diemHieuSuat=" + diemHieuSuat + ", bac=" + bac + '}';
-    }
+	@Override
+	public String toString() {
+		return "BangDanhGiaNhanVien [id=" + id + ", nam=" + nam + ", diemChuyenCan=" + diemChuyenCan + ", diemThaiDo="
+				+ diemThaiDo + ", diemChuyenMon=" + diemChuyenMon + ", diemHieuSuat=" + diemHieuSuat + ", bac=" + bac
+				+ "]";
+	}
 
+    
 }
