@@ -70,14 +70,19 @@ public class GD_QLSP extends javax.swing.JPanel {
 		AutoCompleteDecorator.decorate(jComboBoxMaBoPhan);
 		AutoCompleteDecorator.decorate(jComboBoxCDTQ);
 
-		IDAOHopDong daoHopDong = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong");
-		dsHopDong = daoHopDong.layDanhSachHopDong();
-		IDAOSanPham daoSanPham = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
-		dsSanPham = daoSanPham.layDanhSachSanPham();
-		dsCongNhan = new DAOCongNhan().layDanhSachCongNhan();
-		dsCongDoan = new DAOCongDoan().getAll();
-		dsBoPhan = new ArrayList<BoPhan>();
-		dsCTPC = new ArrayList<ChiTietPhanCong>();
+		try {
+			IDAOHopDong daoHopDong = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong");
+			dsHopDong = daoHopDong.layDanhSachHopDong();
+			IDAOSanPham daoSanPham = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
+			dsSanPham = daoSanPham.layDanhSachSanPham();
+			dsCongNhan = new DAOCongNhan().layDanhSachCongNhan();
+			dsCongDoan = new DAOCongDoan().getAll();
+			dsBoPhan = new ArrayList<BoPhan>();
+			dsCTPC = new ArrayList<ChiTietPhanCong>();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		// loaddata to jComboBoxMaHopDong
 
 		loadJComboBoxMaHopDong();
