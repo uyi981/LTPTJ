@@ -368,7 +368,7 @@ public class GD_ChiTietPhieuLuongNV extends javax.swing.JPanel {
         Layout.instance.showLayout("tabTL");
     }//GEN-LAST:event_backMouseReleased
 
-    public void updateData(PhieuLuongNhanVien plnv) throws RemoteException {
+    public void updateData(PhieuLuongNhanVien plnv) {
         DecimalFormat decimalFormat = new DecimalFormat("#,###.##đ");
         jLabelThangNam.setText(plnv.getThang() + "/" + plnv.getNam());
         jLabelMaPhieuLuong.setText(plnv.getMaPL());
@@ -377,21 +377,22 @@ public class GD_ChiTietPhieuLuongNV extends javax.swing.JPanel {
         try {
 //			daoNhanVien.get(plnv.getMaNV());
         	nv = daoNhanVien.timKiemNhanVien(plnv.getMaNV());
+            jLabelTen.setText(nv.getTen());
+            jLabelMaNV.setText(nv.getMaNV());
+            jLabelBoPhan.setText(nv.getBoPhan().getTenBP()); 
+            jLabelLuongCoBan.setText(decimalFormat.format(nv.getLuongCoBan()));
+
+            jLabelSoNgayLam.setText(plnv.getSoNgayLam() + "");
+            jLabelThuongNangSuat.setText(decimalFormat.format(plnv.getThuong()));
+            jLabelPhat.setText(decimalFormat.format(plnv.getPhat()));
+            jLabelPhuCap.setText(decimalFormat.format(plnv.getPhuCap())) ;
+            jLabelLuongThucNhan.setText(decimalFormat.format(plnv.getLuongThucNhan()));
       
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        jLabelTen.setText(nv.getTen());
-        jLabelMaNV.setText(nv.getMaNV());
-        jLabelBoPhan.setText(nv.getBoPhan().getTenBP()); 
-        jLabelLuongCoBan.setText(decimalFormat.format(nv.getLuongCoBan()));
-
-        jLabelSoNgayLam.setText(plnv.getSoNgayLam() + "");
-        jLabelThuongNangSuat.setText(decimalFormat.format(plnv.getThuong()));
-        jLabelPhat.setText(decimalFormat.format(plnv.getPhat()));
-        jLabelPhuCap.setText(decimalFormat.format(plnv.getPhuCap())) ;
-        jLabelLuongThucNhan.setText(decimalFormat.format(plnv.getLuongThucNhan()));
+  
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back;

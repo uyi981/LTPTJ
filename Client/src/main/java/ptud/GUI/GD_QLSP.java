@@ -43,7 +43,7 @@ import DAO_Interface.IDAOHopDong;
 import DAO_Interface.IDAONhanVien;
 import DAO_Interface.IDAOSanPham;
 import client.Client;
-import ptud.DAO.*;
+
 import ptud.Entity.BoPhan;
 import ptud.Entity.ChiTietPhanCong;
 import ptud.Entity.CongDoan;
@@ -79,50 +79,51 @@ public class GD_QLSP extends javax.swing.JPanel {
 			dsCongDoan = new DAOCongDoan().getAll();
 			dsBoPhan = new ArrayList<BoPhan>();
 			dsCTPC = new ArrayList<ChiTietPhanCong>();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		// loaddata to jComboBoxMaHopDong
+			
+			// loaddata to jComboBoxMaHopDong
 
-		loadJComboBoxMaHopDong();
+			loadJComboBoxMaHopDong();
 
-		// loaddata to jComboBoxMaBoPhan
-		for (BoPhan boPhan : new DAOBoPhan().getAll()) {
-			// Only take maBP prefixed with 'SX'
-			if (boPhan.getMaBP().startsWith("SX")) {
-				jComboBoxMaBoPhan.addItem(boPhan.getMaBP());
-				jComboBoxBoPhan.addItem(boPhan.getTenBP());
-				jComboBoxBoPhan1.addItem(boPhan.getTenBP());
-				dsBoPhan.add(boPhan);
+			// loaddata to jComboBoxMaBoPhan
+			for (BoPhan boPhan : new DAOBoPhan().getAll()) {
+				// Only take maBP prefixed with 'SX'
+				if (boPhan.getMaBP().startsWith("SX")) {
+					jComboBoxMaBoPhan.addItem(boPhan.getMaBP());
+					jComboBoxBoPhan.addItem(boPhan.getTenBP());
+					jComboBoxBoPhan1.addItem(boPhan.getTenBP());
+					dsBoPhan.add(boPhan);
+				}
 			}
-		}
 
-		// loaddata sanpham vao jcombobox
-		for (SanPham sanPham : dsSanPham) {
-			System.out.println(sanPham.getMaSanPham());
-			HopDong hd = new DAOHopDong().timKiemHopDong(sanPham.getMaHD());
-			System.out.println(hd);
-			if (hd.getTrangThai().equals("đang thực hiện"))
-				jComboBoxSanPham.addItem(sanPham.getTenSanPham());
-		}
+			// loaddata sanpham vao jcombobox
+			for (SanPham sanPham : dsSanPham) {
+				System.out.println(sanPham.getMaSanPham());
+				HopDong hd = new DAOHopDong().timKiemHopDong(sanPham.getMaHD());
+				System.out.println(hd);
+				if (hd.getTrangThai().equals("đang thực hiện"))
+					jComboBoxSanPham.addItem(sanPham.getTenSanPham());
+			}
 
-		// loaddata jcombobox congdoan
+			// loaddata jcombobox congdoan
 
-		try {
-			IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
-			for (CongDoan cd : daoCongDoan.getAll())
-				jComboBoxCongDoan.addItem(cd.getTenCD());
+			try {
+				IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+				for (CongDoan cd : daoCongDoan.getAll())
+					jComboBoxCongDoan.addItem(cd.getTenCD());
 
-			// loaddata to jtableCongDoan
-			loadDsCongDoan();
-			loadDsCongNhan();
+				// loaddata to jtableCongDoan
+				loadDsCongDoan();
+				loadDsCongNhan();
 
-			jDateChooser1.setDate(new Date());
-			loadDsCTPC();
+				jDateChooser1.setDate(new Date());
+				loadDsCTPC();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	
 
 	}
 
