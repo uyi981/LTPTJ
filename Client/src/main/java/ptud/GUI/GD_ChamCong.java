@@ -612,9 +612,7 @@ public class GD_ChamCong extends javax.swing.JPanel {
 			phieuChamCongHanhChinh.setTienPhat((int) model.getValueAt(i, 4));
 			phieuChamCongHanhChinh.setNoiDungTienPhat((String) model.getValueAt(i, 5));
 			try {
-				daoPhieuChamCongNhanVien.insert(phieuChamCongHanhChinh);
-			} catch (SQLException ex) {
-				Logger.getLogger(GD_ChamCong.class.getName()).log(Level.SEVERE, null, ex);
+				daoPhieuChamCongNhanVien.themPhieuChamCongNhanVien(phieuChamCongHanhChinh);
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
