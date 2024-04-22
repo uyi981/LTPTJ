@@ -45,12 +45,7 @@ public class GD_DanhGia extends javax.swing.JPanel {
 
 	private void handlerBtnBack() {
 		Layout.instance.showLayout("tabNS");
-		try {
-			GD_QLNS.instance.updateData();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		GD_QLNS.instance.updateData();
 	}
 
 //  tab NV
