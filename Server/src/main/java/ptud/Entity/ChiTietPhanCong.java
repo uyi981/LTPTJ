@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
+import DAO_Implement.DAOCongDoan;
+import DAO_Implement.DAOCongNhan;
+import DAO_Interface.IDAOCongDoan;
+import DAO_Interface.IDAOCongNhan;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -54,8 +58,23 @@ public class ChiTietPhanCong {
 
 	public ChiTietPhanCong() {
 	};
+	
+	@Transient
+	private IDAOCongDoan daoCongDoan;
+	@Transient
+	private IDAOCongNhan  daoCongNhan;
 
     public ChiTietPhanCong(String maCTPC, String maCD, String maCN, LocalDate ngay, int soLuongCDGiao) {
+    	try {
+			daoCongDoan = new DAOCongDoan();
+	    	daoCongNhan = new DAOCongNhan();
+	    	
+	    	this.congDoan = daoCongDoan.get(maCD);
+	    	this.congNhan = daoCongNhan.timKiemCongNhan(maCN);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         setMaCD(maCD);
         setMaCN(maCN);
         setMaCTPC(maCTPC);
@@ -107,8 +126,8 @@ public class ChiTietPhanCong {
     public String toString() {
         return "ChiTietPhanCong{" +
                 "maCTPC='" + maCTPC + '\'' +
-                ", maCD='" + maCD + '\'' +
-                ", maCN='" + maCN + '\'' +
+                ", maCD='" + congDoan.getMaCD() + '\'' +
+                ", maCN='" + congNhan.getMaCN() + '\'' +
                 ", ngay=" + ngay +
                 ", soLuongCDGiao=" + soLuongCDGiao +
                 '}';

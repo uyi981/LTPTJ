@@ -42,6 +42,7 @@ public class DAOBoPhan extends UnicastRemoteObject implements IDAOBoPhan {
 			em.getTransaction().commit();
 			return true;
 		} catch (Exception e) {
+			em.getTransaction().rollback();
 			e.printStackTrace();
 			return false;
 		}
@@ -93,10 +94,12 @@ public class DAOBoPhan extends UnicastRemoteObject implements IDAOBoPhan {
 	@Override
 	public String getMaBoPhanByTenBoPhan(String tenBoPhan) throws RemoteException {
 		try {
-			String query = "select maBP\n" + "from [dbo].[BoPhan]\n" + "where tenBP = ?";
+			String query = "select maBP from BoPhan\r\n"
+					+ "where tenBP = ? \r\n";
 			String result = (String) em.createNativeQuery(query).setParameter(1, tenBoPhan).getSingleResult();
 			return result;
 		} catch (Exception e) {
+			em.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return null;

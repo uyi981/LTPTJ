@@ -28,7 +28,7 @@ public class BoPhan {
 	@Id
 	@Column(name = "maBP", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String maBP;
-	@Column(columnDefinition = "VARCHAR(30)")
+	@Column(columnDefinition = "NVARCHAR(100)")
 	private String tenBP;
 	
 	// BoPhan has many NhanVien
@@ -67,9 +67,10 @@ public class BoPhan {
         this.tenBP = tenBP;
     }
 
-    @Override
-    public String toString() {
-        return super.toString(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
+	@Override
+	public String toString() {
+		return "BoPhan [maBP=" + maBP + ", tenBP=" + tenBP + "]";
+	}
+
     
 }

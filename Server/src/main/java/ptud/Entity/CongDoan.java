@@ -35,7 +35,7 @@ public class CongDoan {
 	@Id
 	@Column(name = "maCD", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String maCD;
-	@Column(columnDefinition = "VARCHAR(50)")
+	@Column(columnDefinition = "NVARCHAR(50)")
 	private String tenCD;
 	@Column(columnDefinition = "REAL NULL")
 	private double donGia;

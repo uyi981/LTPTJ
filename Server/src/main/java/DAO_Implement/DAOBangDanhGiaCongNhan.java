@@ -68,6 +68,7 @@ public class DAOBangDanhGiaCongNhan extends UnicastRemoteObject implements IDAOB
             em.getTransaction().commit();
             return true;
         } catch (Exception e) {
+        	em.getTransaction().rollback();
             e.printStackTrace();
             return false;
         }
@@ -77,8 +78,9 @@ public class DAOBangDanhGiaCongNhan extends UnicastRemoteObject implements IDAOB
     public BangDanhGiaCongNhan getBangDanhGiaCuaCongNhan(String maCN, int year) throws RemoteException {
         try {
             return (BangDanhGiaCongNhan) em.createNativeQuery("SELECT * FROM BangDanhGiaCongNhan WHERE maCN = ? AND nam = ?",
-                    BangDanhGiaCongNhan.class).setParameter(1, maCN).setParameter(2, year).getSingleResult();
+                    BangDanhGiaCongNhan.class).setParameter(1, maCN).setParameter(2, year).getResultList().get(0);
         } catch (Exception e) {
+        	em.getTransaction().rollback();
             e.printStackTrace();
             return null;
         }
