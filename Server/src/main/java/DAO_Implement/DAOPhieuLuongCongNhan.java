@@ -1,6 +1,7 @@
 package DAO_Implement;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,12 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import ptud.Entity.PhieuLuongCongNhan;
 
-public class DAOPhieuLuongCongNhan implements IDAOPhieuLuongCongNhan {
+public class DAOPhieuLuongCongNhan extends UnicastRemoteObject implements IDAOPhieuLuongCongNhan {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8525365560857119801L;
 	private EntityManager em;
 	 
 	public DAOPhieuLuongCongNhan() throws RemoteException {

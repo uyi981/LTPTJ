@@ -2,6 +2,7 @@ package DAO_Implement;
 
 import java.nio.charset.StandardCharsets;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -13,8 +14,12 @@ import jakarta.persistence.Query;
 
 import ptud.Entity.TaiKhoan;
 
-public class DAOTaiKhoan implements DAO_Interface.IDAOTaiKhoan{
+public class DAOTaiKhoan extends UnicastRemoteObject implements DAO_Interface.IDAOTaiKhoan{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9127304083126447988L;
 	private EntityManager em;
 	 
 	public DAOTaiKhoan() throws RemoteException {

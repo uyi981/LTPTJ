@@ -1,6 +1,7 @@
 package DAO_Implement;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,8 +12,12 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import ptud.Entity.PhieuChamCongHanhChinh;
 
-public class DAOPhieuChamCongNhanVien implements DAO_Interface.IDAOPhieuChamCongNhanVien {
+public class DAOPhieuChamCongNhanVien extends UnicastRemoteObject implements DAO_Interface.IDAOPhieuChamCongNhanVien {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2693781337997268465L;
 	private EntityManager em;
 	 
 	 public DAOPhieuChamCongNhanVien() throws RemoteException {
@@ -85,11 +90,7 @@ public class DAOPhieuChamCongNhanVien implements DAO_Interface.IDAOPhieuChamCong
 		        return 0;
 		    }
 	}
-	 public static String getCurrentDateYYYYMMDD() {
-	        LocalDate currentDate = LocalDate.now();
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	        return currentDate.format(formatter);
-	    }
+	
 
 	@Override
 	public ArrayList<Object[]> getDanhSachThongTinChamCongByIDBoPhan(String maBoPhan) throws RemoteException {
@@ -161,6 +162,14 @@ public class DAOPhieuChamCongNhanVien implements DAO_Interface.IDAOPhieuChamCong
 		        e.printStackTrace();
 		        return 0;
 		    }
+	}
+
+	@Override
+	public String getCurrentDateYYYYMMDD() throws RemoteException {
+		LocalDate currentDate = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return currentDate.format(formatter);
+		
 	}
 
 }

@@ -1,6 +1,7 @@
 package DAO_Implement;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,8 +14,12 @@ import ptud.Entity.ChamCongDTO;
 import ptud.Entity.ChiTietPhanCong;
 import ptud.Entity.PhieuChamCongCongNhan;
 
-public class DAOPhieuChamCongCongNhan implements DAO_Interface.IDAOPhieuChamCongCongNhan {
+public class DAOPhieuChamCongCongNhan extends UnicastRemoteObject implements DAO_Interface.IDAOPhieuChamCongCongNhan {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4603057401427970452L;
 	private EntityManager em;
 
 	public DAOPhieuChamCongCongNhan() throws RemoteException {
@@ -160,22 +165,23 @@ public class DAOPhieuChamCongCongNhan implements DAO_Interface.IDAOPhieuChamCong
 	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<Object[]> getDanhSachThongTinChamCongByIDBoPhan(String maBoPhan) throws RemoteException {
-		 ArrayList<Object[]> ds = new ArrayList<>();
-		    try {
-		        Query query = em.createNativeQuery(
-		                "SELECT cn.maCN, cn.tenCN, cd.tenCD, c.soLuongCDGiao FROM ChiTietPhanCong c " +
-		                        "JOIN CongNhan cn ON c.maCN = cn.maCN " +
-		                        "JOIN CongDoan cd ON c.maCD = cd.maCD " +
-		                        "LEFT JOIN PhieuChamCongCongNhan p ON c.maCTPC = p.maCTPC " +
-		                        "WHERE cd.maBP = :maBoPhan AND ngay = :ngay AND c.maCTPC NOT IN " +
-		                        "(SELECT p.maCTPC FROM PhieuChamCongCongNhan p)");
-		        query.setParameter("maBoPhan", maBoPhan);
-		        query.setParameter("ngay", getCurrentDateYYYYMMDD());
-		        ds = (ArrayList<Object[]>) query.getResultList();
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		    return ds;
+		    
+		 String query =  "select cn.maCN, cn.tenCN, cd.tenCD, c.soLuongCDGiao\n"
+                 + "from [dbo].[ChiTietPhanCong] c\n"
+                 + "join [dbo].[CongNhan] cn on c.maCN = cn.maCN\n"
+                 + "join [dbo].[CongDoan] cd on c.maCD = cd.maCD\n"
+                 + "left join PhieuChamCongCongNhan p on c.maCTPC = p.maCTPC\n"
+                 + "where cd.maBP = ? and ngay = ? and c.maCTPC not in (select p.maCTPC from [dbo].[PhieuChamCongCongNhan] p)\n";
+		 
+		ArrayList<Object[]> result = (ArrayList<Object[]>) em.createNativeQuery(query).setParameter(1, maBoPhan).setParameter(2, LocalDate.now()).getResultList(); 
+		ArrayList<Object[]> rs = result;
+		return rs;
+
+//		        query.setParameter("maBoPhan", maBoPhan);
+//		        query.setParameter("ngay", getCurrentDateYYYYMMDD());
+//		        ds = (ArrayList<Object[]>) query.getResultList();
+//		    
+//		    return ds;
 	}
 
 	@Override
@@ -193,11 +199,19 @@ public class DAOPhieuChamCongCongNhan implements DAO_Interface.IDAOPhieuChamCong
 		return rs;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<ChamCongDTO> getDsCongDoanLamDuocCuaCongNhanTrongThang(String maCN, int thang, int nam)
 			throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<ChamCongDTO> resultList = (ArrayList<ChamCongDTO>) em
+				.createNativeQuery("select cn.maCD, SUM(c.soLuongCD) as TongSoLuongCD, SUM(c.soLuongCDTangCa) as TongSoLuongCDTangCa\n"
+	                    + "from [dbo].[PhieuChamCongCongNhan] c\n"
+	                    + "join [dbo].[ChiTietPhanCong] cn on c.maCTPC = cn.maCTPC\n"
+	                    + "where cn.maCN = ? and MONTH(ngay) = ? and YEAR(ngay) = ?\n"
+	                    + "group by cn.maCD", ChamCongDTO.class)
+				.setParameter("maCN", maCN).setParameter(nam, thang).setParameter(nam, maCN) .getResultList();
+		return resultList;
+		
 	}
 
 }
