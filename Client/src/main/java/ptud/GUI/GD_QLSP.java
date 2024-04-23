@@ -98,7 +98,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 			// loaddata sanpham vao jcombobox
 			for (SanPham sanPham : dsSanPham) {
 				System.out.println(sanPham.getMaSanPham());
-				HopDong hd = new DAOHopDong().timKiemHopDong(sanPham.getMaHD());
+				HopDong hd = daoHopDong.timKiemHopDong(sanPham.getMaHD());
 				System.out.println(hd);
 				if (hd.getTrangThai().equals("đang thực hiện"))
 					jComboBoxSanPham.addItem(sanPham.getTenSanPham());
