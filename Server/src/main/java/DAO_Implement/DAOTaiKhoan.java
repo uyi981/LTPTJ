@@ -67,7 +67,7 @@ public class DAOTaiKhoan extends UnicastRemoteObject implements DAO_Interface.ID
 	@Override
 	public String getTenNhanVienTaiKhoanByIDNV(String maNV) throws RemoteException {
 		 try {
-		        String query = "SELECT nv.tenNV FROM NhanVien nv WHERE nv.maNV = :maNV";
+		        String query = "SELECT nv.ten FROM NhanVien nv WHERE nv.maNV = :maNV";
 		        Query jpqlQuery = em.createQuery(query);
 		        jpqlQuery.setParameter("maNV", maNV);
 		        Object result = jpqlQuery.getSingleResult();
@@ -100,17 +100,8 @@ public class DAOTaiKhoan extends UnicastRemoteObject implements DAO_Interface.ID
 	public ArrayList<TaiKhoan> getAll() throws RemoteException {
 		ArrayList<TaiKhoan> dsTaiKhoan = new ArrayList<>();
 	    try {
-	        String query = "SELECT TK.maNV, TK.userName, TK.matKhau, TK.vaiTro, NV.tenNV " +
-	                       "FROM TaiKhoan TK " +
-	                       "JOIN NhanVien NV ON TK.maNV = NV.maNV " +
-	                       "WHERE TK.trangThai = 1";
-	        Query jpqlQuery = em.createQuery(query);
-	        List<Object[]> results = jpqlQuery.getResultList();
-
-	        for (Object[] result : results) {
-	            TaiKhoan tk = new TaiKhoan((String) result[1], (String) result[0], (String) result[2], (int) result[3], true);
-	            dsTaiKhoan.add(tk);
-	        }
+	        String query = "Select tk from TaiKhoan tk";
+	        return (ArrayList<TaiKhoan>) em.createQuery(query).getResultList();
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -145,16 +136,16 @@ public class DAOTaiKhoan extends UnicastRemoteObject implements DAO_Interface.ID
 	}
 
 	@Override
-	public boolean deleteTaiKhoanByID(String id) throws RemoteException {
+	public boolean deleteTaiKhoanByID(String userName) throws RemoteException {
 		  try {
-		        TaiKhoan taiKhoan = em.find(TaiKhoan.class, id);
+		        TaiKhoan taiKhoan = getAll().get(7);
 		        if (taiKhoan != null) {
 		            em.getTransaction().begin();
 		            em.remove(taiKhoan);
 		            em.getTransaction().commit();
 		            return true;
 		        } else {
-		            System.out.println("Không tìm thấy tài khoản có ID: " + id);
+		            System.out.println("Không tìm thấy tài khoản có ID: " + userName);
 		        }
 		    } catch (Exception e) {
 		        e.printStackTrace();
