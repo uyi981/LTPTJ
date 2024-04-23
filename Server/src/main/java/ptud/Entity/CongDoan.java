@@ -4,13 +4,16 @@
  */
 package ptud.Entity;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
 
+import DAO_Implement.DAOBoPhan;
 import DAO_Implement.DAOChiTietPhanCong;
 import DAO_Implement.DAOCongDoan;
 import DAO_Implement.DAOSanPham;
+import DAO_Interface.IDAOBoPhan;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -84,12 +87,24 @@ public class CongDoan implements java.io.Serializable {
 	private String maBP;
 	@Transient
 	private ArrayList<String> dsCDTQ;
+	
+	@Transient
+	IDAOBoPhan daoBoPhan;
 
 	public CongDoan() {
 	}
 
 	public CongDoan(String maCD, String maSP, String maBP, String tenCD, double donGia, boolean trangThai,
 			int soLuongChuanBiToiThieu, ArrayList<String> dsCDTQ) {
+		
+		try {
+			daoBoPhan = new DAOBoPhan();
+			this.boPhan = daoBoPhan.get(maBP);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		setMaCD(maCD);
 		setMaSP(maSP);
 		setMaBP(maBP);
@@ -181,6 +196,7 @@ public class CongDoan implements java.io.Serializable {
 
 	public void setMaBP(String maBP) {
 		this.maBP = maBP;
+		
 	}
 
 	public void setTenCD(String tenCD) {
