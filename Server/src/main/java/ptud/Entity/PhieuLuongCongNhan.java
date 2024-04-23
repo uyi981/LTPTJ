@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import DAO_Implement.DAOCongNhan;
 import DAO_Implement.DAOPhieuChamCongCongNhan;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -91,7 +92,15 @@ public class PhieuLuongCongNhan implements Serializable{
     }
 
     public void setMaCN(String maCN) {
-        this.maCN = maCN;
+    	try {
+    		this.maCN = maCN;
+            DAOCongNhan daoCongNhan = new DAOCongNhan();
+            this.congNhan = daoCongNhan.timKiemCongNhan(maCN);
+            
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
     }
 
     public double getPhat() {

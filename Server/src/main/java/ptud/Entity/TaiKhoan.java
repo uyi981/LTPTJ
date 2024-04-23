@@ -6,6 +6,7 @@ package ptud.Entity;
 
 import java.io.Serializable;
 
+import DAO_Implement.DAONhanVien;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -43,11 +44,21 @@ public class TaiKhoan implements Serializable {
        
     public TaiKhoan(String userName, String maNV, String matKhat, int vaiTro, boolean trangThai) {
         this.userName = userName;
-        this.maNV = maNV;
+        this.setmaNV(maNV);
         this.matKhau = matKhat;
         this.vaiTro = vaiTro;
         this.trangThai = trangThai;
     }
+
+	public void setmaNV(String maNV) {
+		try {
+			this.maNV = maNV;
+			DAONhanVien daoNV = new DAONhanVien();
+			this.nhanVien = daoNV.timKiemNhanVien(maNV);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
     public String getUserName() {
         return userName;
