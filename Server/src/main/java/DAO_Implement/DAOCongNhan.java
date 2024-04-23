@@ -87,7 +87,7 @@ public class DAOCongNhan extends UnicastRemoteObject implements DAO_Interface.ID
 	@Override
 	public List<CongNhan> layDanhSachCongNhan() throws RemoteException {
 		// TODO Auto-generated method stub
-		return null;
+		return em.createQuery("SELECT c FROM CongNhan c", CongNhan.class).getResultList();
 	}
 	@Override
 	  public int countAll() throws RemoteException {
