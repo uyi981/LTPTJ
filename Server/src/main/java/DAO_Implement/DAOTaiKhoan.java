@@ -96,6 +96,7 @@ public class DAOTaiKhoan extends UnicastRemoteObject implements DAO_Interface.ID
 	    return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<TaiKhoan> getAll() throws RemoteException {
 		ArrayList<TaiKhoan> dsTaiKhoan = new ArrayList<>();

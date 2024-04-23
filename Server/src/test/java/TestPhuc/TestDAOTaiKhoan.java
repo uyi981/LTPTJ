@@ -3,6 +3,7 @@ package TestPhuc;
 import static org.mockito.ArgumentMatchers.intThat;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -65,14 +66,16 @@ public class TestDAOTaiKhoan {
 
 	@Test
 	public void testGetAll() {
-		try {
-			daoTaiKhoan.getAll().forEach(System.out::println);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	    try {
+	        ArrayList<TaiKhoan> dsTaiKhoan = daoTaiKhoan.getAll();
+	        for (TaiKhoan tk : dsTaiKhoan) {
+	            System.out.println(tk);
+	        }
+	        System.out.println("211");
+	    } catch (RemoteException e) {
+	        e.printStackTrace();
+	    }
 	}
-
 //	@Test
 //	public void testUpdateTaiKhoan() {
 //		try {
