@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import DAO_Implement.DAOCongNhan;
 import DAO_Implement.DAONhanVien;
 import DAO_Implement.DAOPhieuChamCongNhanVien;
 import jakarta.persistence.Column;
@@ -98,9 +99,15 @@ public class PhieuLuongNhanVien implements Serializable {
     }
 
     public void setMaNV(String maNV) {
-        this.maNV = maNV;
+    	try {
+    		this.maNV = maNV;
+            DAONhanVien daoNhanVien = new DAONhanVien();
+            this.nhanVien = daoNhanVien.timKiemNhanVien(maNV);
+      
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
-
     public double getPhat() {
         double phat2 = 0; 
         // xử lý tính toán

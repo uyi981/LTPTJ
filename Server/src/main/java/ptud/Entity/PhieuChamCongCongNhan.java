@@ -34,7 +34,25 @@ public class PhieuChamCongCongNhan implements Serializable{
    private LocalDate ngay;
    private boolean vang;
    @Column(name = "soluongCD")
-   private int soLuongSanPham;
+   @Transient
+   private String maCTPC;
+   public String getMaCTPC() {
+	return maCTPC;
+}
+
+public void setMaCTPC(String maCTPC) {
+	this.maCTPC = maCTPC;
+}
+
+public ChiTietPhanCong getChiTietPhanCong() {
+	return chiTietPhanCong;
+}
+
+public void setChiTietPhanCong(ChiTietPhanCong chiTietPhanCong) {
+	this.chiTietPhanCong = chiTietPhanCong;
+}
+
+private int soLuongSanPham;
    private String noiDungPhat;
    private double tienCong;
    private double tienThuong;
