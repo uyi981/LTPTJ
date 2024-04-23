@@ -8,8 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Column; 
 @Entity
-public class KhachHang 
+public class KhachHang implements java.io.Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4537509636308592658L;
 	// Author VoPhuocHau
 	@Id
 	@Column(name = "maKH")

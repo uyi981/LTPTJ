@@ -19,9 +19,13 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 @NoArgsConstructor
 @Entity
-public class SanPham 
+public class SanPham implements java.io.Serializable
 {
-	// Author VoPhuocHau
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 562676768619198300L;
+// Author VoPhuocHau
   @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
   HopDong hopDong;
   String maHD;

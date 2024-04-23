@@ -4,31 +4,27 @@
  */
 package ptud.Entity;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-import DAO_Implement.DAOBoPhan;
 import DAO_Implement.DAOCongNhan;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
 
-import java.util.Set;
 /**
  *
  * @author TomTom
  */
 @jakarta.persistence.Entity
-public class CongNhan {
+public class CongNhan implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -76540101357324003L;
 	@Id
     private String maCN;
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)

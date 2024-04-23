@@ -21,8 +21,12 @@ import jakarta.persistence.Transient;
  * @author TomTom
  */
 @Entity
-public class NhanVien {
+public class NhanVien implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4697915967513040947L;
 	@Id
     private String maNV;
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)

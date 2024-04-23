@@ -23,8 +23,12 @@ import DAO_Implement.DAOHopDong;
 import DAO_Implement.DAOSanPham;
 @NoArgsConstructor
 @Entity
-public class SanPham 
+public class SanPham implements java.io.Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6404978116106301355L;
 	// Author VoPhuocHau
   @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
   @jakarta.persistence.JoinColumn(name = "maHD")
