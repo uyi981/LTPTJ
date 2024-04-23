@@ -4,6 +4,8 @@
  */
 package ptud.Entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,7 +25,11 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "BangDanhGiaNhanVien")
-public class BangDanhGiaNhanVien {
+public class BangDanhGiaNhanVien implements Serializable  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7935973543724868085L;
 	@Id
     @Column(name = "maBDG", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String id;

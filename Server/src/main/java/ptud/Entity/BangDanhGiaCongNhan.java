@@ -21,6 +21,10 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "BangDanhGiaCongNhan")
 public class BangDanhGiaCongNhan implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7642605856229942470L;
 	@Id
 	@Column(name = "maBDG", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String id;

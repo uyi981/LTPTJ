@@ -27,11 +27,15 @@ import jakarta.persistence.Transient;
 
 /**
  * 
- * @author KHANH PC
+ * @author Hung
  */
 @Entity
 @Table(name = "CongDoan")
-public class CongDoan {
+public class CongDoan implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5017574781139848315L;
 	@Id
 	@Column(name = "maCD", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String maCD;
