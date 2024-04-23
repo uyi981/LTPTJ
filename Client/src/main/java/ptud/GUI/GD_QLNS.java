@@ -49,7 +49,7 @@ public class GD_QLNS extends javax.swing.JPanel {
             for (NhanVien nhanVien : danhSachNhanVien) {
                 // Add each NhanVien object to the table
                 model.addRow(new Object[]{nhanVien.getMaNV(), nhanVien.getTen(), nhanVien.getNgayBatDauLam(),
-                    nhanVien.getCccd(), nhanVien.getDienThoai(), nhanVien.isGioiTinh() ? "Nam" : "Ná»¯",
+                    nhanVien.getCccd(), nhanVien.getDienThoai(), nhanVien.isGioiTinh() ? "Nam" : "Nữ",
                     nhanVien.getNgaySinh(), nhanVien.getPhuCap(), nhanVien.getLuongCoBan()});
             }
 		} catch (Exception e) {
@@ -65,7 +65,8 @@ public class GD_QLNS extends javax.swing.JPanel {
            int[] selectedRows = tblNV.getSelectedRows();
 
            if (selectedRows.length > 0) {
-               int option = JOptionPane.showConfirmDialog(this, "Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n thÃ´i viá»‡c nhÃ¢n viÃªn?", "XÃ¡c nháº­n", JOptionPane.YES_NO_OPTION);
+               int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn thôi việc nhân viên?", 
+            		   "Xác nhận", JOptionPane.YES_NO_OPTION);
 
                if (option == JOptionPane.YES_OPTION) {
                    // XÃ³a tá»«ng dÃ²ng Ä‘Æ°á»£c chá»�n
@@ -78,7 +79,7 @@ public class GD_QLNS extends javax.swing.JPanel {
                    populateNhanVienTable();
                }
            } else {
-               JOptionPane.showMessageDialog(this, "ChÆ°a chá»�n nhÃ¢n viÃªn Ä‘á»ƒ thÃ´i viá»‡c.", "Lá»—i", JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(this, "Chưa chọn nhân viên để thôi việc.", "Lỗi", JOptionPane.ERROR_MESSAGE);
            }
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -100,8 +101,8 @@ public class GD_QLNS extends javax.swing.JPanel {
           for (CongNhan congNhan : danhSachCongNhan) {
               // Add each NhanVien object to the table
               model.addRow(new Object[]{congNhan.getMaCN(), congNhan.getTen(), congNhan.getNgayBatDauLam(),
-                  congNhan.getCccd(), congNhan.getDienThoai(), congNhan.isGioiTinh() ? "Nam" : "Ná»¯",
-                  congNhan.getNgaySinh(), congNhan.isChoPhanCong() ? "Ä�Ã£ phÃ¢n cÃ´ng" : "ChÆ°a phÃ¢n cÃ´ng",});
+                  congNhan.getCccd(), congNhan.getDienThoai(), congNhan.isGioiTinh() ? "Nam" : "Nữ",
+                  congNhan.getNgaySinh(), congNhan.isChoPhanCong() ? "Đã phân công" : "Chưa phân công",});
           }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,7 +118,7 @@ public class GD_QLNS extends javax.swing.JPanel {
            int[] selectedRows = jTable2.getSelectedRows();
 
            if (selectedRows.length > 0) {
-               int option = JOptionPane.showConfirmDialog(this, "Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n thÃ´i viá»‡c cÃ´ng nhÃ¢n?", "XÃ¡c nháº­n", JOptionPane.YES_NO_OPTION);
+               int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn thôi việc công nhân !", "Xác nhận", JOptionPane.YES_NO_OPTION);
 
                if (option == JOptionPane.YES_OPTION) {
                    // XÃ³a tá»«ng dÃ²ng Ä‘Æ°á»£c chá»�n
@@ -130,7 +131,7 @@ public class GD_QLNS extends javax.swing.JPanel {
                    populatCongNhanTable();
                }
            } else {
-               JOptionPane.showMessageDialog(this, "ChÆ°a chá»�n cÃ´ng nhÃ¢n Ä‘á»ƒ thÃ´i viá»‡c.", "Lá»—i", JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(this, "Chưa chọn công nhân để thôi việc.", "Lỗi", JOptionPane.ERROR_MESSAGE);
            }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -156,19 +157,19 @@ public class GD_QLNS extends javax.swing.JPanel {
 
           switch (searchCriteria) {
               case "MÃ£ CN": {
-                  dsKetQuaTimKiem = daoCongNhan.search(searchText, "MÃ£ CN");
+                  dsKetQuaTimKiem = daoCongNhan.search(searchText, "Mã công nhân");
                   break;
               }
               case "TÃªn cÃ´ng nhÃ¢n": {
-                  dsKetQuaTimKiem = daoCongNhan.search(searchText, "TÃªn cÃ´ng nhÃ¢n");
+                  dsKetQuaTimKiem = daoCongNhan.search(searchText, "Tên công nhân");
                   break;
               }
               case "Sá»‘ Ä‘iá»‡n thoáº¡i": {
-                  dsKetQuaTimKiem = daoCongNhan.search(searchText, "Sá»‘ Ä‘iá»‡n thoáº¡i");
+                  dsKetQuaTimKiem = daoCongNhan.search(searchText, "Số điện thoại");
                   break;
               }
               default:
-                  JOptionPane.showMessageDialog(this, "TiÃªu chÃ­ tÃ¬m kiáº¿m khÃ´ng há»£p lá»‡.", "Lá»—i", JOptionPane.ERROR_MESSAGE);
+                  JOptionPane.showMessageDialog(this, "Tiêu chí tìm kiếm không hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
                   return;
           }
           DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
@@ -176,8 +177,8 @@ public class GD_QLNS extends javax.swing.JPanel {
 
           for (CongNhan congNhan : dsKetQuaTimKiem) {
                model.addRow(new Object[]{congNhan.getMaCN(), congNhan.getTen(), congNhan.getNgayBatDauLam(),
-                  congNhan.getCccd(), congNhan.getDienThoai(), congNhan.isGioiTinh() ? "Nam" : "Ná»¯",
-                  congNhan.getNgaySinh(), congNhan.isChoPhanCong() ? "Ä�Ã£ phÃ¢n cÃ´ng" : "ChÆ°a phÃ¢n cÃ´ng",});
+                  congNhan.getCccd(), congNhan.getDienThoai(), congNhan.isGioiTinh() ? "Nam" : "Nữ",
+                  congNhan.getNgaySinh(), congNhan.isChoPhanCong() ? "Đã phân công " : "Chưa phân công",});
           }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -244,7 +245,7 @@ public class GD_QLNS extends javax.swing.JPanel {
         title.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         title.setForeground(new java.awt.Color(0, 0, 0));
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText("QUáº¢N LÃ� NHÃ‚N Sá»°");
+        title.setText("QUẢN LÝ NHÂN SỰ");
         title.setPreferredSize(new java.awt.Dimension(105, 60));
         header.add(title, java.awt.BorderLayout.NORTH);
 
@@ -271,7 +272,7 @@ public class GD_QLNS extends javax.swing.JPanel {
 
         jButton4.setBackground(new java.awt.Color(198, 222, 192));
         jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setText("Ä�Ã¡nh giÃ¡ cÃ´ng nhÃ¢n");
+        jButton4.setText("Dánh giá công nhân ");
         jButton4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jButton4.setPreferredSize(new java.awt.Dimension(150, 30));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -282,7 +283,7 @@ public class GD_QLNS extends javax.swing.JPanel {
 
         btnThoiViecCN.setBackground(new java.awt.Color(255, 102, 102));
         btnThoiViecCN.setForeground(new java.awt.Color(0, 0, 0));
-        btnThoiViecCN.setText("ThÃ´i viá»‡c cÃ´ng nhÃ¢n");
+        btnThoiViecCN.setText("Thôi việc công nhân");
         btnThoiViecCN.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnThoiViecCN.setPreferredSize(new java.awt.Dimension(150, 30));
         btnThoiViecCN.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -298,7 +299,7 @@ public class GD_QLNS extends javax.swing.JPanel {
 
         jButton6.setBackground(new java.awt.Color(198, 222, 192));
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
-        jButton6.setText("ThÃªm cÃ´ng nhÃ¢n");
+        jButton6.setText("Thêm công nhân");
         jButton6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jButton6.setPreferredSize(new java.awt.Dimension(150, 30));
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -329,7 +330,7 @@ public class GD_QLNS extends javax.swing.JPanel {
         txtSearchCN.setPreferredSize(new java.awt.Dimension(71, 30));
 
         cboTieuChiCN.setBackground(new java.awt.Color(198, 222, 192));
-        cboTieuChiCN.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MÃ£ CN", "TÃªn cÃ´ng nhÃ¢n", "Sá»‘ Ä‘iá»‡n thoáº¡i", "CCCD", " " }));
+        cboTieuChiCN.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã CN", "Tên công nhân", "Số điện thoại", "CCCD", " " }));
         cboTieuChiCN.setBorder(null);
         cboTieuChiCN.setMinimumSize(new java.awt.Dimension(100, 30));
 
@@ -370,13 +371,13 @@ public class GD_QLNS extends javax.swing.JPanel {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"2210001", "LÃª Thá»‹ XuÃ¢n Mai", "23/04/2022", "054198003412", "0987566743", "Ná»¯", "11/05/1998", null},
+            	{"2210001", "Lê Thị Xuân Mai", "23/04/2022", "054198003412", "0987566743", "Nữ", "11/05/1998", null},
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "MÃ£ CN", "TÃªn cÃ´ng nhÃ¢n", "NgÃ y báº¯t Ä‘áº§u lÃ m", "CCCD", "Sá»‘ Ä‘iá»‡n thoáº¡i", "Giá»›i tÃ­nh", "NgÃ y sinh", "Ä�Ã£ phÃ¢n cÃ´ng"
+            		"Mã CN", "Tên công nhân", "Ngày bắt đầu làm", "CCCD", "Số điện thoại", "Giới tính", "Ngày sinh", "Đã phân công"
             }
         ) {
             Class[] types = new Class [] {
@@ -427,13 +428,13 @@ public class GD_QLNS extends javax.swing.JPanel {
 
         tblNV.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"2210001", "LÃª Thá»‹ XuÃ¢n Mai", "23/04/2022", "054198003412", "0987566743", "Ná»¯", "11/05/1998",  new Double(500000.0), null},
+            	{"2210001", "Lê Thị Xuân Mai", "23/04/2022", "054198003412", "0987566743", "Nữ", "11/05/1998",  new Double(500000.0), null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "MÃ£ NV", "TÃªn nhÃ¢n viÃªn", "NgÃ y báº¯t Ä‘áº§u lÃ m", "CCCD", "Sá»‘ Ä‘iá»‡n thoáº¡i", "Giá»›i tÃ­nh", "NgÃ y sinh", "Phá»¥ cáº¥p", "LÆ°Æ¡ng cÆ¡ báº£ng"
+            		"Mã NV", "Tên nhân viên", "Ngày bắt đầu làm", "CCCD", "Số điện thoại", "Giới tính", "Ngày sinh", "Phụ cấp", "Lương cơ bảng"
             }
         ) {
             Class[] types = new Class [] {
@@ -466,7 +467,7 @@ public class GD_QLNS extends javax.swing.JPanel {
 
         jButton3.setBackground(new java.awt.Color(198, 222, 192));
         jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Ä�Ã¡nh giÃ¡ nhÃ¢n viÃªn");
+        jButton3.setText("Đánh giá nhân viên");
         jButton3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jButton3.setPreferredSize(new java.awt.Dimension(150, 30));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -476,7 +477,7 @@ public class GD_QLNS extends javax.swing.JPanel {
         });
         btnThoiViecNV.setBackground(new java.awt.Color(255, 102, 102));
         btnThoiViecNV.setForeground(new java.awt.Color(0, 0, 0));
-        btnThoiViecNV.setText("ThÃ´i viá»‡c nhÃ¢n viÃªn");
+        btnThoiViecNV.setText("Thôi việc nhân viên");
         btnThoiViecNV.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnThoiViecNV.setPreferredSize(new java.awt.Dimension(150, 30));
         btnThoiViecNV.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -498,7 +499,7 @@ public class GD_QLNS extends javax.swing.JPanel {
 
         jButton1.setBackground(new java.awt.Color(198, 222, 192));
         jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("ThÃªm nhÃ¢n viÃªn");
+        jButton1.setText("Thêm nhân viên");
         jButton1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jButton1.setPreferredSize(new java.awt.Dimension(150, 30));
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -529,7 +530,7 @@ public class GD_QLNS extends javax.swing.JPanel {
         txtSearchNV.setPreferredSize(new java.awt.Dimension(71, 30));
 
         cboTieuChiNV.setBackground(new java.awt.Color(198, 222, 192));
-        cboTieuChiNV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MÃ£ NV", "TÃªn nhÃ¢n viÃªn", "Sá»‘ Ä‘iá»‡n thoáº¡i", "CCCD" }));
+        cboTieuChiNV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã NV", "Tên nhân viên", "Số điện thoại", "CCCD" }));
         cboTieuChiNV.setBorder(null);
         cboTieuChiNV.setMinimumSize(new java.awt.Dimension(100, 30));
 
@@ -584,7 +585,7 @@ public class GD_QLNS extends javax.swing.JPanel {
                 .addComponent(tableNV, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE))
         );
 
-        body.addTab("NhÃ¢n viÃªn", dsNv);
+        body.addTab("Nhân viên", dsNv);
 
         add(body, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
