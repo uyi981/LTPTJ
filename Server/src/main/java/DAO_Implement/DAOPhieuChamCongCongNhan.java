@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.query.NativeQuery;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
@@ -57,14 +59,12 @@ public class DAOPhieuChamCongCongNhan extends UnicastRemoteObject implements DAO
 	@Override
 	public float getTongTienPhatTrongThang(String idCN, int thang, int nam) throws RemoteException {
 		try {
-			Query query = em.createQuery("select sum(p.tienPhat) as tongTienPhat " + "from PhieuChamCongCongNhan p "
-					+ "where p.maPCCCN like :idCN and p.thang = :thang and p.nam = :nam");
-			query.setParameter("idCN", "%" + idCN + "%");
-			query.setParameter("thang", thang);
-			query.setParameter("nam", nam);
-			return (float) query.getSingleResult();
+			String query = "select sum(tienPhat) as tongTienPhat\n"
+	                + "from [dbo].[PhieuChamCongCongNhan]\n"
+	                + "where maPCCCN like ?";
+			return (int) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)).getSingleResult();
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();	
 			return 0;
 		}
 	}
@@ -87,41 +87,30 @@ public class DAOPhieuChamCongCongNhan extends UnicastRemoteObject implements DAO
 	@Override
 	public float getTongTienCongKhongTangCaTrongThang(String idCN, int thang, int nam) throws RemoteException {
 		try {
-			String query = "select sum(p.soLuongCD * cd.donGia) as tongTien " + "from PhieuChamCongCongNhan p "
-					+ "join ChiTietPhanCong c on p.maCTPC = c.maCTPC " + "join CongDoan cd on c.maCD = cd.maCD "
-					+ "where p.maPCCCN like :idCN";
-
-			Query jpqlQuery = em.createQuery(query);
-			jpqlQuery.setParameter("idCN", "%" + idCN + "%");
-
-			Object result = jpqlQuery.getSingleResult();
-			if (result != null) {
-				return (float) result;
-			} else {
-				return 0;
-			}
+			String query = "select sum(soLuongCD * donGia)\n as tongTien\n"
+	                + "from [dbo].[PhieuChamCongCongNhan] p\n"
+	                + "join [dbo].[ChiTietPhanCong] c on p.maCTPC = c.maCTPC\n"
+	                + "join [dbo].[CongDoan] cd on c.maCD = cd.maCD\n"
+	                + "where maPCCCN like ?";
+			return (float) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)).getSingleResult();
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();	
 			return 0;
 		}
 	}
 
+
 	@Override
 	public float getTongTienCongTangCaTrongThang(String idCN, int thang, int nam) throws RemoteException {
 		try {
-			String query = "select sum(p.soLuongCDTangCa * cd.donGia) as tongTien " + "from PhieuChamCongCongNhan p "
-					+ "join ChiTietPhanCong c on p.maCTPC = c.maCTPC " + "join CongDoan cd on c.maCD = cd.maCD "
-					+ "where p.maPCCCN like :idCN";
+			String query = "select sum(soLuongCD * donGia * 1.2)\n as tongTien\n"
+	                + "from [dbo].[PhieuChamCongCongNhan] p\n"
+	                + "join [dbo].[ChiTietPhanCong] c on p.maCTPC = c.maCTPC\n"
+	                + "join [dbo].[CongDoan] cd on c.maCD = cd.maCD\n"
+	                + "where maPCCCN like ?";
 
-			Query jpqlQuery = em.createQuery(query);
-			jpqlQuery.setParameter("idCN", "%" + idCN + "%");
+			return (float) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)).getSingleResult();
 
-			Object result = jpqlQuery.getSingleResult();
-			if (result != null) {
-				return (float) result;
-			} else {
-				return 0;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -143,16 +132,19 @@ public class DAOPhieuChamCongCongNhan extends UnicastRemoteObject implements DAO
 	@Override
 	public int getSoNgayLam(String idCN, int thang, int nam) throws RemoteException {
 		try {
-			Query query = em.createQuery(
-					"SELECT SUM(p.soNgayLam) FROM PhieuChamCongCongNhan p WHERE p.idCN = :idCN AND p.thang = :thang AND p.nam = :nam");
-			query.setParameter("idCN", idCN);
-			query.setParameter("thang", thang);
-			query.setParameter("nam", nam);
-			return (int) query.getSingleResult();
+			String query = 
+					"select count(*) as soLuong from [dbo].[PhieuChamCongCongNhan] where maPCCCN like ? and vang = 0";
+			return (int) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)).getSingleResult();
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+	private void setParameter(Query query, String idCN, int thang, int nam) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -171,9 +163,9 @@ public class DAOPhieuChamCongCongNhan extends UnicastRemoteObject implements DAO
                  + "join [dbo].[CongNhan] cn on c.maCN = cn.maCN\n"
                  + "join [dbo].[CongDoan] cd on c.maCD = cd.maCD\n"
                  + "left join PhieuChamCongCongNhan p on c.maCTPC = p.maCTPC\n"
-                 + "where cd.maBP = ? and ngay = ? and c.maCTPC not in (select p.maCTPC from [dbo].[PhieuChamCongCongNhan] p)\n";
+                 + "where cd.maBP = ? and c.maCTPC not in (select p.maCTPC from [dbo].[PhieuChamCongCongNhan] p)\n";
 		 
-		ArrayList<Object[]> result = (ArrayList<Object[]>) em.createNativeQuery(query).setParameter(1, maBoPhan).setParameter(2, LocalDate.now()).getResultList(); 
+		ArrayList<Object[]> result = (ArrayList<Object[]>) em.createNativeQuery(query).setParameter(1, maBoPhan).getResultList(); 
 		ArrayList<Object[]> rs = result;
 		return rs;
 
@@ -191,10 +183,10 @@ public class DAOPhieuChamCongCongNhan extends UnicastRemoteObject implements DAO
                 + "from [dbo].[ChiTietPhanCong] c\n"
                 + "join [dbo].[CongNhan] cn on c.maCN = cn.maCN\n"
                 + "join [dbo].[CongDoan] cd on c.maCD = cd.maCD\n"
-                + "where cn.maCN = ? and ngay = ? and c.maCTPC not in (select p.maCTPC from [dbo].[PhieuChamCongCongNhan] p)\n";
+                + "where cn.maCN = ? and c.maCTPC not in (select p.maCTPC from [dbo].[PhieuChamCongCongNhan] p)\n";
 		
 		// TODO Auto-generated method stub
-		Object result =   em.createNativeQuery(query).setParameter(1, maCN).setParameter(2, LocalDate.now()).getSingleResult();
+		Object result =   em.createNativeQuery(query).setParameter(1, maCN).getSingleResult();
 		Object[] rs =  (Object[]) result;
 		return rs;
 	}

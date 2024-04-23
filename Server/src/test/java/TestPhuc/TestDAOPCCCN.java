@@ -3,6 +3,7 @@ package TestPhuc;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,8 +26,10 @@ public class TestDAOPCCCN {
 //		try {
 //			System.out.println("2222");
 //			daoPhieuChamCongCongNhan = new DAOPhieuChamCongCongNhan();
-//			PhieuChamCongCongNhan pcccn = new PhieuChamCongCongNhan("edd", "CN1", LocalDate.of(2024, 04, 23), false, 100, "CTP", "Noi dung phat", 1000, 2000, 3000, 50);
+//		    public PhieuChamCongCongNhan(String maPCCCN, LocalDate ngay, boolean vang, int soLuongSanPham, String maCTPC, String noiDungPhat, double tienCong, double tienThuong, double tienPhat, int soLuongSanPhamTangCa)
+//			PhieuChamCongCongNhan pcccn = new PhieuChamCongCongNhan("BB55", LocalDate.of(2024,4, 23), false, 11, "A", "thich", 100, 22, 12, 0);
 //			daoPhieuChamCongCongNhan.themPhieuChamCongCongNhan(pcccn);
+//			System.out.println("da pass");
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
@@ -36,9 +39,9 @@ public class TestDAOPCCCN {
 //	public void testGetTongTienPhatTrongThang() {
 //		try {
 //			daoPhieuChamCongCongNhan = new DAOPhieuChamCongCongNhan();
-//			float tongTienPhat = daoPhieuChamCongCongNhan.getTongTienPhatTrongThang("SX01051001", 10, 2023);
+//			float tongTienPhat = daoPhieuChamCongCongNhan.getTongTienPhatTrongThang("SX01051001", 4, 2024);
 //			System.out.println(tongTienPhat);
-//			//báo lỗi vì giá trị của nhân viên là null
+//			System.out.println("123");
 //		} catch (RemoteException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
@@ -62,7 +65,7 @@ public class TestDAOPCCCN {
 //	public void testGetTongTienCongKhongTangCaTrongThang() {
 //		try {
 //			daoPhieuChamCongCongNhan = new DAOPhieuChamCongCongNhan();
-//			float tongTienKTC = daoPhieuChamCongCongNhan.getTongTienCongKhongTangCaTrongThang("SX01051001", 10, 2023);
+//			float tongTienKTC = daoPhieuChamCongCongNhan.getTongTienCongKhongTangCaTrongThang("SX01051001", 4, 2024);
 //			System.out.println(tongTienKTC);
 //			System.out.println("123");
 //		} catch (RemoteException e) {
@@ -89,27 +92,30 @@ public class TestDAOPCCCN {
 //	public void testGetSoNgayLam() {
 //		try {
 //			daoPhieuChamCongCongNhan = new DAOPhieuChamCongCongNhan();
-//			int soNgayLamViec = daoPhieuChamCongCongNhan.getSoNgayLam("A", 10, 2023);
+//			int soNgayLamViec = daoPhieuChamCongCongNhan.getSoNgayLam("SX01051001", 4, 2024);
 //			System.out.println(soNgayLamViec);
-//			System.out.println("12322");
+//			System.out.println("pass");
 //		} catch (RemoteException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 //	}
 	
-//	@Test
-//	public void testGetDanhSachThongTinChamCongByIDBoPhan() {
-//		try {
-//			DAOPhieuChamCongCongNhan daoPhieuChamCongCongNhan = new DAOPhieuChamCongCongNhan();
-//			System.out.print("tétcc");
-//		    Object[] aObjects = daoPhieuChamCongCongNhan.getThongTinChamCongByMaCongNhan("SX01051001");
-//		    System.out.print("cc"+aObjects[0]);
-//		} catch (Exception e) {
-//			System.out.print("cc"+e);
-//			// TODO: handle exception
-//		}
-//	}
+	@Test
+	public void testGetDanhSachThongTinChamCongByIDBoPhan() {
+	    try {
+	        DAOPhieuChamCongCongNhan daoPhieuChamCongCongNhan = new DAOPhieuChamCongCongNhan();
+	        System.out.print("tétcc");
+	        ArrayList<Object[]> aObjects = daoPhieuChamCongCongNhan.getDanhSachThongTinChamCongByIDBoPhan("SX01");
+	        
+	        // Lặp qua từng phần tử trong mảng và hiển thị giá trị của từng phần tử
+	        for (Object[] row : aObjects) {
+	            System.out.println(Arrays.toString(row));
+	        }
+	    } catch (Exception e) {
+	        System.out.print("cc"+e);
+	        // TODO: handle exception
+	    }
+	}
 	
 //	@Test 
 //	public void testGetDsCongDoanLamDuocCuaCongNhanTrongThang()
