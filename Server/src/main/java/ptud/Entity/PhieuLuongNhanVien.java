@@ -95,7 +95,7 @@ public class PhieuLuongNhanVien implements Serializable {
     }
 
     public String getMaNV() {
-        return maNV;
+        return nhanVien.getMaNV();
     }
 
     public void setMaNV(String maNV) {

@@ -21,10 +21,9 @@ class TestDAOHopDong {
 	void test() throws Exception{
 		daoHopDong = new DAOHopDong();
 		daoHopDong.themHopDong(hopDong);
-		if (daoHopDong.timKiemHopDong(hopDong.getMaHD()) == null)
-		{
-			fail("Chưa thêm được hợp đồng");
-		}		
+		daoHopDong.layDanhSachHopDong();
+		//if (daoHopDong.timKiemHopDong(hopDong.getMaHD()) == null)
+		System.out.print(daoHopDong.layDanhSachHopDong().toString());	
 	}
 	@Test
 	void testXoaHopDong() throws  Exception

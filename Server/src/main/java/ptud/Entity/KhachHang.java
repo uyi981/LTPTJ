@@ -18,7 +18,7 @@ public class KhachHang implements java.io.Serializable
 	@Id
 	@Column(name = "maKH")
 	String maKhachHang;
-	@Column(name = "tenKH")
+	@Column(name = "tenKH",columnDefinition = "NVARCHAR(100)")
 	String tenKhachHang;
 	@Column(name = "toChuc")
 	boolean isToChuc;

@@ -96,7 +96,7 @@ public class ChiTietPhanCong implements Serializable {
     }
 
     public String getMaCD() {
-        return maCD;
+        return congDoan.getMaCD();
     }
 
     public void setMaCD(String maCD) {
@@ -104,7 +104,7 @@ public class ChiTietPhanCong implements Serializable {
     }
 
     public String getMaCN() {
-        return maCN;
+        return congNhan.getMaCN();
     }
 
     public void setMaCN(String maCN) {

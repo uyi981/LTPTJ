@@ -42,7 +42,7 @@ public class PhieuChamCongCongNhan implements Serializable{
 }
 
 public void setMaCTPC(String maCTPC) {
-	this.maCTPC = maCTPC;
+	this.maCTPC = chiTietPhanCong.getMaCTPC();
 }
 
 public ChiTietPhanCong getChiTietPhanCong() {

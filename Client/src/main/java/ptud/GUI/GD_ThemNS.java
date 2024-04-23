@@ -36,7 +36,7 @@ public class GD_ThemNS extends javax.swing.JPanel {
     private void updateCboBoPhan(String filter) {
         cboBoPhan.removeAllItems();
         try {
-        	 IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DaoBoPhan");
+        	 IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
 //           daoBoPhan daoBoPhan = DAO_BoPhan.getInstance();
            ArrayList<BoPhan> danhSachBoPhan = daoBoPhan.filter(filter);
            for (BoPhan boPhan : danhSachBoPhan) {

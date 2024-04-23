@@ -33,7 +33,7 @@ public class NhanVien implements java.io.Serializable {
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
 	@jakarta.persistence.JoinColumn(name = "maBP")
     private BoPhan boPhan;
-	@Column(name = "tenNV")
+	@Column(name = "tenNV",columnDefinition = "NVARCHAR(100)")
     private String ten;
     private boolean gioiTinh;
     @Column(name = "ngaySinh",columnDefinition = "DATE")
