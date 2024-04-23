@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ptud.Entity;
-import java.sql.Date;
+import java.io.Serializable;
 /**
  *
  * @author vohau
@@ -24,8 +24,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Transient;
 // lưu ý khi đổ dữ liệu vào table thì phải set oldMaHD = maHD nằm cuối danh sách.
 @Entity
-public class HopDong {       
-    // khai bao thuoc tinh
+public class HopDong implements Serializable
+{       
+	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3572611841999822480L;
+	// khai bao thuoc tinh
 	@Id
    private String maHD;
    private String tenHD;

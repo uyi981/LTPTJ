@@ -26,7 +26,11 @@ import java.util.Set;
  * @author TomTom
  */
 @jakarta.persistence.Entity
-public class CongNhan {
+public class CongNhan implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7638494013889377779L;
 	@Id
     private String maCN;
 	@ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)

@@ -28,8 +28,12 @@ import jakarta.persistence.Entity;
 import java.util.Set;
 // lưu ý khi đổ dữ liệu vào table thì phải set oldMaHD = maHD nằm cuối danh sách.
 @Entity
-public class HopDong {       
-    // khai bao thuoc tinh
+public class HopDong implements java.io.Serializable{       
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8928115741292509203L;
+	// khai bao thuoc tinh
 	@Id
    private String maHD;
    private String tenHD;
