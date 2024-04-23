@@ -24,7 +24,11 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "BoPhan")
-public class BoPhan {
+public class BoPhan implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -768300825866613486L;
 	@Id
 	@Column(name = "maBP", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String maBP;

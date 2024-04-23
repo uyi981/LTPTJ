@@ -4,12 +4,18 @@
  */
 package ptud.Entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author KHANH PC
  */
-public class ChamCongDTO {
-    private String maCD;
+public class ChamCongDTO implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6251722743025535668L;
+	private String maCD;
     private int tongSoLuongCD;
     private int tongSoLuongCDTangCa;
 

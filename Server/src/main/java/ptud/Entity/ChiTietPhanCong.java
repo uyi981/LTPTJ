@@ -1,5 +1,6 @@
 package ptud.Entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
@@ -29,7 +30,11 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "ChiTietPhanCong")
-public class ChiTietPhanCong {
+public class ChiTietPhanCong implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2758189337952382367L;
 	@Id
 	@Column(name = "maCTPC", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String maCTPC;
