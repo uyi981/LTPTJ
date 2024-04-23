@@ -40,7 +40,7 @@ public class SanPham implements java.io.Serializable
   
     public String getMaHD() 
     {
-        return maHD;
+        return hopDong.getMaHD();
     }
 
     public void setMaHD(String maHD) 
@@ -57,7 +57,7 @@ public class SanPham implements java.io.Serializable
   @Id
   @Column(name = "maSP")
   String maSanPham;
-  @Column(name = "tenSP")
+  @Column(name = "tenSP",columnDefinition = "NVARCHAR(100)")
   String tenSanPham;
   int soLuong;
   double donGia;

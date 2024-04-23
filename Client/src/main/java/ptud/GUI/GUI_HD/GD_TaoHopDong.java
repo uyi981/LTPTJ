@@ -5,6 +5,7 @@
 package ptud.GUI.GUI_HD;
 
 import java.awt.CardLayout;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import DAO_Interface.IDAOHopDong;
 import DAO_Interface.IDAOKhachHang;
 import DAO_Interface.IDAOSanPham;
+import client.Client;
 import ptud.Entity.HopDong;
 import ptud.Entity.KhachHang;
 import ptud.Entity.SanPham;
@@ -40,6 +42,13 @@ public class GD_TaoHopDong extends javax.swing.JPanel {
      */
     public GD_TaoHopDong() {
         initComponents();
+        try {
+            daohd = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong");
+            daosp = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
+            daokh = (IDAOKhachHang)Naming.lookup(Client.URL+"DAOKhachHang");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}      
         cardLayout = (CardLayout) body_body_2.getLayout();
         modelSanPham = (DefaultTableModel) tableSanPham.getModel();
         addListKH();

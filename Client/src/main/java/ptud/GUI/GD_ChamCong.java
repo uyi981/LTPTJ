@@ -126,12 +126,12 @@ public class GD_ChamCong extends javax.swing.JPanel {
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		try {
-			DAO_PCCCN = (IDAOPhieuChamCongCongNhan) Naming.lookup(Client.URL + "DaoPhieuChamCongCongNhan");
-			daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DaoBoPhan");
-			daoPhieuChamCongNhanVien = (IDAOPhieuChamCongNhanVien) Naming.lookup(Client.URL + "DaoPhieuChamCongNhanVien");
-			daoChiTietPhanCong = (IDAOChiTietPhanCong) Naming.lookup(Client.URL + "DaoChiTietPhanCong");
-			daoPhieuChamCongCongNhan = (IDAOPhieuChamCongCongNhan) Naming.lookup(Client.URL + "DaoPhieuChamCongCongNhan");
-			daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DaoCongDoan");
+			DAO_PCCCN = (IDAOPhieuChamCongCongNhan) Naming.lookup(Client.URL + "DAOPhieuChamCongCongNhan");
+			daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+			daoPhieuChamCongNhanVien = (IDAOPhieuChamCongNhanVien) Naming.lookup(Client.URL + "DAOPhieuChamCongNhanVien");
+			daoChiTietPhanCong = (IDAOChiTietPhanCong) Naming.lookup(Client.URL + "DAOChiTietPhanCong");
+			daoPhieuChamCongCongNhan = (IDAOPhieuChamCongCongNhan) Naming.lookup(Client.URL + "DAOPhieuChamCongCongNhan");
+			daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

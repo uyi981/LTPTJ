@@ -120,11 +120,11 @@ public class CongDoan implements java.io.Serializable {
 	}
 
 	public String getMaSP() {
-		return maSP;
+		return this.sanPham.getMaSanPham();
 	}
 
 	public String getMaBP() {
-		return maBP;
+		return this.boPhan.getMaBP();
 	}
 
 	public String getTenCD() {

@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Set;
 
 import DAO_Implement.DAOKhachHang;
 import DAO_Implement.DAOSanPham;
@@ -21,6 +22,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 // lưu ý khi đổ dữ liệu vào table thì phải set oldMaHD = maHD nằm cuối danh sách.
 @Entity
@@ -34,9 +36,11 @@ public class HopDong implements Serializable
 	// khai bao thuoc tinh
 	@Id
    private String maHD;
+	@Column(columnDefinition = "NVARCHAR(100)")
    private String tenHD;
    private LocalDate ngayBatDau;
    private LocalDate ngayKetThucDuKien;
+	@Column(columnDefinition = "NVARCHAR(100)")
    private String trangThai;
    @Transient
    public static String oldMaHD = null;
@@ -46,9 +50,9 @@ public class HopDong implements Serializable
    @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
    @JoinColumn(name = "maKH")
    KhachHang khachHang;
-  // @OneToMany(mappedBy = "hopDong")
-  // @Transient
-   //Set<SanPham> sanPham;
+   @OneToMany(mappedBy = "hopDong")
+   @Transient
+   Set<SanPham> sanPham;
     public int getSoLuongSanPham() {
         return soLuongSanPham;
     }
@@ -56,9 +60,9 @@ public class HopDong implements Serializable
     public void setSoLuongSanPham() 
     {
        
-      // soLuongSanPham =  sanPhams.size();
+       soLuongSanPham =  sanPhams.size();
     }
-   @Column(nullable = true)
+   @Transient
    private int soLuongSanPham;
    @Transient
    transient ArrayList<SanPham> sanPhams = new ArrayList<>();
@@ -70,7 +74,7 @@ public class HopDong implements Serializable
     public void setSanPhams(ArrayList<SanPham> sanPhams) {
         this.sanPhams = sanPhams;
     }
-   // 
+   
    
    
     public void setMaKH(String maKH) {
@@ -133,7 +137,8 @@ public class HopDong implements Serializable
     }
 
     public String getMaKH() {
-        return maKH;
+    	
+        return khachHang.getMaKhachHang();
     }
 
     public double getDonGia() {

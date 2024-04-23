@@ -88,7 +88,7 @@ public class PhieuLuongCongNhan implements Serializable{
     }
 
     public String getMaCN() {
-        return maCN;
+        return congNhan.getMaCN();
     }
 
     public void setMaCN(String maCN) {

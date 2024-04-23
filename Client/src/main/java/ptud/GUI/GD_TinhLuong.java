@@ -45,7 +45,7 @@ public class GD_TinhLuong extends javax.swing.JPanel {
         initComponents();
         try {
             init();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -56,12 +56,15 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     public ArrayList<PhieuLuongNhanVien> dsPhieuLuongNhanVien;
     public ArrayList<PhieuLuongCongNhan> dsPhieuLuongCongNhan;
 
-    private void init() throws SQLException {
+    private void init() throws Exception {
 //        dsNhanVien = DAO_NhanVien.getInstance().getAll();
 //        dsCongNhan = DAO_CongNhan.getInstance().getAll();
     	try {
-    		IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
-        	IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
+    		IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
+        	IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
+        	dsNhanVien = (ArrayList)daoNhanVien.layDanhSachNhanVien();
+        	dsCongNhan = (ArrayList)daoCongNhan.layDanhSachCongNhan();
+        	System.out.println(dsNhanVien);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

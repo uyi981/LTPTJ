@@ -5,6 +5,7 @@
 package ptud.GUI.GUI_HD;
 
 import java.awt.CardLayout;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -18,10 +19,11 @@ import java.util.regex.Pattern;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import com.toedter.calendar.*;
 import DAO_Interface.IDAOHopDong;
 import DAO_Interface.IDAOKhachHang;
 import DAO_Interface.IDAOSanPham;
+import client.Client;
 import ptud.Entity.HopDong;
 import ptud.Entity.KhachHang;
 import ptud.Entity.SanPham;
@@ -50,6 +52,13 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
      */
     public GD_ChiTietHopDong() 
     {
+    	 try {
+             daohd = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong");
+             daosp = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
+             daokh = (IDAOKhachHang)Naming.lookup(Client.URL+"DAOKhachHang");
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 		} 
         initComponents();
         // chinh sua cell cua table + tao cac model
         tienDoSanPhamTable.getColumnModel().getColumn(1).setCellRenderer(new TienDoTableCellRender());
@@ -386,7 +395,7 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
         trangThaimaHDTextField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         capNhatButton = new javax.swing.JButton();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser1 = new JDateChooser();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -1158,7 +1167,7 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
     private javax.swing.JPanel header_header_body;
     private javax.swing.JButton huyButton;
     private javax.swing.JPanel infoHolder;
-    private com.toedter.calendar.JDayChooser jDateChooser1;
+    private JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

@@ -10,7 +10,7 @@ public class Tess {
 		    Object[] aObjects = daoPhieuChamCongCongNhan.getThongTinChamCongByMaCongNhan("SX01051001");
 		    System.out.print("cc"+aObjects[0]);
 		} catch (Exception e) {
-			System.out.print("cc"+e);
+			System.out.print();
 			// TODO: handle exception
 		}
 		
