@@ -49,22 +49,25 @@ public class GD_QLTK extends javax.swing.JPanel {
     public void loadDataTable() throws RemoteException {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        IDAOTaiKhoan tk = null;
 		try {
-			tk = (IDAOTaiKhoan) Naming.lookup(Client.URL + "DAOTaiKhoan");
-		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			
+			IDAOTaiKhoan daoTaiKhoan = (IDAOTaiKhoan) Naming.lookup(Client.URL + "DAOTaiKhoan");
+			ArrayList<TaiKhoan> ds = daoTaiKhoan.getAll();
+		        int stt = 1;
+		        for (TaiKhoan tkk : ds) {
+		        	
+		            model.addRow(new Object[]{stt, tkk.getMaNV(), tkk.getUserName(), tkk.getMatKhat()});
+		            stt = stt + 1; 
+		        }
+		        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		        jTable1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        ArrayList<TaiKhoan> ds = tk.getAll();
-        int stt = 1;
-        for (TaiKhoan tkk : ds) {
-            model.addRow(new Object[]{stt, tkk.getMaNV(), tkk.getUserName(), tkk.getMatKhat()});
-            stt = stt + 1; 
-        }
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        jTable1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+       
+       
     }
 
     public void loadDetailDataAcount() throws RemoteException {
