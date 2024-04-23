@@ -1158,7 +1158,7 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
     private javax.swing.JPanel header_header_body;
     private javax.swing.JButton huyButton;
     private javax.swing.JPanel infoHolder;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDayChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
