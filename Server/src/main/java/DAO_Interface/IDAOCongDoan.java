@@ -20,4 +20,6 @@ public interface IDAOCongDoan extends Remote {
     public ArrayList<CongDoan> getDsCDTQ(String maCD) throws Exception;
     public int getSoLuongChuanBi(String maCD) throws Exception;
     public void updateSoLuong( String maCD, int delta, boolean giam ) throws Exception;
+    
+    
 }

@@ -14,6 +14,7 @@ import DAO_Implement.DAOChiTietPhanCong;
 import DAO_Implement.DAOCongDoan;
 import DAO_Implement.DAOSanPham;
 import DAO_Interface.IDAOBoPhan;
+import DAO_Interface.IDAOSanPham;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,7 +24,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -90,6 +90,8 @@ public class CongDoan implements java.io.Serializable {
 	
 	@Transient
 	IDAOBoPhan daoBoPhan;
+	@Transient
+	IDAOSanPham daoSanPham;
 
 	public CongDoan() {
 	}
@@ -100,6 +102,13 @@ public class CongDoan implements java.io.Serializable {
 		try {
 			daoBoPhan = new DAOBoPhan();
 			this.boPhan = daoBoPhan.get(maBP);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			daoSanPham = new DAOSanPham();
+			this.sanPham = daoSanPham.timKiemSanPham(maSP);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -262,5 +271,14 @@ public class CongDoan implements java.io.Serializable {
 		final CongDoan other = (CongDoan) obj;
 		return Objects.equals(this.maCD, other.maCD);
 	}
+
+	@Override
+	public String toString() {
+		return "CongDoan [maCD=" + maCD + ", tenCD=" + tenCD + ", donGia=" + donGia + ", trangThai=" + trangThai
+				+ ", soLuongChuanBi=" + soLuongChuanBi + ", soLuongChuanBiToiThieu=" + soLuongChuanBiToiThieu
+				+ ", soLuongHoanThanh=" + soLuongHoanThanh + ", maSP=" + sanPham.getMaSanPham() + ", maBP=" + boPhan.getMaBP() + "]";
+	}
+	
+	
 
 }
