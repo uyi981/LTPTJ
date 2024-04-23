@@ -6,6 +6,7 @@ package ptud.Entity;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -80,7 +81,7 @@ public class CongDoan implements java.io.Serializable {
 	        joinColumns = @JoinColumn(name = "maCD"),
 	        inverseJoinColumns = @JoinColumn(name = "maCDTQ")
 	    )
-	 private Set<CongDoan> dsCDTQs;
+	 private Set<CongDoan> dsCDTQs = new HashSet<CongDoan>();
 	@Transient
 	private String maSP;
 	@Transient
@@ -92,7 +93,10 @@ public class CongDoan implements java.io.Serializable {
 	IDAOBoPhan daoBoPhan;
 	@Transient
 	IDAOSanPham daoSanPham;
-
+	public void insertCDTQ(CongDoan cd)
+	{
+		dsCDTQs.add(cd);
+	}
 	public CongDoan() {
 	}
 
@@ -149,33 +153,6 @@ public class CongDoan implements java.io.Serializable {
 	}
 
 	public int getSoLuongChuanBi() throws Exception  {
-		int soLuongChuanBi = 0;
-
-		DAOCongDoan daoCD = new DAOCongDoan();
-		DAOSanPham daoSP = new DAOSanPham();
-		if (daoCD.getDsCDTQ(maCD).isEmpty()) {
-			// nếu không có cđtq, số lượng chuẩn bị là slsp
-			SanPham sp = daoSP.timKiemSanPham(maSP);
-			soLuongChuanBi = sp.getSoLuong();
-		} else {
-			// Lấy số lượng hoàn thành nhỏ nhất của công đoạn tiên quyết làm số lượng chuẩn
-			// bị
-			ArrayList<CongDoan> dsCDTQ = daoCD.getDsCDTQ(maCD);
-			int sum = 99999;
-			for (CongDoan cd : dsCDTQ) {
-				int slht = cd.getSoLuongHoanThanh();
-				sum = Math.min(sum, slht);
-			}
-			soLuongChuanBi = sum;
-		}
-
-		// trừ đi số lượng đã hoàn thành
-		soLuongChuanBi -= this.getSoLuongHoanThanh();
-
-		// trừ đi số lượng đã được giao trong hôm nay
-		DAOChiTietPhanCong daoCTPC = new DAOChiTietPhanCong();
-		soLuongChuanBi -= daoCTPC.getSoLuongCongDoanDuocGiaoHomNay(this.maCD);
-
 		return soLuongChuanBi;
 	}
 
@@ -184,10 +161,6 @@ public class CongDoan implements java.io.Serializable {
 	}
 
 	public int getSoLuongHoanThanh() throws Exception {
-		DAOCongDoan daoCD = new DAOCongDoan();
-		int soLuongHoanThanh = 0;
-		// xử lý tính toán
-		soLuongHoanThanh = daoCD.getSoLuongHoanThanh(this.maCD);
 		return soLuongHoanThanh;
 	}
 
