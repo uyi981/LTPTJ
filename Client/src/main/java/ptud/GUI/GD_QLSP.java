@@ -63,7 +63,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 	IDAOCongDoan daoCongDoan;
 	IDAOCongNhan daoCongNhan;
 	IDAOBoPhan daoBoPhan;
-	IDAOChiTietPhanCong daoCTPC;
+	IDAOChiTietPhanCong daoChiTietPhanCong;
 	/**
 	 * Creates new form GD_QLSP
 	 */
@@ -83,7 +83,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 			 daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
 			 daoSanPham = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
 			 daoBoPhan =(IDAOBoPhan)Naming.lookup(Client.URL + "DAOBoPhan");
-			 daoCTPC = (IDAOChiTietPhanCong)Naming.lookup(Client.URL + "DAOChiTietPhanCong");
+			 daoChiTietPhanCong = (IDAOChiTietPhanCong)Naming.lookup(Client.URL + "DAOChiTietPhanCong");
 			 dsHopDong = daoHopDong.layDanhSachHopDong();			 
 			 dsSanPham = daoSanPham.layDanhSachSanPham();
 			 dsCongNhan = daoCongNhan.layDanhSachCongNhan();
@@ -139,7 +139,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 
 	// biến toàn cục
 	public ArrayList<CongDoan> dsCongDoan;
-	public String maSP;
+	public String xxxxxxxxxxx;
 	public CongDoan congDoan;
 	public List<SanPham> dsSanPham;
 	public List<CongNhan> dsCongNhan;
@@ -1399,7 +1399,6 @@ public class GD_QLSP extends javax.swing.JPanel {
 				if (row >= 0) {
 					String maCN = jTableCTPC.getValueAt(row, 0).toString();
 					try {
-						IDAOChiTietPhanCong daoChiTietPhanCong = (IDAOChiTietPhanCong) Naming.lookup(Client.URL + "DAOChiTietPhanCong");
 						daoChiTietPhanCong.deleteHomNayByMaCN(maCN);
 						daoChiTietPhanCong.updateChoPhanCong(maCN, true);
 					} catch (Exception e) {
@@ -1461,7 +1460,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 		// TODO add your handling code here:
 		if (jTableSanPham.isEnabled()) {
 			int row = jTableSanPham.getSelectedRow();
-			maSP = (String) jTableSanPham.getValueAt(row, 0);
+			xxxxxxxxxxx = (String) jTableSanPham.getValueAt(row, 0);
 			loadDataJTableCongDoan();
 			loadDataJComboBoxCDTQ();
 			jButtonTaoMoi.setEnabled(true);
@@ -1482,7 +1481,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 				int selectedRow = jTableCongDoan.getSelectedRow();
 				String maCD = (String) jTableCongDoan.getValueAt(selectedRow, 0);
 				try {
-					IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+					
 					congDoan = daoCongDoan.get(maCD);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1553,7 +1552,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 				if (row < 0)
 					throw new Exception("Vui lòng chọn công đoạn cần phân công!");
 				String macd = jTableCongDoan1.getValueAt(row, 0).toString();
-				IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+		
 				CongDoan cd = daoCongDoan.get(macd);
 				int soLuongChuanBi = cd.getSoLuongChuanBi();
 
@@ -1597,7 +1596,6 @@ public class GD_QLSP extends javax.swing.JPanel {
 						int soLuong = Integer.parseInt(sl);
 						if (soLuong == 0)
 							continue;
-						IDAOChiTietPhanCong daoChiTietPhanCong = (IDAOChiTietPhanCong) Naming.lookup(Client.URL + "DAOChiTietPhanCong");
 						daoChiTietPhanCong
 								.insert(new ChiTietPhanCong(maCTPC, macd, maCN, LocalDate.now(), soLuong));
 						daoChiTietPhanCong.updateChoPhanCong(maCN, false);
@@ -1657,7 +1655,6 @@ public class GD_QLSP extends javax.swing.JPanel {
 					throw new Exception("Vui lòng nhập số lượng là số tự nhiên > 0");
 				int row = jTableCongDoan1.getSelectedRow();
 				String macd = jTableCongDoan1.getValueAt(row, 0).toString();
-				IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
 				CongDoan cd = daoCongDoan.get(macd);
 				int soLuongChuanBi = cd.getSoLuongChuanBi();
 				for (int i = 0; i < jTableCongNhan.getRowCount(); i++) {
@@ -1755,7 +1752,6 @@ public class GD_QLSP extends javax.swing.JPanel {
 
 				String tenCD = jTableCTPC.getValueAt(row, 4).toString();
 				String maSP = jTableCTPC.getValueAt(row, 3).toString();
-				IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
 				ArrayList<CongDoan> dsCD = daoCongDoan.getAllByMaSP(maSP);
 				CongDoan cd = null;
 				for (CongDoan congDoan : dsCD) {
@@ -1770,7 +1766,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 					throw new Exception("Số lượng giao không được lớn hơn số lượng chuẩn bị");
 
 				// yes, no option
-				int option = JOptionPane.showConfirmDialog(this, "Bạn đã chắc chắn chưa ?", "Confirmation",
+				int option = JOptionPane.showConfirmDialog(this, "Bạn đã chắc chắn cBạn đã chắc chắn chưa ?hưa ????", "Confirmation",
 						JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {
 					IDAOChiTietPhanCong daoChiTietPhanCong = (IDAOChiTietPhanCong) Naming
@@ -1862,6 +1858,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 
 	private void jButtonLuu1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton11ActionPerformed
 		// TODO add your handling code here:
+		
 	}// GEN-LAST:event_jButton11ActionPerformed
 
 	private void jComboBoxBoPhanActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jComboBoxMaHopDong3ActionPerformed
@@ -1949,7 +1946,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 		// get the data of col 0 and selected row
 		if (jTableSanPham.isEnabled()) {
 			int row = jTableSanPham.getSelectedRow();
-			maSP = (String) jTableSanPham.getValueAt(row, 0);
+			xxxxxxxxxxx = (String) jTableSanPham.getValueAt(row, 0);
 			loadDataJTableCongDoan();
 			loadDataJComboBoxCDTQ();
 			String typeHD = jComboBoxLoaiHopDong.getSelectedItem().toString();
@@ -1966,7 +1963,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 //        IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(rmiURL);
 		try {
 		
-			dsCongDoan = daoCongDoan.getAllByMaSP(maSP);
+			dsCongDoan = daoCongDoan.getAllByMaSP(xxxxxxxxxxx);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -2057,8 +2054,8 @@ public class GD_QLSP extends javax.swing.JPanel {
 		try {
 			for (CongDoan cd : dsCongDoan) {
 				model.addRow(new Object[] { cd.getMaCD(), cd.getTenCD(), cd.getDonGia(), cd.getMaBP(), cd.getMaSP(),
-						cd.isTrangThai(), cd.getSoLuongChuanBiToiThieu(), cd.getSoLuongChuanBi(),
-						cd.getSoLuongHoanThanh() });
+						cd.isTrangThai(),cd.getSoLuongChuanBiToiThieu(), GetSoLuongChuanbi(cd),
+						getSoLuongHoanThanh(cd)});
 
 			}
 		} catch (Exception e) {
@@ -2068,17 +2065,37 @@ public class GD_QLSP extends javax.swing.JPanel {
 
 		model.fireTableDataChanged();
 	}
-
+	private int getSoLuongHoanThanh(CongDoan congDoan) throws Exception {
+		int soLuongHoanThanh = 0;
+		// xử lý tính toán
+		try
+		{	
+			soLuongHoanThanh = daoCongDoan.getSoLuongHoanThanh(congDoan.getMaCD());
+			if(soLuongHoanThanh>=0)
+			return soLuongHoanThanh;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}	
+		return 0;
+		
+	}
 	private void loadDataJTableCDTQ() {
+		
 		if (congDoan != null) {
-			ArrayList<String> dsCDTQ = congDoan.getDsCDTQ();
+			
 			DefaultTableModel model = (DefaultTableModel) jTableCDTQ.getModel();
 			model.setRowCount(0);
 			try {
-				IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
-				for (String maCDTQ : dsCDTQ) {
-					model.addRow(new Object[] { maCDTQ, daoCongDoan.get(maCDTQ).getTenCD() });
+				ArrayList<CongDoan> dsCDTQ = daoCongDoan.getDsCDTQ(congDoan.getMaCD());
+				if(dsCDTQ!=null)
+				{
+					for (CongDoan maCDTQ : dsCDTQ) {
+						model.addRow(new Object[] { maCDTQ.getMaCD(),maCDTQ.getTenCD() });
+					}
 				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -2097,7 +2114,6 @@ public class GD_QLSP extends javax.swing.JPanel {
 			dsCha.add(congDoan);
 			dsCon.add(congDoan);
 			try {
-				IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
 				while (!dsCha.isEmpty()) {
 					CongDoan cd = dsCha.get(0);
 					dsCha.remove(0);
@@ -2138,7 +2154,41 @@ public class GD_QLSP extends javax.swing.JPanel {
 		}
 
 	}
+	private int GetSoLuongChuanbi(CongDoan congDoan)
+	{
+		int soLuongChuanBi = 0;
+		try
+		{
+			if (daoCongDoan.getDsCDTQ(congDoan.getMaCD()).isEmpty()) {
+				// nếu không có cđtq, số lượng chuẩn bị là slsp
+				SanPham sp = daoSanPham.timKiemSanPham(congDoan.getMaSP());
+				soLuongChuanBi = sp.getSoLuong();
+			} else {
+				// Lấy số lượng hoàn thành nhỏ nhất của công đoạn tiên quyết làm số lượng chuẩn
+				// bị
+				ArrayList<CongDoan> dsCDTQ = daoCongDoan.getDsCDTQ(congDoan.getMaCD());
+				int sum = 99999;
+				for (CongDoan cd : dsCDTQ) {
+					int slht = cd.getSoLuongHoanThanh();
+					sum = Math.min(sum, slht);
+				}
+				soLuongChuanBi = sum;
+			}
 
+			// trừ đi số lượng đã hoàn thành
+			soLuongChuanBi -= congDoan.getSoLuongHoanThanh();			
+
+			// trừ đi số lượng đã được giao trong hôm nay
+			soLuongChuanBi -= daoChiTietPhanCong.getSoLuongCongDoanDuocGiaoHomNay(congDoan.getMaCD());
+			return soLuongChuanBi;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		//	DAOCongDoan daoCD = new DAOCongDoan();
+		//	DAOSanPham daoSP = new DAOSanPham();
+		return 0;
+	}
 	private void AfterSaveOrCancel() {
 		if (!jButtonSua.isEnabled())
 			clearData();
@@ -2181,8 +2231,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 				if (!jButtonTaoMoi.getText().equals("Hủy")) {
 					clearData();
 					IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
-					DAOCongDoan dao = (DAOCongDoan) daoCongDoan;
-					String lastMaCD = dao.getLastMaCD(maSP);
+					String lastMaCD = daoCongDoan.getLastMaCD(xxxxxxxxxxx);
 					// create new MaCD from lastMaCD, Increase the last 2 characters by 1 unit
 					// example xxxx01 to xxxx02, xxxx11 to xxxx12
 					String newMaCD = lastMaCD.substring(0, lastMaCD.length() - 2);
@@ -2268,7 +2317,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 			boolean trangThai = false;
 			try {
 				maCD = jTextFieldMaCD.getText();
-				maSP1 = maSP;
+				maSP1 = xxxxxxxxxxx;
 				maBP = jComboBoxMaBoPhan.getSelectedItem().toString();
 				tenCD = jTextFieldTenCD.getText();
 				if (tenCD.isBlank())
@@ -2304,12 +2353,18 @@ public class GD_QLSP extends javax.swing.JPanel {
 				CongDoan congDoan = new CongDoan(maCD, maSP1, maBP, tenCD, donGia, trangThai, soLuongChuanBiToiThieu,
 						dsCDTQ);
 				try {
-					IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
-					DAOCongDoan dao = (DAOCongDoan) daoCongDoan;
+					
+						for(String maCD1 : dsCDTQ)
+						{
+							congDoan.insertCDTQ(daoCongDoan.get(maCD1));
+						}
+						
 					if (jButtonTaoMoi.getText().equals("Hủy"))
-						dao.insert(congDoan);
+					{
+						daoCongDoan.insert(congDoan);
+					}					
 					else
-						dao.update(congDoan);
+						daoCongDoan.update(congDoan);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -2337,7 +2392,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 				int selectedRow = jTableCongDoan.getSelectedRow();
 				String maCD = (String) jTableCongDoan.getValueAt(selectedRow, 0);
 				try {
-					IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+					
 					congDoan = daoCongDoan.get(maCD);
 				} catch (Exception e) {
                     e.printStackTrace();

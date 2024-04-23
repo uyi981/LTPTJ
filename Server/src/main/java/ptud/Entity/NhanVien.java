@@ -201,7 +201,7 @@ public class NhanVien implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "NhanVien{" + "maNV=" + maNV + ", boPhan=" + boPhan + ", ten=" + ten + ", gioiTinh=" + gioiTinh + ", ngaySinh=" + ngaySinh + ", ngayBatDauLam=" + ngayBatDauLam + ", cccd=" + cccd + ", dienThoai=" + dienThoai + ", trangThai=" + trangThai + ", avatar=" + avatar + ", luongCoBan=" + luongCoBan + ", phuCap=" + phuCap + '}';
+        return "NhanVien{" + "maNV=" + maNV + ", boPhan=" + boPhan.getTenBP() + ", ten=" + ten + ", gioiTinh=" + gioiTinh + ", ngaySinh=" + ngaySinh + ", ngayBatDauLam=" + ngayBatDauLam + ", cccd=" + cccd + ", dienThoai=" + dienThoai + ", trangThai=" + trangThai + ", avatar=" + avatar + ", luongCoBan=" + luongCoBan + ", phuCap=" + phuCap + '}';
     }
 
 }

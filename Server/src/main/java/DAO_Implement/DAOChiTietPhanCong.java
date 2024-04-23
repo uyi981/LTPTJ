@@ -103,10 +103,14 @@ public class DAOChiTietPhanCong extends UnicastRemoteObject implements IDAOChiTi
 	public int getSoLuongCongDoanDuocGiaoHomNay(String maCD) throws Exception {
 		// "SELECT SUM(soLuongCDGiao) FROM ChiTietPhanCong WHERE maCD = ? AND ngay = ?"
 		try {
-			return (int) em
+			Object soluongDuocGiaoHomNay = em
 					.createNativeQuery(
 							"SELECT SUM(soLuongCDGiao) FROM ChiTietPhanCong " + "WHERE maCD = ? AND ngay = ?")
 					.setParameter(1, maCD).setParameter(2, LocalDate.now()).getSingleResult();
+			if(soluongDuocGiaoHomNay != null)
+				return Integer.parseInt(soluongDuocGiaoHomNay.toString());
+			else
+				return 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;

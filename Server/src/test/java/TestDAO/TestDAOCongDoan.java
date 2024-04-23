@@ -54,7 +54,7 @@ public class TestDAOCongDoan {
 //			e.printStackTrace();
 //		}
 //	}
-//	
+	
 //	@Test
 //	public void testGetAllByMaSP() {
 //		try {
@@ -152,7 +152,7 @@ public class TestDAOCongDoan {
 //            e.printStackTrace();
 //            }
 //        }
-//	
+	
 //	@Test
 //	public void testGetSoLuongHoanThanh() {
 //        try {
@@ -168,7 +168,7 @@ public class TestDAOCongDoan {
 //	@Test
 //	public void testGetDsCDTQ() {
 //		try {
-//			List<CongDoan> result = daoCongDoan.getDsCDTQ("05112023010202");
+//			List<String> result = daoCongDoan.getDsCDTQ("05112023010202");
 //			result.forEach(System.out::println);
 //			assertNotNull(result);
 //		} catch (Exception e) {
@@ -188,16 +188,16 @@ public class TestDAOCongDoan {
 //			e.printStackTrace();
 //		}
 //	}
-//	
-//	@Test
-//	public void testUpdateSoLuong() {
-//		try {
-//			daoCongDoan.updateSoLuong("05112023010101", 10, false);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	
+	@Test
+	public void testUpdateSoLuong() {
+		try {
+			daoCongDoan.updateSoLuong("05112023010101", 10, false);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 	@AfterAll
