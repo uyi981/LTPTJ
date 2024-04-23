@@ -36,6 +36,7 @@ import DAO_Implement.DAOCongDoan;
 import DAO_Implement.DAOCongNhan;
 import DAO_Implement.DAOHopDong;
 import DAO_Implement.DAOSanPham;
+import DAO_Interface.IDAOBoPhan;
 import DAO_Interface.IDAOChiTietPhanCong;
 import DAO_Interface.IDAOCongDoan;
 import DAO_Interface.IDAOCongNhan;
@@ -57,6 +58,12 @@ import ptud.Entity.SanPham;
  */
 public class GD_QLSP extends javax.swing.JPanel {
 
+	IDAOHopDong daoHopDong;
+	IDAOSanPham daoSanPham;
+	IDAOCongDoan daoCongDoan;
+	IDAOCongNhan daoCongNhan;
+	IDAOBoPhan daoBoPhan;
+	IDAOChiTietPhanCong daoCTPC;
 	/**
 	 * Creates new form GD_QLSP
 	 */
@@ -71,21 +78,25 @@ public class GD_QLSP extends javax.swing.JPanel {
 		AutoCompleteDecorator.decorate(jComboBoxCDTQ);
 
 		try {
-			IDAOHopDong daoHopDong = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong");
-			dsHopDong = daoHopDong.layDanhSachHopDong();
-			IDAOSanPham daoSanPham = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
-			dsSanPham = daoSanPham.layDanhSachSanPham();
-			dsCongNhan = new DAOCongNhan().layDanhSachCongNhan();
-			dsCongDoan = new DAOCongDoan().getAll();
-			dsBoPhan = new ArrayList<BoPhan>();
-			dsCTPC = new ArrayList<ChiTietPhanCong>();
+			 daoHopDong = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong");
+			 daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+			 daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
+			 daoSanPham = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
+			 daoBoPhan =(IDAOBoPhan)Naming.lookup(Client.URL + "DAOBoPhan");
+			 daoCTPC = (IDAOChiTietPhanCong)Naming.lookup(Client.URL + "DAOChiTietPhanCong");
+			 dsHopDong = daoHopDong.layDanhSachHopDong();			 
+			 dsSanPham = daoSanPham.layDanhSachSanPham();
+			 dsCongNhan = daoCongNhan.layDanhSachCongNhan();
+			 dsCongDoan =daoCongDoan.getAll();
+			 dsBoPhan = new ArrayList<BoPhan>();
+			 dsCTPC = new ArrayList<ChiTietPhanCong>();
 			
 			// loaddata to jComboBoxMaHopDong
 
 			loadJComboBoxMaHopDong();
 
 			// loaddata to jComboBoxMaBoPhan
-			for (BoPhan boPhan : new DAOBoPhan().getAll()) {
+			for (BoPhan boPhan : daoBoPhan.getAll()) {
 				// Only take maBP prefixed with 'SX'
 				if (boPhan.getMaBP().startsWith("SX")) {
 					jComboBoxMaBoPhan.addItem(boPhan.getMaBP());
@@ -107,7 +118,6 @@ public class GD_QLSP extends javax.swing.JPanel {
 			// loaddata jcombobox congdoan
 
 			try {
-				IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
 				for (CongDoan cd : daoCongDoan.getAll())
 					jComboBoxCongDoan.addItem(cd.getTenCD());
 
@@ -154,7 +164,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 	// loaddata SanPham
 	private void loadDsSanPham() {
 		try {
-			IDAOSanPham daoSanPham = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
+			
 //    		 dsSanPham = DAOSanPham.getInstance().layDanhSachSanPham();
 			DefaultTableModel tblModel = (DefaultTableModel) jTableSanPham.getModel();
 			// xóa hết các phần tử trong jTableSanPham
@@ -163,7 +173,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 			for (SanPham sp : dsSanPham) {
 				String maHD1 = "0511202301";
 				maHD1 = sp.getMaHD();
-				IDAOHopDong daoHopDong = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong");
+				
 				HopDong hd = daoHopDong.timKiemHopDong(maHD1);
 				String typeHD = jComboBoxLoaiHopDong.getSelectedItem().toString();
 				if (hd.getTrangThai().equals(typeHD))
@@ -182,12 +192,13 @@ public class GD_QLSP extends javax.swing.JPanel {
 	// loaddata CongDoan
 	private void loadDsCongDoan() {
 		try {
-			IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+			
+			
 			ArrayList<CongDoan> dsCongDoan = daoCongDoan.getAll();
 			ArrayList<CongDoan> dsCongDoan2 = new ArrayList<CongDoan>();
 			for (CongDoan cd : dsCongDoan) {
-				SanPham sp = new DAOSanPham().timKiemSanPham(cd.getMaSP());
-				HopDong hd = new DAOHopDong().timKiemHopDong(sp.getMaHD());
+				SanPham sp = daoSanPham.timKiemSanPham(cd.getMaSP());
+				HopDong hd = daoHopDong.timKiemHopDong(sp.getMaHD());
 				if (!hd.getTrangThai().equals("đang thực hiện"))
 					continue;
 				if (cd.getSoLuongChuanBi() < cd.getSoLuongChuanBiToiThieu())
@@ -232,7 +243,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 
 	private void loadDsCongNhan() {
 		try {
-			IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+			
 			DefaultTableModel tblModelCongNhan = (DefaultTableModel) jTableCongNhan.getModel();
 			tblModelCongNhan.setRowCount(0);
 			for (CongNhan cn : dsCongNhan) {
@@ -279,8 +290,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 			String bp = jComboBoxBoPhan1.getSelectedItem().toString();
 			String cd2 = jComboBoxCongDoan.getSelectedItem().toString();
 
-			IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
-			IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
+			
 			for (ChiTietPhanCong ctpc : dsCTPC) {
 				CongNhan cn = daoCongNhan.timKiemCongNhan(ctpc.getMaCN());
 				CongDoan cd = daoCongDoan.get(ctpc.getMaCD());
@@ -1955,7 +1965,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 	private void loadDataJTableCongDoan() {
 //        IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(rmiURL);
 		try {
-			IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+		
 			dsCongDoan = daoCongDoan.getAllByMaSP(maSP);
 		} catch (Exception e) {
 			e.printStackTrace();

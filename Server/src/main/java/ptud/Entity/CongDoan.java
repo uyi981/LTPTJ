@@ -77,8 +77,8 @@ public class CongDoan implements java.io.Serializable {
 	 @ManyToMany
 	    @JoinTable(
 	        name = "CongDoanTienQuyet",
-	        joinColumns = @JoinColumn(name = "maCDTQ"),
-	        inverseJoinColumns = @JoinColumn(name = "maCD")
+	        joinColumns = @JoinColumn(name = "maCD"),
+	        inverseJoinColumns = @JoinColumn(name = "maCDTQ")
 	    )
 	 private Set<CongDoan> dsCDTQs;
 	@Transient

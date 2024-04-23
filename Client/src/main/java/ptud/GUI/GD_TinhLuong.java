@@ -31,7 +31,10 @@ import ptud.Entity.PhieuLuongNhanVien;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.print.*;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.text.MessageFormat;
 import javax.swing.JTable;
 /**
@@ -55,6 +58,7 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     public ArrayList<NhanVien> dsNhanVien;
     public ArrayList<PhieuLuongNhanVien> dsPhieuLuongNhanVien;
     public ArrayList<PhieuLuongCongNhan> dsPhieuLuongCongNhan;
+	private IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan;
 
     private void init() throws Exception {
 //        dsNhanVien = DAO_NhanVien.getInstance().getAll();
@@ -174,7 +178,7 @@ public class GD_TinhLuong extends javax.swing.JPanel {
         int thang = jMonthChooser2.getMonth() + 1;
         int nam = jYearChooser2.getYear();
         try {
-        	IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
+
             dsPhieuLuongCongNhan = daoPhieuLuongCongNhan.getAllByThangNam(thang, nam);
             
             DefaultTableModel model = (DefaultTableModel) jTablePhieuLuongCongNhan.getModel();
@@ -234,7 +238,14 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+    	
+    	try {
+			daoPhieuLuongCongNhan  = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
         buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
