@@ -1,5 +1,6 @@
 package ptud.Entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 
@@ -8,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -19,9 +21,13 @@ import jakarta.persistence.Transient;
 @Entity
 @Table(name = "PhieuChamCongCongNhan")
 
-public class PhieuChamCongCongNhan{
+public class PhieuChamCongCongNhan implements Serializable{
 	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8179437309301218357L;
 	@Id
    private String maPCCCN;
 	@Column(name = "ngayChamCong",columnDefinition = "DATE")
@@ -29,8 +35,6 @@ public class PhieuChamCongCongNhan{
    private boolean vang;
    @Column(name = "soluongCD")
    private int soLuongSanPham;
-   @Transient
-   private String maCTPC;
    private String noiDungPhat;
    private double tienCong;
    private double tienThuong;
@@ -39,10 +43,9 @@ public class PhieuChamCongCongNhan{
    private int soLuongSanPhamTangCa;
    
    
-   @OneToOne(fetch = FetchType.LAZY)
+   @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "maCTPC")
-   
-   ChiTietPhanCong chiTietPhanCong;
+   private ChiTietPhanCong chiTietPhanCong;
  
 
     public PhieuChamCongCongNhan() {
@@ -53,7 +56,6 @@ public class PhieuChamCongCongNhan{
         this.ngay = ngay;
         this.vang = vang;
         this.soLuongSanPham = soLuongSanPham;
-        this.maCTPC = maCTPC;
         this.noiDungPhat = noiDungPhat;
         this.tienCong = tienCong;
         this.tienThuong = tienThuong;
@@ -95,14 +97,7 @@ public class PhieuChamCongCongNhan{
         this.soLuongSanPham = soLuongSanPham;
     }
 
-    public String getMaCTPC() {
-        return maCTPC;
-    }
-
-    public void setMaCTPC(String maCTPC) {
-        this.maCTPC = maCTPC;
-    }
-
+  
     public String getNoiDungPhat() {
         return noiDungPhat;
     }
@@ -145,7 +140,7 @@ public class PhieuChamCongCongNhan{
 
     @Override
     public String toString() {
-        return "PhieuChamCongCongNhan{" + "maPCCCN=" + maPCCCN + ", ngay=" + ngay + ", vang=" + vang + ", soLuongSanPham=" + soLuongSanPham + ", maCTPC=" + maCTPC + ", noiDungPhat=" + noiDungPhat + ", tienCong=" + tienCong + ", tienThuong=" + tienThuong + ", tienPhat=" + tienPhat + ", soLuongSanPhamTangCa=" + soLuongSanPhamTangCa + '}';
+        return "PhieuChamCongCongNhan{" + "maPCCCN=" + maPCCCN + ", ngay=" + ngay + ", vang=" + vang + ", soLuongSanPham=" + soLuongSanPham  + ", noiDungPhat=" + noiDungPhat + ", tienCong=" + tienCong + ", tienThuong=" + tienThuong + ", tienPhat=" + tienPhat + ", soLuongSanPhamTangCa=" + soLuongSanPhamTangCa + '}';
     }
     
 }

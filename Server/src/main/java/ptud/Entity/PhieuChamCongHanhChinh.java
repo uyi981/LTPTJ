@@ -4,8 +4,10 @@
  */
 package ptud.Entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
+import DAO_Implement.DAONhanVien;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,7 +23,11 @@ import jakarta.persistence.Transient;
 */
 @Entity
 @Table(name = "PhieuChamCongHanhChinh")
-public class PhieuChamCongHanhChinh {
+public class PhieuChamCongHanhChinh implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3787578402698920278L;
 	@Id
    private String maPCCHC;
     @Transient
@@ -42,18 +48,36 @@ public class PhieuChamCongHanhChinh {
    
    
 
-    public PhieuChamCongHanhChinh(String maPCCHC, String maNV, LocalDate ngay, boolean vang, boolean diTre, int gioTangCa, double tienPhat, String noiDungTienPhat) {
-        this.maPCCHC = maPCCHC;
-        this.maNV = maNV;
-        this.ngay = ngay;
-        this.vang = vang;
-        this.diTre = diTre;
-        this.gioTangCa = gioTangCa;
-        this.tienPhat = tienPhat;
-        this.noiDungTienPhat = noiDungTienPhat;
-    }
+//    public PhieuChamCongHanhChinh(String maPCCHC, String maNV, LocalDate ngay, boolean vang, int gioTangCa, String noiDungTienPhat) {
+//        this.maPCCHC = maPCCHC;
+//        this.maNV = maNV;
+//        this.ngay = ngay;
+//        this.vang = vang;
+//        this.diTre = diTre;
+//        this.gioTangCa = gioTangCa;
+//        this.tienPhat = tienPhat;
+//        this.noiDungTienPhat = noiDungTienPhat;
+//    }
+    
+    
 
-    public String getMaPCCHC() {
+    public PhieuChamCongHanhChinh(String maPCCHC, String maNV, LocalDate ngay, boolean vang, boolean diTre,
+			int gioTangCa, double tienPhat, String noiDungTienPhat) {
+		super();
+		this.maPCCHC = maPCCHC;
+		this.setMaNV(maNV);
+		this.ngay = ngay;
+		this.vang = vang;
+		this.diTre = diTre;
+		this.gioTangCa = gioTangCa;
+		this.tienPhat = tienPhat;
+		this.noiDungTienPhat = noiDungTienPhat;
+	}
+
+    
+
+
+	public String getMaPCCHC() {
         return maPCCHC;
     }
 
@@ -71,7 +95,15 @@ public class PhieuChamCongHanhChinh {
     }
 
     public void setMaNV(String maNV) {
-        this.maNV = maNV;
+    	try {
+    		System.out.println("ooooooooooooo");
+    		 this.maNV = maNV;
+    	     DAONhanVien daoNhanVien = new DAONhanVien();
+    	     this.nhanVien = daoNhanVien.timKiemNhanVien(maNV);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+       
     }
 
     public LocalDate getNgay() {

@@ -4,6 +4,8 @@
  */
 package ptud.Entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -19,8 +21,12 @@ import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "TaiKhoan")
-public class TaiKhoan {
+public class TaiKhoan implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7197856349777350453L;
 	@Transient
 	private String maNV;
    private String userName, matKhau;

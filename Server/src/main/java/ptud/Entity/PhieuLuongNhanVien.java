@@ -4,6 +4,7 @@
  */
 package ptud.Entity;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -25,7 +26,11 @@ import jakarta.persistence.Transient;
 @Entity
 @Table(name = "PhieuLuongNhanVien")
 
-public class PhieuLuongNhanVien {
+public class PhieuLuongNhanVien implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9103520691142499119L;
 	@Id
     private String maPL;   
     private int thang; 
