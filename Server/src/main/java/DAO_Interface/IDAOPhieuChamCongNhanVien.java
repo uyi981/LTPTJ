@@ -22,6 +22,9 @@ public interface IDAOPhieuChamCongNhanVien extends Remote{
     
     public float getTongTienPhatTrongThang(String idNV, int thang, int nam) throws RemoteException;
     
+    public String getCurrentDateYYYYMMDD() throws RemoteException;
+
+    
     
 
 
