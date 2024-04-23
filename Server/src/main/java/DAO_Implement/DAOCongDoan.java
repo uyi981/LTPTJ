@@ -133,7 +133,8 @@ public class DAOCongDoan extends UnicastRemoteObject implements IDAOCongDoan {
     public ArrayList<CongDoan> getDsCDTQ(String maCD) throws Exception {
         // "SELECT maCDTQ FROM CongDoanTienQuyet WHERE maCD = ?";
         ArrayList<CongDoan> resultList = (ArrayList<CongDoan>) em.createNativeQuery(
-                        "SELECT maCDTQ FROM CongDoanTienQuyet WHERE maCD = ?", CongDoan.class)
+                        "SELECT maCDTQ FROM CongDoanTienQuyet "
+                        + "WHERE maCD = ?", CongDoan.class)
                 .setParameter(1, maCD).getResultList();
         return resultList;
     }
