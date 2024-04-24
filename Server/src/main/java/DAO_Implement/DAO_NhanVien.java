@@ -8,10 +8,10 @@ import jakarta.persistence.Persistence;
 import ptud.Entity.NhanVien;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-public class DAONhanVien extends UnicastRemoteObject implements DAO_Interface.IDAONhanVien
+public class DAO_NhanVien extends UnicastRemoteObject implements DAO_Interface.IDAONhanVien
 {
   EntityManager em;
-	public DAONhanVien() throws RemoteException {
+	public DAO_NhanVien() throws RemoteException {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 		// TODO Auto-generated constructor stub
 	}
@@ -25,8 +25,8 @@ public class DAONhanVien extends UnicastRemoteObject implements DAO_Interface.ID
 	{
 		return em.createQuery("select a from NhanVien a", NhanVien.class).getResultList().size();
 	}
-	 public static DAONhanVien getInstance() throws RemoteException {
-	        return new DAONhanVien();
+	 public static DAO_NhanVien getInstance() throws RemoteException {
+	        return new DAO_NhanVien();
 	    }
 
 	@Override
@@ -100,5 +100,10 @@ public class DAONhanVien extends UnicastRemoteObject implements DAO_Interface.ID
 	public List<NhanVien> layDanhSachNhanVien() throws RemoteException {
 		// TODO Auto-generated method stub
 		return em.createQuery("select a from NhanVien a", NhanVien.class).getResultList();
+	}
+	@Override
+	public String getMaBoPhan(String nhanVien) throws RemoteException {
+		// TODO Auto-generated method stub
+		return em.createNativeQuery("select maBP from NhanVien where maNV = :maNV").setParameter("maNV", nhanVien).getSingleResult().toString();
 	}
 }

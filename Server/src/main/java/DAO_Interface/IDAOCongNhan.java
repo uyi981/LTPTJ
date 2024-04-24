@@ -14,4 +14,6 @@ public interface IDAOCongNhan extends Remote{
 	public List<CongNhan> layDanhSachCongNhan() throws RemoteException;
 	public ArrayList<CongNhan> search(String searchText, String searchCriteria) throws RemoteException ;
 	public int countAll() throws RemoteException ;
+	public String getMaBoPhan(String congNhan) throws RemoteException ;
+
 }

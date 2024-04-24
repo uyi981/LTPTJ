@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import DAO_Implement.DAOTaiKhoan;
 import DAO_Interface.IDAOTaiKhoan;
 import client.Client;
 import ptud.GUI.*;
@@ -64,7 +63,6 @@ public class Login extends javax.swing.JFrame {
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		try {
-			daoTaiKhoan = (IDAOTaiKhoan) Naming.lookup( Client.URL+"DAOTaiKhoan");
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -199,7 +197,9 @@ public class Login extends javax.swing.JFrame {
 	private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton1MouseClicked
 
 		int userRole = 1;
+		
 		try {
+			IDAOTaiKhoan daoTaiKhoan = (IDAOTaiKhoan)Naming.lookup( Client.URL+"DAOTaiKhoan");
 			userRole = daoTaiKhoan.getUserRole(jTextField1.getText(), jPasswordField1.getText());
 		} catch (Exception ex) {
 			Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);

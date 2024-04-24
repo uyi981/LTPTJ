@@ -12,7 +12,7 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import ptud.Entity.PhieuChamCongHanhChinh;
 
-public class DAOPhieuChamCongNhanVien extends UnicastRemoteObject implements DAO_Interface.IDAOPhieuChamCongNhanVien {
+public class DAO_PhieuChamCongNhanVien extends UnicastRemoteObject implements DAO_Interface.IDAOPhieuChamCongNhanVien {
 
 	/**
 	 * 
@@ -20,7 +20,7 @@ public class DAOPhieuChamCongNhanVien extends UnicastRemoteObject implements DAO
 	private static final long serialVersionUID = -2693781337997268465L;
 	private EntityManager em;
 	 
-	 public DAOPhieuChamCongNhanVien() throws RemoteException {
+	 public DAO_PhieuChamCongNhanVien() throws RemoteException {
 	        em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	    }
 	 
@@ -35,8 +35,8 @@ public class DAOPhieuChamCongNhanVien extends UnicastRemoteObject implements DAO
 	        return "PCCHC" + formattedDate + idNV;
 	    }
 	 
-	 public static DAOPhieuChamCongNhanVien getInstance() throws RemoteException {
-	        return new DAOPhieuChamCongNhanVien();
+	 public static DAO_PhieuChamCongNhanVien getInstance() throws RemoteException {
+	        return new DAO_PhieuChamCongNhanVien();
 	    }
 	
 	@Override
@@ -56,7 +56,7 @@ public class DAOPhieuChamCongNhanVien extends UnicastRemoteObject implements DAO
 	public int getSoNgayLam(String idNV, int thang, int nam) throws RemoteException {
 		try {
 			Query query = em.createQuery(
-					"SELECT SUM(p.soNgayLam) FROM PhieuChamCongHanhChinh p WHERE p.idCN = :idCN AND p.thang = :thang AND p.nam = :nam");
+					"SELECT COUNT(*) FROM PhieuChamCongHanhChinh p WHERE p.idCN = :idCN AND month(pc.ngayChamCong) = :thang AND AND  year(pc.ngayChamCong) = :nam ");
 			query.setParameter("idCN", idNV);
 			query.setParameter("thang", thang);
 			query.setParameter("nam", nam);
@@ -72,7 +72,7 @@ public class DAOPhieuChamCongNhanVien extends UnicastRemoteObject implements DAO
 		 try {
 		        String query = "SELECT SUM(p.gioTangCa) " +
 		                       "FROM PhieuChamCongHanhChinh p " +
-		                       "WHERE p.maNV = :idNV AND p.thang = :thang AND p.nam = :nam";
+		                       "WHERE p.maNV = :idNV AND month(pc.ngayChamCong) = :thang AND   year(pc.ngayChamCong) = :nam ";
 
 		        Query jpqlQuery = em.createQuery(query);
 		        jpqlQuery.setParameter("idNV", idNV);
@@ -99,11 +99,11 @@ public class DAOPhieuChamCongNhanVien extends UnicastRemoteObject implements DAO
 		        String query = "SELECT nv.maNV, nv.tenNV " +
 		                       "FROM NhanVien nv " +
 		                       "WHERE nv.maBP = :maBoPhan " +
-		                       "AND nv.maNV NOT IN (SELECT pc.maNV FROM PhieuChamCongHanhChinh pc WHERE pc.ngaychamcong = :ngayHienTai)";
-		        Query jpqlQuery = em.createQuery(query);
-		        jpqlQuery.setParameter("maBoPhan", maBoPhan);
-		        jpqlQuery.setParameter("ngayHienTai", getCurrentDateYYYYMMDD());
-		        List<Object[]> resultSet = jpqlQuery.getResultList();
+		                       "AND nv.maNV NOT IN (SELECT pc.maNV FROM PhieuChamCongHanhChinh pc WHERE pc.ngayChamCong = :ngayHienTai)";
+//		        Query jpqlQuery = em.createQuery(query);
+//		        jpqlQuery.setParameter("maBoPhan", maBoPhan);
+//		        jpqlQuery.setParameter("ngayHienTai", getCurrentDateYYYYMMDD());
+		        List<Object[]> resultSet =(List<Object[]> )em.createNativeQuery(query).setParameter("maBoPhan", maBoPhan).setParameter("ngayHienTai", getCurrentDateYYYYMMDD()).getResultList();
 		        for (Object[] row : resultSet) {
 		            Object[] thongTinChamCong = new Object[7];
 		            thongTinChamCong[0] = row[0];
@@ -145,7 +145,7 @@ public class DAOPhieuChamCongNhanVien extends UnicastRemoteObject implements DAO
 		  try {
 		        String query = "SELECT SUM(pc.tienPhat) " +
 		                       "FROM PhieuChamCongHanhChinh pc " +
-		                       "WHERE pc.maNV = :idNV AND pc.thang = :thang AND pc.nam = :nam";
+		                       "WHERE pc.maNV = :idNV AND  month(pc.ngayChamCong) = :thang AND   year(pc.ngayChamCong) = :nam ";
 
 		        Query jpqlQuery = em.createQuery(query);
 		        jpqlQuery.setParameter("idNV", idNV);

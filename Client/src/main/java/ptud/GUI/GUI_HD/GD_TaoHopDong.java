@@ -185,18 +185,19 @@ void createHopDong() {
                 isCreate = false;
             }
             if (isCreate == true) {
-
+            	String maKH = jComboBoxMaKH.getSelectedItem().toString();
+            
                 try {
 
                     String tenHD = jTextFieldTenHD.getText();
-
+                	KhachHang khachHang = daokh.timKiemKhachHang(maKH);
                     int stt = 1;
                     for (HopDong hopDong : daohd.layDanhSachHopDong()) {
                         if (hopDong.getNgayBatDau().equals(ngayBD)) {
                             stt++;
                         }
                     }
-                    hopDong = new HopDong(stt, tenHD, ngayBD, ngayKT, giaTri, jComboBoxMaKH.getSelectedItem().toString(), "chờ xác nhận");
+                    hopDong = new HopDong(stt, tenHD, ngayBD, ngayKT, giaTri,khachHang, "chờ xác nhận");
                     daohd.themHopDong(hopDong);
                 } catch (Exception e) {
                     JOptionPane.showConfirmDialog(this, "Lỗi tạo hợp đồng!");
@@ -221,7 +222,7 @@ void createHopDong() {
          int soLuong = Integer.parseInt(rowData[1].toString());
          donGia = Double.parseDouble(rowData[2].toString());
          String tenSP = rowData[0].toString();
-         SanPham sanPham = new SanPham(stt, tenSP, soLuong, donGia, hopDong.getMaHD());
+         SanPham sanPham = new SanPham(stt, tenSP, soLuong, donGia, hopDong);
     	try {
     		daosp.themSanPham(sanPham);
 		} catch (RemoteException e) {

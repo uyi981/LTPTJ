@@ -8,7 +8,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import ptud.Entity.KhachHang;
 
-public class DAOKhachHang extends UnicastRemoteObject implements DAO_Interface.IDAOKhachHang{
+public class DAO_KhachHang extends UnicastRemoteObject implements DAO_Interface.IDAOKhachHang{
  
 	/**
 	 * 
@@ -16,7 +16,7 @@ public class DAOKhachHang extends UnicastRemoteObject implements DAO_Interface.I
 	private static final long serialVersionUID = 2441975338527262012L;
 
 	private jakarta.persistence.EntityManager em;	 
-	public DAOKhachHang() throws RemoteException {
+	public DAO_KhachHang() throws RemoteException {
 		
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 		// TODO Auto-generated constructor stub

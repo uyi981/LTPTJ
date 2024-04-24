@@ -7,7 +7,7 @@ package ptud.Entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import DAO_Implement.DAONhanVien;
+import DAO_Implement.DAO_NhanVien;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,8 +30,6 @@ public class PhieuChamCongHanhChinh implements Serializable{
 	private static final long serialVersionUID = -3787578402698920278L;
 	@Id
    private String maPCCHC;
-    @Transient
-   private String maNV;
    @Column(name = "ngayChamCong",columnDefinition = "DATE")
    private LocalDate ngay;
    private boolean vang, diTre;
@@ -43,7 +41,6 @@ public class PhieuChamCongHanhChinh implements Serializable{
    
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "maNV")
-   
    NhanVien nhanVien;
    
    
@@ -61,11 +58,11 @@ public class PhieuChamCongHanhChinh implements Serializable{
     
     
 
-    public PhieuChamCongHanhChinh(String maPCCHC, String maNV, LocalDate ngay, boolean vang, boolean diTre,
+    public PhieuChamCongHanhChinh(String maPCCHC, NhanVien nhanVien, LocalDate ngay, boolean vang, boolean diTre,
 			int gioTangCa, double tienPhat, String noiDungTienPhat) {
 		super();
 		this.maPCCHC = maPCCHC;
-		this.setMaNV(maNV);
+		this.nhanVien = nhanVien;
 		this.ngay = ngay;
 		this.vang = vang;
 		this.diTre = diTre;
@@ -75,6 +72,20 @@ public class PhieuChamCongHanhChinh implements Serializable{
 	}
 
     
+
+
+	public NhanVien getNhanVien() {
+		return nhanVien;
+	}
+
+
+
+
+	public void setNhanVien(NhanVien nhanVien) {
+		this.nhanVien = nhanVien;
+	}
+
+
 
 
 	public String getMaPCCHC() {
@@ -94,17 +105,7 @@ public class PhieuChamCongHanhChinh implements Serializable{
         return nhanVien.getMaNV();
     }
 
-    public void setMaNV(String maNV) {
-    	try {
-    		System.out.println("ooooooooooooo");
-    		 this.maNV = maNV;
-    	     DAONhanVien daoNhanVien = new DAONhanVien();
-    	     this.nhanVien = daoNhanVien.timKiemNhanVien(maNV);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-       
-    }
+   
 
     public LocalDate getNgay() {
         return ngay;

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-import DAO_Implement.DAOCongNhan;
+import DAO_Implement.DAO_CongNhan;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Id;
@@ -155,8 +155,8 @@ public class CongNhan implements java.io.Serializable {
         this.choPhanCong = choPhanCong;
     }
 
-    public CongNhan(BoPhan boPhan, String ten, boolean gioiTinh, LocalDate ngaySinh, LocalDate ngayBatDauLam, String cccd, String dienThoai, boolean trangThai, byte[] avatar, boolean choPhanCong) throws Exception{
-        this.maCN = genMaCN(boPhan, ngayBatDauLam, gioiTinh);
+    public CongNhan(BoPhan boPhan, String ten, boolean gioiTinh, LocalDate ngaySinh, LocalDate ngayBatDauLam, String cccd, String dienThoai, boolean trangThai, byte[] avatar, boolean choPhanCong,int count) throws Exception{
+        this.maCN = genMaCN(count,boPhan, ngayBatDauLam, gioiTinh);
         this.boPhan = boPhan;
         this.ten = ten;
         this.gioiTinh = gioiTinh;
@@ -174,10 +174,7 @@ public class CongNhan implements java.io.Serializable {
     }
     
     
-    private String genMaCN(BoPhan boPhan, LocalDate ngayBatDauLam, boolean gioiTinh) throws Exception{
-        DAOCongNhan daoCongNhan = new DAOCongNhan();
-        int count = daoCongNhan.countAll();
-
+    private String genMaCN(int count,BoPhan boPhan, LocalDate ngayBatDauLam, boolean gioiTinh) throws Exception{
         // Sử dụng DateTimeFormatter để lấy hai số cuối của năm
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy");
         String lastTwoDigitsOfYear = ngayBatDauLam.format(formatter);

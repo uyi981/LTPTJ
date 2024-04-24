@@ -5,20 +5,17 @@ package DAO_Implement;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
-import ptud.Entity.BoPhan;
 import ptud.Entity.CongNhan;
-public class DAOCongNhan extends UnicastRemoteObject implements DAO_Interface.IDAOCongNhan
+public class DAO_CongNhan extends UnicastRemoteObject implements DAO_Interface.IDAOCongNhan
 {
 	EntityManager em;
-	public DAOCongNhan() throws RemoteException {
+	public DAO_CongNhan() throws RemoteException {
 		super();
 		em = Persistence.createEntityManagerFactory("MSSQL")
 				.createEntityManager();
@@ -132,5 +129,12 @@ public class DAOCongNhan extends UnicastRemoteObject implements DAO_Interface.ID
 	        }
 	        return dsCongNhan;
 	    }
+
+	@Override
+	public String getMaBoPhan(String congNhan) throws RemoteException {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		return em.createNativeQuery("select maBP from CongNhan where maCN = :maCN").setParameter("maCN", congNhan).getSingleResult().toString();
+	}
   
 }

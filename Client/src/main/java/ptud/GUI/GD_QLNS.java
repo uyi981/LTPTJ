@@ -14,8 +14,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import DAO_Implement.DAOCongNhan;
-import DAO_Implement.DAONhanVien;
 import DAO_Interface.IDAOCongNhan;
 import DAO_Interface.IDAONhanVien;
 import client.Client;

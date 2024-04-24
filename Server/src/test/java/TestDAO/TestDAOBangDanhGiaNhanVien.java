@@ -11,8 +11,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import DAO_Implement.DAOBangDanhGiaNhanVien;
-import DAO_Implement.DAONhanVien;
+import DAO_Implement.DAO_BangDanhGiaNhanVien;
+import DAO_Implement.DAO_NhanVien;
 import DAO_Interface.IDAOBangDanhGiaNhanVien;
 import DAO_Interface.IDAONhanVien;
 import ptud.Entity.BangDanhGiaNhanVien;
@@ -26,8 +26,8 @@ public class TestDAOBangDanhGiaNhanVien {
 	@BeforeAll
 	public void init() {
 		try {
-			daoBangDanhGiaNhanVien = new DAOBangDanhGiaNhanVien();
-			daoNhanVien = new DAONhanVien();
+			daoBangDanhGiaNhanVien = new DAO_BangDanhGiaNhanVien();
+			daoNhanVien = new DAO_NhanVien();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

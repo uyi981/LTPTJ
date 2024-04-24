@@ -4,7 +4,9 @@
  */
 package ptud.GUI;
 
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -19,7 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import DAO_Implement.DAOPhieuChamCongCongNhan;
 import DAO_Interface.IDAOBoPhan;
 import DAO_Interface.IDAOChiTietPhanCong;
 import DAO_Interface.IDAOCongDoan;
@@ -66,6 +67,18 @@ public class GD_ChamCong extends javax.swing.JPanel {
 	 * @throws RemoteException
 	 */
 	public void initGUI() throws RemoteException {
+		try {
+			daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		initComponents();
 		jTextField2.setText(LocalDate.now().toString());
 //        DAO_BoPhan daoBoPhan = new DAO_BoPhan();
@@ -595,75 +608,92 @@ public class GD_ChamCong extends javax.swing.JPanel {
 
 	private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton2MouseClicked
 		// TODO add your handling code here:
-		DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-		int row = model.getRowCount();
-		PhieuChamCongHanhChinh phieuChamCongHanhChinh = new PhieuChamCongHanhChinh();
-		String today = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy")).toString();
-		for (int i = 0; i < row; i++) {
-			boolean isVang = (Boolean) (jTable2.getValueAt(i, 2));
-			boolean isTre = (Boolean) (jTable2.getValueAt(i, 3));
-
-			phieuChamCongHanhChinh.setMaPCCHC(today + model.getValueAt(i, 0).toString());
-			phieuChamCongHanhChinh.setNgay(LocalDate.now());
-			phieuChamCongHanhChinh.setMaNV(model.getValueAt(i, 0).toString());
-			phieuChamCongHanhChinh.setVang(isVang);
-			phieuChamCongHanhChinh.setDiTre(isTre);
-			phieuChamCongHanhChinh.setGioTangCa(0);
-			phieuChamCongHanhChinh.setTienPhat((int) model.getValueAt(i, 4));
-			phieuChamCongHanhChinh.setNoiDungTienPhat((String) model.getValueAt(i, 5));
-			try {
-				daoPhieuChamCongNhanVien.themPhieuChamCongNhanVien(phieuChamCongHanhChinh);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		
+		
+		try
+		{
+			DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+			int row = model.getRowCount();
+			PhieuChamCongHanhChinh phieuChamCongHanhChinh = new PhieuChamCongHanhChinh();
+			String today = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy")).toString();
+			IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
+			for (int i = 0; i < row; i++) {
+				boolean isVang = (Boolean) (jTable2.getValueAt(i, 2));
+				boolean isTre = (Boolean) (jTable2.getValueAt(i, 3));
+				phieuChamCongHanhChinh.setMaPCCHC(today + model.getValueAt(i, 0).toString());
+				phieuChamCongHanhChinh.setNgay(LocalDate.now());
+				phieuChamCongHanhChinh.setNhanVien(daoNhanVien.timKiemNhanVien((String) model.getValueAt(i, 0)));
+				phieuChamCongHanhChinh.setVang(isVang);
+				phieuChamCongHanhChinh.setDiTre(isTre);
+				phieuChamCongHanhChinh.setGioTangCa(0);
+				phieuChamCongHanhChinh.setTienPhat((int) model.getValueAt(i, 4));
+				phieuChamCongHanhChinh.setNoiDungTienPhat((String) model.getValueAt(i, 5));
+				try {
+					daoPhieuChamCongNhanVien.themPhieuChamCongNhanVien(phieuChamCongHanhChinh);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			loadDataTable2();
 		}
-		loadDataTable2();
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Lỗi ChamCong.java - jButton2MouseClicked");
+		}
 	}// GEN-LAST:event_jButton2MouseClicked
 
 	private void jButton3MouseClicked(java.awt.event.MouseEvent evt) throws Exception {// GEN-FIRST:event_jButton3MouseClicked
-		DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-		int row = model.getRowCount();
-		PhieuChamCongCongNhan phieuChamCongCongNhan = new PhieuChamCongCongNhan();
-		for (int i = 0; i < row; i++) {
-			String maCN = model.getValueAt(i, 0).toString();
-//			String maCTPC = DAO_ChiTietPhanCong.getMaChiTietPhanCongBymaCN(maCN);
-			String maCTPC = daoChiTietPhanCong.getMaChiTietPhanCongBymaCN(maCN);
-			int soCDGiao = (int) model.getValueAt(i, 4);
-			boolean isVang = (Boolean) (jTable3.getValueAt(i, 2));
-			String maCD = daoChiTietPhanCong.getMaCongDoanBymaCTPC(maCTPC);
-			int donGiaCongDoan = (int) daoCongDoan.get(maCD).getDonGia();
+		try
+		{
+			IDAOChiTietPhanCong daoChiTietPhanCong = (IDAOChiTietPhanCong) Naming.lookup(Client.URL + "DAOChiTietPhanCong");
+			DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+			int row = model.getRowCount();
+			PhieuChamCongCongNhan phieuChamCongCongNhan = new PhieuChamCongCongNhan();
+			for (int i = 0; i < row; i++) {
+				String maCN = model.getValueAt(i, 0).toString();
+//				String maCTPC = DAO_ChiTietPhanCong.getMaChiTietPhanCongBymaCN(maCN);
+				String maCTPC = daoChiTietPhanCong.getMaChiTietPhanCongBymaCN(maCN);
+				int soCDGiao = (int) model.getValueAt(i, 4);
+				boolean isVang = (Boolean) (jTable3.getValueAt(i, 2));
+				String maCD = daoChiTietPhanCong.getMaCongDoanBymaCTPC(maCTPC);
+				double donGiaCongDoan = (double) daoCongDoan.get(maCD).getDonGia();		
+				phieuChamCongCongNhan.setMaPCCCN("PCCCN" + maCTPC);
+				phieuChamCongCongNhan.setChiTietPhanCong(daoChiTietPhanCong.get(maCTPC));
+				phieuChamCongCongNhan.setNgay(LocalDate.now());
+				phieuChamCongCongNhan.setVang(isVang);
+				phieuChamCongCongNhan.setSoLuongSanPham((int) model.getValueAt(i, 5));
+				phieuChamCongCongNhan.setSoLuongSanPhamTangCa((int) model.getValueAt(i, 6));
+				phieuChamCongCongNhan.setNoiDungPhat((String) model.getValueAt(i, 9));
+				phieuChamCongCongNhan.setTienCong((int) (phieuChamCongCongNhan.getSoLuongSanPham()
+						+ phieuChamCongCongNhan.getSoLuongSanPhamTangCa() * 1.2) * donGiaCongDoan);
+				phieuChamCongCongNhan.setTienPhat((int) model.getValueAt(i, 8));
+				phieuChamCongCongNhan.setTienThuong((int) (model.getValueAt(i, 7)));
 
-			phieuChamCongCongNhan.setMaPCCCN("PCCCN" + maCTPC);
-			phieuChamCongCongNhan.setMaCTPC(maCTPC);
-			phieuChamCongCongNhan.setNgay(LocalDate.now());
-			phieuChamCongCongNhan.setVang(isVang);
-			phieuChamCongCongNhan.setSoLuongSanPham((int) model.getValueAt(i, 5));
-			phieuChamCongCongNhan.setSoLuongSanPhamTangCa((int) model.getValueAt(i, 6));
-			phieuChamCongCongNhan.setNoiDungPhat((String) model.getValueAt(i, 9));
-			phieuChamCongCongNhan.setTienCong((int) (phieuChamCongCongNhan.getSoLuongSanPham()
-					+ phieuChamCongCongNhan.getSoLuongSanPhamTangCa() * 1.2) * donGiaCongDoan);
-			phieuChamCongCongNhan.setTienPhat((int) model.getValueAt(i, 8));
-			phieuChamCongCongNhan.setTienThuong((int) (model.getValueAt(i, 7)));
-
-			try {
-				if (soCDGiao < phieuChamCongCongNhan.getSoLuongSanPham()
-						+ phieuChamCongCongNhan.getSoLuongSanPhamTangCa()) {
-					JOptionPane.showMessageDialog(this, "Số lượng nhập công đoạn vượt quá số lượng giao!", "Cảnh báo",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-//					boolean kq = DAO_PhieuChamCongCongNhan.getInstance().insert(phieuChamCongCongNhan);
-					boolean kq = daoPhieuChamCongCongNhan.themPhieuChamCongCongNhan(phieuChamCongCongNhan);
-					
-//					DAO_ChiTietPhanCong.getInstance().updateChoPhanCong(maCN, true);
-					daoChiTietPhanCong.updateChoPhanCong(maCN, true);
+				try {
+					if (soCDGiao < phieuChamCongCongNhan.getSoLuongSanPham()
+							+ phieuChamCongCongNhan.getSoLuongSanPhamTangCa()) {
+						JOptionPane.showMessageDialog(this, "Số lượng nhập công đoạn vượt quá số lượng giao!", "Cảnh báo",
+								JOptionPane.INFORMATION_MESSAGE);
+					} else {
+//						boolean kq = DAO_PhieuChamCongCongNhan.getInstance().insert(phieuChamCongCongNhan);
+						boolean kq = daoPhieuChamCongCongNhan.themPhieuChamCongCongNhan(phieuChamCongCongNhan);
+						
+//						DAO_ChiTietPhanCong.getInstance().updateChoPhanCong(maCN, true);
+						daoChiTietPhanCong.updateChoPhanCong(maCN, true);
+					}
+				} catch (SQLException ex) {
+					Logger.getLogger(GD_ChamCong.class.getName()).log(Level.SEVERE, null, ex);
 				}
-			} catch (SQLException ex) {
-				Logger.getLogger(GD_ChamCong.class.getName()).log(Level.SEVERE, null, ex);
 			}
-		}
-		loadDataTabale1();
+			loadDataTabale1();
 
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Lỗi ChamCong.java - jButton3MouseClicked");
+		}
+	
 	}// GEN-LAST:event_jButton3MouseClicked
 
 	private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_jComboBox3ActionPerformed

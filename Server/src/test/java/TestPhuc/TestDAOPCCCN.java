@@ -8,10 +8,10 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import DAO_Implement.DAOBangDanhGiaNhanVien;
-import DAO_Implement.DAOCongNhan;
-import DAO_Implement.DAONhanVien;
-import DAO_Implement.DAOPhieuChamCongCongNhan;
+import DAO_Implement.DAO_BangDanhGiaNhanVien;
+import DAO_Implement.DAO_CongNhan;
+import DAO_Implement.DAO_NhanVien;
+import DAO_Implement.DAO_PhieuChamCongCongNhan;
 import DAO_Interface.IDAOCongNhan;
 import DAO_Interface.IDAOPhieuChamCongCongNhan;
 import ptud.Entity.ChamCongDTO;
@@ -103,7 +103,7 @@ public class TestDAOPCCCN {
 	@Test
 	public void testGetDanhSachThongTinChamCongByIDBoPhan() {
 	    try {
-	        DAOPhieuChamCongCongNhan daoPhieuChamCongCongNhan = new DAOPhieuChamCongCongNhan();
+	        DAO_PhieuChamCongCongNhan daoPhieuChamCongCongNhan = new DAO_PhieuChamCongCongNhan();
 	        System.out.print("tétcc");
 	        ArrayList<Object[]> aObjects = daoPhieuChamCongCongNhan.getDanhSachThongTinChamCongByIDBoPhan("SX01");
 	        

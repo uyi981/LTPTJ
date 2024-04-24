@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
 
-import DAO_Implement.DAOKhachHang;
-import DAO_Implement.DAOSanPham;
+import DAO_Implement.DAO_KhachHang;
+import DAO_Implement.DAO_SanPham;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -29,10 +29,24 @@ import jakarta.persistence.Transient;
 public class HopDong implements Serializable
 {       
 	
-    /**
+    public Set<SanPham> getSanPham() {
+		return sanPham;
+	}
+
+	public void setSanPham(Set<SanPham> sanPham) {
+		this.sanPham = sanPham;
+	}
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3572611841999822480L;
+	public KhachHang getKhachHang() {
+		return khachHang;
+	}
+
+	public void setKhachHang(KhachHang khachHang) {
+		this.khachHang = khachHang;
+	}
 	// khai bao thuoc tinh
 	@Id
    private String maHD;
@@ -45,50 +59,16 @@ public class HopDong implements Serializable
    @Transient
    public static String oldMaHD = null;
    private double donGia; 
-   @Transient
-   private String maKH; 
    @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
    @JoinColumn(name = "maKH")
    KhachHang khachHang;
    @OneToMany(mappedBy = "hopDong")
-   @Transient
    Set<SanPham> sanPham;
-    public int getSoLuongSanPham() {
-        return soLuongSanPham;
-    }
 
-    public void setSoLuongSanPham() 
-    {
-       
-       soLuongSanPham =  sanPhams.size();
-    }
    @Transient
    private int soLuongSanPham;
-   @Transient
-   transient ArrayList<SanPham> sanPhams = new ArrayList<>();
 
-    public ArrayList<SanPham> getSanPhams() {
-        return sanPhams;
-    }
-
-    public void setSanPhams(ArrayList<SanPham> sanPhams) {
-        this.sanPhams = sanPhams;
-    }
    
-   
-   
-    public void setMaKH(String maKH) {
-        this.maKH = maKH;
-        try 
-        {
-        	 DAOKhachHang daokh = new DAOKhachHang();
-             khachHang = daokh.timKiemKhachHang(maKH);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-       
-    }
 
     public void setMaHD(String maHD) {
         this.maHD = maHD;
@@ -208,28 +188,18 @@ public class HopDong implements Serializable
         return trangThai;
     }
 
-    public HopDong(int stt, String tenHD, LocalDate ngayBatDau, LocalDate ngayKetThucDuKien, double donGia, String maKH,String trangThai) {
+    public HopDong(int stt, String tenHD, LocalDate ngayBatDau, LocalDate ngayKetThucDuKien, double donGia, KhachHang khachHang,String trangThai) {
         super();
+        this.setKhachHang(khachHang);
         this.setNgayBatDau(ngayBatDau);
         this.setNgayKetThucDuKien(ngayKetThucDuKien);
         this.setTenHD(tenHD);
         this.setTrangThai(trangThai);
         this.setDonGia(donGia);
         this.setMaHD(stt);
-        this.setMaKH(maKH);
     }
 
-    public void updateListSanPham() throws Exception{
-    	DAOSanPham daosp = null;
-        daosp = new DAOSanPham();
-        sanPhams = null;
-        sanPhams = new ArrayList<>();
-        for (SanPham sanPham : daosp.layDanhSachSanPham()) {
-			if (sanPham.getMaHD().equals(maHD)) {
-				sanPhams.add(sanPham);
-			}
-        }
-    }
+
 
     public HopDong(String maHD, String tenHD, LocalDate ngayBatDau, LocalDate ngayKetThucDuKien, double donGia, String maKH,String trangThai) {
         super();
@@ -239,7 +209,6 @@ public class HopDong implements Serializable
         this.setTrangThai(trangThai);
         this.setDonGia(donGia);
         this.setMaHD(maHD);
-        this.setMaKH(maKH);
     }
 
     public String ToString() {

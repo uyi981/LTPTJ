@@ -9,17 +9,17 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import DAO_Implement.DAOHopDong;
+import DAO_Implement.DAO_HopDong;
 import ptud.Entity.HopDong;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TestDAOHopDong {
-	DAOHopDong daoHopDong;
+	DAO_HopDong daoHopDong;
 	HopDong hopDong = new HopDong("AAAA", "A", LocalDate.of(2020, 10, 30), LocalDate.of(2021,10,30),10000,"231002","Chờ xác nhận");
 
 	
 	@Test
 	void test() throws Exception{
-		daoHopDong = new DAOHopDong();
+		daoHopDong = new DAO_HopDong();
 		daoHopDong.themHopDong(hopDong);
 		daoHopDong.layDanhSachHopDong();
 		//if (daoHopDong.timKiemHopDong(hopDong.getMaHD()) == null)

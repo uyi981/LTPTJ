@@ -9,9 +9,9 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Objects;
 
-import DAO_Implement.DAOCongNhan;
-import DAO_Implement.DAONhanVien;
-import DAO_Implement.DAOPhieuChamCongNhanVien;
+import DAO_Implement.DAO_CongNhan;
+import DAO_Implement.DAO_NhanVien;
+import DAO_Implement.DAO_PhieuChamCongNhanVien;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -62,12 +62,12 @@ public class PhieuLuongNhanVien implements Serializable {
     public PhieuLuongNhanVien() {
     }
 
-    public PhieuLuongNhanVien(String maPL, int thang, int nam, String maNV, double phat) {
+    public PhieuLuongNhanVien(String maPL, int thang, int nam, NhanVien nhanVien, double phat) {
         setMaPL(maPL);
         setThang(thang);
         setNam(nam);
-        setMaNV(maNV);
         setPhat(phat);
+        this.nhanVien = nhanVien;
     }
 
     public String getMaPL() {
@@ -98,25 +98,11 @@ public class PhieuLuongNhanVien implements Serializable {
         return nhanVien.getMaNV();
     }
 
-    public void setMaNV(String maNV) {
-    	try {
-    		this.maNV = maNV;
-            DAONhanVien daoNhanVien = new DAONhanVien();
-            this.nhanVien = daoNhanVien.timKiemNhanVien(maNV);
-      
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    }
+
     public double getPhat() {
         double phat2 = 0; 
         // xử lý tính toán
-        try {
-            phat2 = DAOPhieuChamCongNhanVien.getInstance().getTongTienPhatTrongThang(maNV, thang, nam);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } 
+ 
         return phat2;
     }
 
@@ -125,17 +111,17 @@ public class PhieuLuongNhanVien implements Serializable {
     }
     
     public double getPhuCap() throws RemoteException {
-    	DAONhanVien daoNhanVien = new DAONhanVien();
+    	DAO_NhanVien daoNhanVien = new DAO_NhanVien();
         double PhuCap = daoNhanVien.timKiemNhanVien(maNV).getPhuCap();
         return PhuCap;
     }
 
     public double getLuong() throws RemoteException  {
-    	DAONhanVien daoNhanVien = new DAONhanVien();
+    	DAO_NhanVien daoNhanVien = new DAO_NhanVien();
     	double luong = 0;
         // xử lý tính toán
         try {
-            luong = new DAOPhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam)*daoNhanVien.timKiemNhanVien(maNV).getLuongCoBan()/24;
+            luong = new DAO_PhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam)*daoNhanVien.timKiemNhanVien(maNV).getLuongCoBan()/24;
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -143,41 +129,10 @@ public class PhieuLuongNhanVien implements Serializable {
         return luong;
     }
 
-    public double getThuong()  throws RemoteException{
-    	DAONhanVien daoNhanVien = new DAONhanVien();
-        double thuong = 0;
-        // xử lý tính toán
-        double luongMoiGio = daoNhanVien.timKiemNhanVien(maNV).getLuongCoBan()/(24*8); 
-        float gioTangCa=0;
-        try {
-            gioTangCa = new DAOPhieuChamCongNhanVien().getTongGioTangCaTrongThang(maNV, thang, nam);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } 
-        thuong = luongMoiGio*gioTangCa*1.5; 
-        return thuong;
-    }
 
 
-    public int getSoNgayLam()  {
-        int soNgayLam = 0; 
-        // xử lý tính toán
-        try {
-            soNgayLam = new DAOPhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } 
-        return soNgayLam;
-    }
+    
 
-    public double getLuongThucNhan() throws RemoteException  {
-        double luongThucNhan = 0;
-        // xử lý tính toán
-        luongThucNhan = getLuong() + getThuong() + getPhuCap() - getPhat();
-        return luongThucNhan;
-    }
 
 
     @Override
@@ -191,9 +146,7 @@ public class PhieuLuongNhanVien implements Serializable {
 				        ", maNV='" + maNV + '\'' +
 				        ", phat=" + phat +
 				        ", luong=" + getLuong() +
-				        ", thuong=" + getThuong() +
-				        ", soNgayLam=" + getSoNgayLam() +
-				        ", luongThucNhan=" + getLuongThucNhan() +
+				       
 				        '}';
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block

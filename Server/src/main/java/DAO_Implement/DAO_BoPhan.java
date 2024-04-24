@@ -8,11 +8,15 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class DAOBoPhan extends UnicastRemoteObject implements IDAOBoPhan {
+public class DAO_BoPhan extends UnicastRemoteObject implements IDAOBoPhan {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3037183164163251250L;
 	private EntityManager em;
 
-	public DAOBoPhan() throws RemoteException {
+	public DAO_BoPhan() throws RemoteException {
 		em = jakarta.persistence.Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 

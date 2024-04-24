@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import DAO_Implement.DAOCongDoan;
+import DAO_Implement.DAO_CongDoan;
 import DAO_Interface.IDAOCongDoan;
 import ptud.Entity.CongDoan;
 
@@ -22,7 +22,7 @@ public class TestDAOCongDoan {
 	@BeforeAll
 	public void init() {
 		try {
-			daoCongDoan = new DAOCongDoan();
+			daoCongDoan = new DAO_CongDoan();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

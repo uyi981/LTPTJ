@@ -1,6 +1,8 @@
 package DAO_Implement;
 import java.rmi.RemoteException;
 import java.util.List;
+
+import ptud.Entity.CongDoan;
 import ptud.Entity.SanPham;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -8,10 +10,10 @@ import DAO_Interface.IDAOSanPham;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-public class DAOSanPham extends UnicastRemoteObject  implements IDAOSanPham 
+public class DAO_SanPham extends UnicastRemoteObject  implements IDAOSanPham 
 {
     EntityManager em;
-	public DAOSanPham() throws RemoteException {
+	public DAO_SanPham() throws RemoteException {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 		// TODO Auto-generated constructor stub
 	}
@@ -81,9 +83,34 @@ public class DAOSanPham extends UnicastRemoteObject  implements IDAOSanPham
 		return em.createQuery("SELECT sp FROM SanPham sp").getResultList();
 	}
 
-
-
-
-
-
+	@Override
+	public int getTienDo(String maSP) throws RemoteException 
+	{
+		
+		// TODO Auto-generated method stub
+		List<?> list = em.createNativeQuery("SELECT * FROM CongDoan WHERE maSP = ?", CongDoan.class)
+				.setParameter(1, maSP).getResultList();
+		List<CongDoan> congDoans = (List<CongDoan>) list;
+		int i =0;
+		int min =0;
+		for (CongDoan congDoan : congDoans) 
+		{
+			if(i==0)
+			{
+				min = congDoan.getSoLuongHoanThanh();
+			}
+			else
+			{
+				if(min>congDoan.getSoLuongHoanThanh())
+                {
+                    min = congDoan.getSoLuongHoanThanh();
+                }
+			}
+		}
+		return min;
+		
+	}
 }
+	
+
+

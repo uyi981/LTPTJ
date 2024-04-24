@@ -429,8 +429,7 @@ public class GD_QLHD extends javax.swing.JPanel {
 		int index = hopDongTable.getSelectedRow();
 		String maHD = hopDongModel.getValueAt(index, 0).toString();
 		try {
-			HopDong hopDong = daoHongDong.timKiemHopDong(maHD);
-			gD_ChiTietHopDong.receiveHopDong(hopDong, this);
+			gD_ChiTietHopDong.receiveHopDong(maHD, this);
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

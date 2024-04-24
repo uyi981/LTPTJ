@@ -10,11 +10,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class DAOChiTietPhanCong extends UnicastRemoteObject implements IDAOChiTietPhanCong {
+public class DAO_ChiTietPhanCong extends UnicastRemoteObject implements IDAOChiTietPhanCong {
 
 	private EntityManager em;
 
-	public DAOChiTietPhanCong() throws Exception {
+	public DAO_ChiTietPhanCong() throws Exception {
 		em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	}
 

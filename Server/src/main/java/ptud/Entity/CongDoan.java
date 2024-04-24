@@ -10,10 +10,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import DAO_Implement.DAOBoPhan;
-import DAO_Implement.DAOChiTietPhanCong;
-import DAO_Implement.DAOCongDoan;
-import DAO_Implement.DAOSanPham;
+import DAO_Implement.DAO_SanPham;
 import DAO_Interface.IDAOBoPhan;
 import DAO_Interface.IDAOSanPham;
 import jakarta.persistence.Column;
@@ -36,6 +33,22 @@ import jakarta.persistence.Transient;
 @Entity
 @Table(name = "CongDoan")
 public class CongDoan implements java.io.Serializable {
+	public BoPhan getBoPhan() {
+		return boPhan;
+	}
+
+	public void setBoPhan(BoPhan boPhan) {
+		this.boPhan = boPhan;
+	}
+
+	public SanPham getSanPham() {
+		return sanPham;
+	}
+
+	public void setSanPham(SanPham sanPham) {
+		this.sanPham = sanPham;
+	}
+
 	/**
 	 * 
 	 */
@@ -82,50 +95,20 @@ public class CongDoan implements java.io.Serializable {
 	        inverseJoinColumns = @JoinColumn(name = "maCDTQ")
 	    )
 	 private Set<CongDoan> dsCDTQs = new HashSet<CongDoan>();
-	@Transient
-	private String maSP;
-	@Transient
-	private String maBP;
-	@Transient
-	private ArrayList<String> dsCDTQ;
-	
-	@Transient
-	IDAOBoPhan daoBoPhan;
-	@Transient
-	IDAOSanPham daoSanPham;
-	public void insertCDTQ(CongDoan cd)
-	{
-		dsCDTQs.add(cd);
-	}
+
 	public CongDoan() {
 	}
 
-	public CongDoan(String maCD, String maSP, String maBP, String tenCD, double donGia, boolean trangThai,
-			int soLuongChuanBiToiThieu, ArrayList<String> dsCDTQ) {
+	public CongDoan(String maCD, SanPham sanPham, BoPhan boPhan, String tenCD, double donGia, boolean trangThai,
+			int soLuongChuanBiToiThieu) {
 		
-		try {
-			daoBoPhan = new DAOBoPhan();
-			this.boPhan = daoBoPhan.get(maBP);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			daoSanPham = new DAOSanPham();
-			this.sanPham = daoSanPham.timKiemSanPham(maSP);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		setMaCD(maCD);
-		setMaSP(maSP);
-		setMaBP(maBP);
+		this.sanPham = sanPham;
+		this.boPhan = boPhan;
 		setTenCD(tenCD);
 		setDonGia(donGia);
 		setTrangThai(trangThai);
 		setSoLuongChuanBiToiThieu(soLuongChuanBiToiThieu);
-		setDsCDTQ(dsCDTQ);
 	}
 
 	public String getMaCD() {
@@ -160,26 +143,10 @@ public class CongDoan implements java.io.Serializable {
 		return soLuongChuanBiToiThieu;
 	}
 
-	public int getSoLuongHoanThanh() throws Exception {
+	public int getSoLuongHoanThanh() {
 		return soLuongHoanThanh;
 	}
 
-	public ArrayList<String> getDsCDTQ() {
-		return dsCDTQ;
-	}
-
-	public void setMaCD(String maCD) {
-		this.maCD = maCD;
-	}
-
-	public void setMaSP(String maSP) {
-		this.maSP = maSP;
-	}
-
-	public void setMaBP(String maBP) {
-		this.maBP = maBP;
-		
-	}
 
 	public void setTenCD(String tenCD) {
 		this.tenCD = tenCD;
@@ -195,32 +162,6 @@ public class CongDoan implements java.io.Serializable {
 
 	public void setSoLuongChuanBiToiThieu(int soLuongChuanBiToiThieu) {
 		this.soLuongChuanBiToiThieu = soLuongChuanBiToiThieu;
-	}
-
-	public void setDsCDTQ(ArrayList<String> dsCDTQ) {
-		this.dsCDTQ = dsCDTQ;
-	}
-
-	public void addCDTQ(String maCDTQ) {
-		if (dsCDTQ == null) {
-			dsCDTQ = new ArrayList<String>();
-		}
-		dsCDTQ.add(maCDTQ);
-	}
-
-	public void deleteCDTQ(String maCDTQ) {
-		if (dsCDTQ != null) {
-			dsCDTQ.remove(maCDTQ);
-		}
-	}
-
-	public void updateCDTQ(String maCDTQ, String maCDTQNew) {
-		if (dsCDTQ != null) {
-			int index = dsCDTQ.indexOf(maCDTQ);
-			if (index != -1) {
-				dsCDTQ.set(index, maCDTQNew);
-			}
-		}
 	}
 
 	@Override
@@ -243,6 +184,14 @@ public class CongDoan implements java.io.Serializable {
 		}
 		final CongDoan other = (CongDoan) obj;
 		return Objects.equals(this.maCD, other.maCD);
+	}
+
+	public Set<CongDoan> getDsCDTQs() {
+		return dsCDTQs;
+	}
+
+	public void setDsCDTQs(Set<CongDoan> dsCDTQs) {
+		this.dsCDTQs = dsCDTQs;
 	}
 
 	@Override

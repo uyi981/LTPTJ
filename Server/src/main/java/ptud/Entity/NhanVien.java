@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-import DAO_Implement.DAONhanVien;
+import DAO_Implement.DAO_NhanVien;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Column;
@@ -185,7 +185,7 @@ public class NhanVien implements java.io.Serializable {
     }
 
     private String genMaNV(BoPhan boPhan,LocalDate ngayBatDauLam, boolean gioiTinh) throws Exception {
-        DAONhanVien daoNhanVien = new DAONhanVien();
+        DAO_NhanVien daoNhanVien = new DAO_NhanVien();
         int count = daoNhanVien.countAll();
 
         // Sử dụng DateTimeFormatter để lấy hai số cuối của năm
@@ -201,7 +201,7 @@ public class NhanVien implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "NhanVien{" + "maNV=" + maNV + ", boPhan=" + boPhan.getTenBP() + ", ten=" + ten + ", gioiTinh=" + gioiTinh + ", ngaySinh=" + ngaySinh + ", ngayBatDauLam=" + ngayBatDauLam + ", cccd=" + cccd + ", dienThoai=" + dienThoai + ", trangThai=" + trangThai + ", avatar=" + avatar + ", luongCoBan=" + luongCoBan + ", phuCap=" + phuCap + '}';
+        return "NhanVien{" + "maNV=" + maNV + ", boPhan="  + ", ten=" + ten + ", gioiTinh=" + gioiTinh + ", ngaySinh=" + ngaySinh + ", ngayBatDauLam=" + ngayBatDauLam + ", cccd=" + cccd + ", dienThoai=" + dienThoai + ", trangThai=" + trangThai + ", avatar=" + avatar + ", luongCoBan=" + luongCoBan + ", phuCap=" + phuCap + '}';
     }
 
 }

@@ -6,7 +6,7 @@ package ptud.Entity;
 
 import java.io.Serializable;
 
-import DAO_Implement.DAONhanVien;
+import DAO_Implement.DAO_NhanVien;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -53,7 +53,7 @@ public class TaiKhoan implements Serializable {
 	public void setmaNV(String maNV) {
 		try {
 			this.maNV = maNV;
-			DAONhanVien daoNV = new DAONhanVien();
+			DAO_NhanVien daoNV = new DAO_NhanVien();
 			this.nhanVien = daoNV.timKiemNhanVien(maNV);
 		} catch (Exception e) {
 			e.printStackTrace();

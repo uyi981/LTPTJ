@@ -2,7 +2,6 @@ package DAO_Interface;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import ptud.Entity.PhieuChamCongHanhChinh;

@@ -17,10 +17,12 @@ import javax.swing.table.DefaultTableModel;
 import DAO_Interface.IDAOBoPhan;
 import DAO_Interface.IDAOCongNhan;
 import DAO_Interface.IDAONhanVien;
+import DAO_Interface.IDAOPhieuChamCongCongNhan;
+import DAO_Interface.IDAOPhieuChamCongNhanVien;
 import DAO_Interface.IDAOPhieuLuongCongNhan;
 import DAO_Interface.IDAOPhieuLuongNhanVien;
 import client.Client;
-
+import ptud.Entity.BoPhan;
 import ptud.Entity.ChiTietPhanCong;
 import ptud.Entity.CongDoan;
 import ptud.Entity.CongNhan;
@@ -122,10 +124,16 @@ public class GD_TinhLuong extends javax.swing.JPanel {
             model.setRowCount(0);
             String tenBP = jComboBoxBoPhan.getSelectedItem().toString();
             DecimalFormat decimalFormat = new DecimalFormat("#,###");
+            IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
+        	IDAOBoPhan daoBoPhan1 = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
 
             if (dsPhieuLuongNhanVien.isEmpty()) {
                 for (NhanVien nv : dsNhanVien) {
-                    if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
+                		
+                  	System.out.println("Loi");
+                	String tbp =   daoBoPhan1.get(daoNhanVien.getMaBoPhan(nv.getMaNV())).getTenBP();
+                	System.out.println(tbp);
+                    if (tenBP.equals("Tất cả") || tenBP.equals(tbp)) {
                         Object[] row = { nv.getMaNV(), nv.getTen(), decimalFormat.format(nv.getLuongCoBan()),
                                 decimalFormat.format(nv.getPhuCap()), 0 };
                         model.addRow(row);
@@ -133,18 +141,32 @@ public class GD_TinhLuong extends javax.swing.JPanel {
                 }
             } else {
                 // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
+            	IDAOPhieuChamCongNhanVien daoPhieuChamCongNhanVien = (IDAOPhieuChamCongNhanVien) Naming.lookup(Client.URL + "DAOPhieuChamCongNhanVien");
+            	IDAONhanVien daoNhanVien1 = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
+            	IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+            	
                 for (PhieuLuongNhanVien plnv : dsPhieuLuongNhanVien) {
+                	System.out.println("Loi");
                     String maNV = plnv.getMaNV();
-                    IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
-                    NhanVien nv = daoNhanVien.timKiemNhanVien(maNV);
+                    NhanVien nv = daoNhanVien1.timKiemNhanVien(maNV);
+                	String tbp1 =   daoBoPhan.get(daoNhanVien.getMaBoPhan(maNV)).getTenBP();
+                   	System.out.println(tbp1);
                     double luongCoBan = nv.getLuongCoBan();
+                    System.out.println(daoPhieuChamCongNhanVien.getSoNgayLam(maNV, thang, nam)*luongCoBan/24);
+                    System.out.println(daoPhieuChamCongNhanVien.getTongTienPhatTrongThang(maNV, thang, nam));
+                    System.out.println(daoPhieuChamCongNhanVien.getTongGioTangCaTrongThang(maNV, thang, nam));
+                    double luong =   daoPhieuChamCongNhanVien.getSoNgayLam(maNV, thang, nam)*luongCoBan/24
+                    		-daoPhieuChamCongNhanVien.getTongTienPhatTrongThang(maNV, thang, nam)
+                    		+daoPhieuChamCongNhanVien.getTongGioTangCaTrongThang(maNV, thang, nam)*luongCoBan/(24*8)*1.5;
+                    
+            
                     double phuCap = nv.getPhuCap();
-                    if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
+                    if (tenBP.equals("Tất cả") || tenBP.equals(tbp1)) {
 
                         Object[] row = { maNV, nv.getTen(),
                                 decimalFormat.format(luongCoBan),
                                 decimalFormat.format(phuCap),
-                                decimalFormat.format(plnv.getLuongThucNhan()) };
+                                decimalFormat.format(luong)};
                         model.addRow(row);
                     }
 
@@ -174,55 +196,76 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     }
 
     private void loadDataPhieuLuongCongNhan() throws SQLException {
-        // thêm dsNhanVien vào jTablePhieuLuongNhanVien
-        int thang = jMonthChooser2.getMonth() + 1;
-        int nam = jYearChooser2.getYear();
-        try {
-
-            dsPhieuLuongCongNhan = daoPhieuLuongCongNhan.getAllByThangNam(thang, nam);
+    	try
+    	{
+    		IDAOPhieuChamCongCongNhan daoPhieuChamCongCongNhan = (IDAOPhieuChamCongCongNhan) Naming.lookup(Client.URL + "DAOPhieuChamCongCongNhan");
+    		   // thêm dsNhanVien vào jTablePhieuLuongNhanVien
+            int thang = jMonthChooser2.getMonth() + 1;
+            int nam = jYearChooser2.getYear();
+            try {
+            	
+                dsPhieuLuongCongNhan = daoPhieuLuongCongNhan.getAllByThangNam(thang, nam);
+                
+                DefaultTableModel model = (DefaultTableModel) jTablePhieuLuongCongNhan.getModel();
+                model.setRowCount(0);
+                
+                String tenBP = jComboBoxBoPhan3.getSelectedItem().toString();
+                DecimalFormat decimalFormat = new DecimalFormat("#,###");
+      
+            	IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+                IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
+                if (dsPhieuLuongCongNhan.isEmpty()) {
+                    // DecimalFormat decimalFormat = new DecimalFormat("#,###");
+                    for (CongNhan nv : dsCongNhan) 
+                    {
+                    	String tbp =   daoBoPhan.get(daoCongNhan.getMaBoPhan(nv.getMaCN())).getTenBP();
+                    	
+                    	
+                        if (tenBP.equals("Tất cả") || tenBP.equals(tbp)) {
+                            Object[] row = { nv.getMaCN(), nv.getTen(), 0,
+                                    0, 0, 0, 0 };
+                            model.addRow(row);
+                        }
+                    }
+                } else {
+                    // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
+                    for (PhieuLuongCongNhan plnv : dsPhieuLuongCongNhan) {
+                    
+                        String maCN = plnv.getMaCN();
+                        IDAOCongNhan daoCongNhan1 = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
+                        CongNhan nv = daoCongNhan.timKiemCongNhan(maCN);
+                        String tenBP2 = daoBoPhan.get(daoCongNhan1.getMaBoPhan(maCN)).getTenBP();
+                        float luong = daoPhieuChamCongCongNhan.getTongTienCongTrongThang(maCN, thang, nam)*1.15f
+                        		- daoPhieuChamCongCongNhan.getTongTienPhatTrongThang(maCN, thang, nam);
+                        		
+                        
+                        if (tenBP.equals("Tất cả") || tenBP.equals(tenBP2)) {
+                            Object[] row = { maCN, nv.getTen(),
+                                    decimalFormat.format( daoPhieuChamCongCongNhan.getTongTienCongTrongThang(maCN, thang, nam)),
+                                 decimalFormat.format(luong) };
+                            model.addRow(row);
+                        }
+                    }
+                }
+                double total = 0; 
+                int rowCount = jTablePhieuLuongCongNhan.getRowCount();
+                int lastColumnIndex = jTablePhieuLuongCongNhan.getColumnCount() - 1;
+                for (int i = 0; i < rowCount; i++) {
+                    String str = jTablePhieuLuongCongNhan.getValueAt(i, lastColumnIndex).toString();
+                    str = str.replaceAll("[^0-9]", "");
+                    double value = Double.parseDouble(str);
+                    total += value;
+                }
+                jTextField2.setText(decimalFormat.format(total));
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
             
-            DefaultTableModel model = (DefaultTableModel) jTablePhieuLuongCongNhan.getModel();
-            model.setRowCount(0);
-
-            String tenBP = jComboBoxBoPhan3.getSelectedItem().toString();
-            DecimalFormat decimalFormat = new DecimalFormat("#,###");
-            if (dsPhieuLuongCongNhan.isEmpty()) {
-                // DecimalFormat decimalFormat = new DecimalFormat("#,###");
-                for (CongNhan nv : dsCongNhan) {
-                    if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
-                        Object[] row = { nv.getMaCN(), nv.getTen(), 0,
-                                0, 0, 0, 0 };
-                        model.addRow(row);
-                    }
-                }
-            } else {
-                // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
-                for (PhieuLuongCongNhan plnv : dsPhieuLuongCongNhan) {
-                    String maCN = plnv.getMaCN();
-                    IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
-                    CongNhan nv = daoCongNhan.timKiemCongNhan(maCN);
-                    if (tenBP.equals("Tất cả") || tenBP.equals(nv.getBoPhan().getTenBP())) {
-                        Object[] row = { maCN, nv.getTen(),
-                                decimalFormat.format(plnv.getLuong()),
-                             decimalFormat.format(plnv.getLuongThucNhan()) };
-                        model.addRow(row);
-                    }
-                }
-            }
-            double total = 0; 
-            int rowCount = jTablePhieuLuongCongNhan.getRowCount();
-            int lastColumnIndex = jTablePhieuLuongCongNhan.getColumnCount() - 1;
-            for (int i = 0; i < rowCount; i++) {
-                String str = jTablePhieuLuongCongNhan.getValueAt(i, lastColumnIndex).toString();
-                str = str.replaceAll("[^0-9]", "");
-                double value = Double.parseDouble(str);
-                total += value;
-            }
-            jTextField2.setText(decimalFormat.format(total));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-        
+    	}
+    	catch(Exception e) {
+    		
+    	}
+     
     }
 
 
@@ -661,7 +704,7 @@ public class GD_TinhLuong extends javax.swing.JPanel {
                     // double phat) {
                     // mã phiếu lương là mã bộ phận + tháng + năm + mã nhân viên
                     String maPL = thang + "" + nam + nv.getMaNV();
-                    PhieuLuongNhanVien plnv = new PhieuLuongNhanVien(maPL, thang, nam, nv.getMaNV(), 0);
+                    PhieuLuongNhanVien plnv = new PhieuLuongNhanVien(maPL, thang, nam, nv, 0);
 
                     // kiểm tra pl đã tồn tại trong database chưa 
                     if( daoPhieuLuongNhanVien.get(maPL) == null){
@@ -735,7 +778,7 @@ public class GD_TinhLuong extends javax.swing.JPanel {
                 int nam = jYearChooser2.getYear();
                 for (CongNhan nv : dsCongNhan) {
                     String maPL = thang + "" + nam + nv.getMaCN();
-                    PhieuLuongCongNhan plcn = new PhieuLuongCongNhan(maPL, thang, nam, nv.getMaCN(), 0);
+                    PhieuLuongCongNhan plcn = new PhieuLuongCongNhan(maPL, thang, nam, nv, 0);
                     if( daoPhieuLuongCongNhan.get(maPL) == null){
                         daoPhieuLuongCongNhan.insert(plcn);
                     } else

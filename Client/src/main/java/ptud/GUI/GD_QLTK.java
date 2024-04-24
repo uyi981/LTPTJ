@@ -20,8 +20,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.html.HTMLDocument.RunElement;
 
-import DAO_Implement.DAONhanVien;
-import DAO_Implement.DAOTaiKhoan;
+import DAO_Interface.IDAONhanVien;
 import DAO_Interface.IDAOTaiKhoan;
 import client.Client;
 import ptud.Entity.NhanVien;
@@ -78,7 +77,7 @@ public class GD_QLTK extends javax.swing.JPanel {
             String userName = model.getValueAt(index, 2).toString();
             String passWord = model.getValueAt(index, 3).toString();
 
-            DAOTaiKhoan tk = new DAOTaiKhoan();
+            IDAOTaiKhoan tk = (IDAOTaiKhoan) Naming.lookup(Client.URL + "DAOTaiKhoan");
             jTextField3.setText(maNV);
             jTextField1.setText(userName);
             jTextField2.setText(passWord);
@@ -144,7 +143,7 @@ public class GD_QLTK extends javax.swing.JPanel {
                 default:
                     throw new AssertionError();
             }
-        } catch (RemoteException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(GD_QLTK.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -210,7 +209,7 @@ public class GD_QLTK extends javax.swing.JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        DAONhanVien daoNV = new DAONhanVien();
+        IDAONhanVien daoNV = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
         NhanVien NV = daoNV.timKiemNhanVien(maNV);
         if (NV == null) {
             JOptionPane.showMessageDialog(this,

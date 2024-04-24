@@ -30,12 +30,6 @@ import javax.swing.text.JTextComponent;
 import org.jdesktop.swingx.autocomplete.AutoCompleteComboBoxEditor;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
-import DAO_Implement.DAOBoPhan;
-import DAO_Implement.DAOChiTietPhanCong;
-import DAO_Implement.DAOCongDoan;
-import DAO_Implement.DAOCongNhan;
-import DAO_Implement.DAOHopDong;
-import DAO_Implement.DAOSanPham;
 import DAO_Interface.IDAOBoPhan;
 import DAO_Interface.IDAOChiTietPhanCong;
 import DAO_Interface.IDAOCongDoan;
@@ -151,7 +145,8 @@ public class GD_QLSP extends javax.swing.JPanel {
 		try {
 			for (SanPham sanPham : dsSanPham) {
 				System.out.println(sanPham.getMaSanPham());
-				HopDong hd = new DAOHopDong().timKiemHopDong(sanPham.getMaHD());
+				IDAOHopDong daoHopDong = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong");
+				HopDong hd = daoHopDong.timKiemHopDong(sanPham.getMaHD());
 				System.out.println(hd);
 				if (hd.getTrangThai().equals("đang thực hiện"))
 					jComboBoxSanPham.addItem(sanPham.getTenSanPham());
@@ -228,8 +223,9 @@ public class GD_QLSP extends javax.swing.JPanel {
 			// loaddata to jTableCongDoan1
 			DefaultTableModel tblModelCongDoan = (DefaultTableModel) jTableCongDoan1.getModel();
 			tblModelCongDoan.setRowCount(0);
+			IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
 			for (CongDoan cd : dsCongDoan2) {
-				String tenBP = new DAOBoPhan().get(cd.getMaBP()).getTenBP();
+				String tenBP = daoBoPhan.get(cd.getMaBP()).getTenBP();
 				String tbData[] = { cd.getMaCD(), cd.getTenCD(), tenBP, String.valueOf(cd.getSoLuongChuanBi()),
 						String.valueOf(cd.getSoLuongHoanThanh()) };
 				tblModelCongDoan.addRow(tbData);
@@ -298,8 +294,8 @@ public class GD_QLSP extends javax.swing.JPanel {
 				// get Phieu cham cong cong nhan của cn trong ngày hôm nay
 				LocalDate date = jDateChooser1.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				soLuongHoanThanh = daoChiTietPhanCong.getSoLuongCongDoanHoanThanhByMaCongNhan(cn.getMaCN(), date);
-
-				String tenBP = new DAOBoPhan().get(daoCongDoan.get(ctpc.getMaCD()).getMaBP()).getTenBP();
+				IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+				String tenBP = daoBoPhan.get(daoCongDoan.get(ctpc.getMaCD()).getMaBP()).getTenBP();
 				String tenCD = cd.getTenCD();
 				boolean ok = true;
 				if (!tenBP.equals(bp) && !bp.equals("Tất cả")) {
@@ -2076,7 +2072,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+		
 		}	
 		return 0;
 		
@@ -2318,8 +2314,8 @@ public class GD_QLSP extends javax.swing.JPanel {
 			try {
 				maCD = jTextFieldMaCD.getText();
 				maSP1 = xxxxxxxxxxx;
-				maBP = jComboBoxMaBoPhan.getSelectedItem().toString();
 				tenCD = jTextFieldTenCD.getText();
+			
 				if (tenCD.isBlank())
 					throw new Exception("Tên công đoạn không được để trống");
 				try {
@@ -2340,42 +2336,63 @@ public class GD_QLSP extends javax.swing.JPanel {
 				JOptionPane.showMessageDialog(this, e.getMessage());
 				return;
 			}
-
-			int confirm = JOptionPane.showConfirmDialog(this, "Bạn đã chắc chắn chưa ?", "Confirmation",
-					JOptionPane.YES_NO_OPTION);
-			if (confirm == JOptionPane.YES_OPTION) {
-
-				ArrayList<String> dsCDTQ = new ArrayList<String>();
-				for (int i = 0; i < jTableCDTQ.getRowCount(); i++) {
-					String maCDTQ = (String) jTableCDTQ.getValueAt(i, 0);
-					dsCDTQ.add(maCDTQ);
-				}
-				CongDoan congDoan = new CongDoan(maCD, maSP1, maBP, tenCD, donGia, trangThai, soLuongChuanBiToiThieu,
-						dsCDTQ);
-				try {
+			
+			try
+			{	
+				IDAOSanPham daoSanPham = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
+				IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");			
+				SanPham sp = daoSanPham.timKiemSanPham(xxxxxxxxxxx);
+				BoPhan bp = daoBoPhan.get(jComboBoxMaBoPhan.getSelectedItem().toString());
+				
+				
+				
+				int confirm = JOptionPane.showConfirmDialog(this, "Bạn đã chắc chắn chưa ?", "Confirmation",
+						JOptionPane.YES_NO_OPTION);
+				if (confirm == JOptionPane.YES_OPTION) {
 					
-						for(String maCD1 : dsCDTQ)
+					ArrayList<String> dsCDTQ = new ArrayList<String>();
+					for (int i = 0; i < jTableCDTQ.getRowCount(); i++) {
+						String maCDTQ = (String) jTableCDTQ.getValueAt(i, 0);
+						dsCDTQ.add(maCDTQ);
+					}
+					IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+					CongDoan congDoan = daoCongDoan.get(maCD);
+					congDoan.setBoPhan(bp);
+					congDoan.setSanPham(sp);
+					congDoan.setTenCD(tenCD);
+					congDoan.setDonGia(donGia);
+					try {																	
+						if (jButtonTaoMoi.getText().equals("Hủy"))
 						{
-							congDoan.insertCDTQ(daoCongDoan.get(maCD1));
-						}
-						
-					if (jButtonTaoMoi.getText().equals("Hủy"))
+							daoCongDoan.insert(congDoan);
+						}					
+						else
+							if(!dsCDTQ.isEmpty())
+							{
+								IDAOCongDoan daoCongDoan1 = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+								daoCongDoan1.update(congDoan);
+								daoCongDoan1.themCongDoanTienQuyet(daoCongDoan1.get(maCD), dsCDTQ);	
+							}
+								
+						} 
+					catch (Exception e) 
 					{
-						daoCongDoan.insert(congDoan);
-					}					
-					else
-						daoCongDoan.update(congDoan);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-				
-				
-				// update the JComboBox for dsCongDoanTienQuyet
-				loadDataJTableCongDoan();
-				loadDataJComboBoxCDTQ();
-				AfterSaveOrCancel();
-				loadDsCongDoan();
+								e.printStackTrace();
+							}
+					
+					
+					// update the JComboBox for dsCongDoanTienQuyet
+					loadDataJTableCongDoan();
+					loadDataJComboBoxCDTQ();
+					AfterSaveOrCancel();
+					loadDsCongDoan();
+				}
 			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			
 		}
 	}// GEN-LAST:event_jButtonLuuMouseReleased
 

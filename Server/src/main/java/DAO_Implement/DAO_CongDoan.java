@@ -8,11 +8,15 @@ import ptud.Entity.CongDoan;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class DAOCongDoan extends UnicastRemoteObject implements IDAOCongDoan {
+public class DAO_CongDoan extends UnicastRemoteObject implements IDAOCongDoan {
 
-    private EntityManager em;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5286402850869536808L;
+	private EntityManager em;
     
-    public DAOCongDoan() throws Exception {
+    public DAO_CongDoan() throws Exception {
         em = Persistence.createEntityManagerFactory("MSSQL")
                 .createEntityManager();
     }
@@ -132,11 +136,15 @@ public class DAOCongDoan extends UnicastRemoteObject implements IDAOCongDoan {
     @Override
     public ArrayList<CongDoan> getDsCDTQ(String maCD) throws Exception {
         // "SELECT maCDTQ FROM CongDoanTienQuyet WHERE maCD = ?";
-        ArrayList<CongDoan> resultList = (ArrayList<CongDoan>) em.createNativeQuery(
-                        "SELECT maCDTQ FROM CongDoanTienQuyet "
-                        + "WHERE maCD = ?", CongDoan.class)
-                .setParameter(1, maCD).getResultList();
-        return resultList;
+//        ArrayList<CongDoan> resultList = (ArrayList<CongDoan>) em.createNativeQuery(
+//                        "SELECT maCDTQ FROM CongDoanTienQuyet "
+//                        + "WHERE maCD = ?", CongDoan.class)
+//                .setParameter(1, maCD).getResultList();
+//        return resultList;
+		ArrayList<CongDoan> resultList = (ArrayList<CongDoan>) em.createNativeQuery(
+				"SELECT * FROM CongDoan WHERE maCD IN (SELECT maCDTQ FROM CongDoanTienQuyet WHERE maCD = ?)",
+				CongDoan.class).setParameter(1, maCD).getResultList();
+		return resultList;
     }
 
     @Override
@@ -163,4 +171,26 @@ public class DAOCongDoan extends UnicastRemoteObject implements IDAOCongDoan {
             em.getTransaction().rollback();
         }
     }
+
+	@Override
+	public void themCongDoanTienQuyet(CongDoan cd, ArrayList<String> cdtq) throws Exception {
+		removeAllCongDoanTienQuyet(cd.getMaCD());
+		// TODO Auto-generated method stub
+		for (String maCDTQ : cdtq) {
+			// "INSERT INTO CongDoanTienQuyet VALUES (?, ?)"
+			em.getTransaction().begin();
+			em.createNativeQuery("INSERT INTO CongDoanTienQuyet VALUES (?, ?)").setParameter(1, cd.getMaCD())
+					.setParameter(2, maCDTQ).executeUpdate();
+			em.getTransaction().commit();
+		}
+	}
+	
+	@Override
+	public void removeAllCongDoanTienQuyet(String maCD) throws Exception
+	{
+		em.getTransaction().begin();
+		em.createNativeQuery("DELETE FROM CongDoanTienQuyet WHERE maCD = ?").setParameter(1, maCD).executeUpdate();
+		em.getTransaction().commit();
+	}
+    
 }

@@ -35,15 +35,9 @@ public class PhieuChamCongCongNhan implements Serializable{
    private boolean vang;
    @Column(name = "soluongCD")
    private int soLuongSanPham;
-   @Transient
-   private String maCTPC;
-   public String getMaCTPC() {
-	return maCTPC;
-}
 
-public void setMaCTPC(String maCTPC) {
-	this.maCTPC = chiTietPhanCong.getMaCTPC();
-}
+
+
 
 public ChiTietPhanCong getChiTietPhanCong() {
 	return chiTietPhanCong;
@@ -69,7 +63,7 @@ public void setChiTietPhanCong(ChiTietPhanCong chiTietPhanCong) {
     public PhieuChamCongCongNhan() {
     }
 
-    public PhieuChamCongCongNhan(String maPCCCN, String maCN, LocalDate ngay, boolean vang, int soLuongSanPham, String maCTPC, String noiDungPhat, double tienCong, double tienThuong, double tienPhat, int soLuongSanPhamTangCa) {
+    public PhieuChamCongCongNhan(String maPCCCN, String maCN, LocalDate ngay, boolean vang, int soLuongSanPham, ChiTietPhanCong chiTietPhanCong, String noiDungPhat, double tienCong, double tienThuong, double tienPhat, int soLuongSanPhamTangCa) {
         this.maPCCCN = maPCCCN;
         this.ngay = ngay;
         this.vang = vang;
@@ -79,6 +73,7 @@ public void setChiTietPhanCong(ChiTietPhanCong chiTietPhanCong) {
         this.tienThuong = tienThuong;
         this.tienPhat = tienPhat;
         this.soLuongSanPhamTangCa = soLuongSanPhamTangCa;
+        this.chiTietPhanCong = chiTietPhanCong;
     }
 
     public String getMaPCCCN() {

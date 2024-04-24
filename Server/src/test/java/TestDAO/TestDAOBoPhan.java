@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import DAO_Implement.DAOBoPhan;
+import DAO_Implement.DAO_BoPhan;
 import DAO_Interface.IDAOBoPhan;
 import ptud.Entity.BoPhan;
 
@@ -22,7 +22,7 @@ public class TestDAOBoPhan {
 	@BeforeAll
 	public void init() {
 		try {
-			daoBoPhan = new DAOBoPhan();
+			daoBoPhan = new DAO_BoPhan();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

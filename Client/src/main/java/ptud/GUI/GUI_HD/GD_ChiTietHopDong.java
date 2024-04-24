@@ -30,6 +30,8 @@ import ptud.Entity.SanPham;
 import ptud.GUI.GD_QLHD;
 import java.time.temporal.ChronoField;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -127,15 +129,20 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
         int soLuong = Integer.parseInt(rowData[1].toString());
         donGia = Double.parseDouble(rowData[2].toString());
         String tenSP = rowData[0].toString();
-        SanPham sanPham = new SanPham(stt, tenSP, soLuong, donGia, hopDong.getMaHD());
-        if (!hopDong.getSanPhams().contains(sanPham)) {
-        	try {
-        		 daosp.themSanPham(sanPham);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-				// TODO: handle exception
-			}
-           
+        SanPham sanPham = new SanPham(stt, tenSP, soLuong, donGia, hopDong);
+        hopDong.getSanPham().add(sanPham);    
+        try 
+        {
+            daohd.suaHopDong(hopDong);
+        	  if(daosp.timKiemSanPham(sanPham.getMaSanPham())==null)
+              {
+               		 daosp.themSanPham(sanPham);
+              }
+        }
+        catch(Exception e)
+        {
+        	System.out.println("loi them san pham");
+        	e.printStackTrace();
         }
     }
     // tao hop dong va them hopdong vao database
@@ -167,7 +174,7 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
                     String tenHD = tenHDmaHDTextField.getText();
                     String maKH = maKHmaHDTextField.getText();
                     hopDong.setTenHD(tenHD);
-                    hopDong.setMaKH(maKH);
+                    hopDong.setKhachHang(daokh.timKiemKhachHang(maKH));
                     daohd.suaHopDong(hopDong);
 
                 } catch (Exception e) {
@@ -181,24 +188,34 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
     }
    // dua sanpham vao table
     void changeEnityToObject(SanPham sanPham) {
-        Object[] rowData = new Object[4];
-        rowData[0] = sanPham.getMaSanPham();
-        rowData[1] = sanPham.getTenSanPham();
-        rowData[2] = sanPham.getSoLuong();
-        rowData[3] = sanPham.getDonGia();
-        Object[] tienDoData = new Object[3];
-        tienDoData[0] = sanPham.getTenSanPham();
-        try {
-        	  sanPham.setTienDo();
-		} catch (Exception e) {
-			// TODO: handle exception
+    	try
+    	{
+    		IDAOSanPham daosp = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
+            Object[] rowData = new Object[4];
+            rowData[0] = sanPham.getMaSanPham();
+            rowData[1] = sanPham.getTenSanPham();
+            rowData[2] = sanPham.getSoLuong();
+            rowData[3] = sanPham.getDonGia();
+            Object[] tienDoData = new Object[3];
+            tienDoData[0] = sanPham.getTenSanPham();
+            try {
+            	   tienDoData[1] = (int)((100.0*daosp.getTienDo(sanPham.getMaSanPham()))/sanPham.getSoLuong()); 
+                   tienDoData[2] = ""+daosp.getTienDo(sanPham.getMaSanPham())+"/"+sanPham.getSoLuong();
+    		} catch (Exception e) {
+    			System.out.println("loi tien do");
+    			e.printStackTrace();
+    			
+    			// TODO: handle exception
+    		}
+            
+            System.out.println("tienDo"+tienDoData[1].toString());
+            sanPhamModel.addRow(rowData);
+            tienDoModel.addRow(tienDoData);
+    	}
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.print("loi change enity to object");
 		}
-      
-        tienDoData[1] = (int)((100.0*sanPham.getTienDo())/sanPham.getSoLuong()); 
-        tienDoData[2] = ""+sanPham.getTienDo()+"/"+sanPham.getSoLuong();
-        System.out.println("tienDo"+tienDoData[1].toString());
-        sanPhamModel.addRow(rowData);
-        tienDoModel.addRow(tienDoData);
 
     }
     // them sanpham vao database
@@ -216,9 +233,15 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
         }
     }
     // moi khi event click vao danh sach hopDong thi phuong thuc se duoc goi
-    public void receiveHopDong(HopDong hopDong1, GD_QLHD gD_QLHD) {
+    public void receiveHopDong(String maHD, GD_QLHD gD_QLHD) {
        // nhan du lieu hopdong tu hopdongtable o class GD_QLHD
-        hopDong = hopDong1;
+    
+		try {
+		    hopDong = daohd.timKiemHopDong(maHD);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("loi tim kiem hop dong");
+		}
         updateData();
         this.gD_QLHD = gD_QLHD; // tham chieu gd_glhd
         updateTable(); // lam moi du lieu cac table
@@ -272,16 +295,30 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
         // tinh toan tien do tong
         int sum = 0;
         int sumMax = 0;
-        for (SanPham sanPham : hopDong.getSanPhams()) {
-        	try {
-        		  sanPham.setTienDo();
+     //  List
+        
+        try
+        {
+    	IDAOHopDong daohd = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong"); 
+    	IDAOSanPham daosp = (IDAOSanPham) Naming.lookup(Client.URL + "DAOSanPham");
+    	List<SanPham> listSp = daohd.layDanhSachSanPham(hopDong.getMaHD());
+    	   for(SanPham sanPham: listSp)
+    	   {
+        	try 
+        	{        		
+        		   sum += daosp.getTienDo(sanPham.getMaSanPham());
+                   sumMax += sanPham.getSoLuong();
 			} catch (Exception e) {
 				// TODO: handle exception
+				e.printStackTrace();
+				System.out.print("loi tinh toan tien do tong");
 			}
-          
-            sum += sanPham.getTienDo();
-            sumMax += sanPham.getSoLuong();
+                  
         }
+	} catch (Exception e) {
+		e.printStackTrace();
+		System.out.print("loi tinh toan tien do tong");
+	}
         jLabel17.setText(""+sum+"/"+sumMax);
         jLabel18.setText(""+(int)ngayConLai+"/"+(int)ngayChenhLechTong);
         progessBarTienDo.setMaximum(sumMax);
@@ -356,14 +393,21 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
     }
 
     void fillHopDongTable() {
-    	try {
-            hopDong.updateListSanPham();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-        for (SanPham sanPham : hopDong.getSanPhams()) {
-            changeEnityToObject(sanPham);
-        }
+    	try
+    	{
+        	IDAOHopDong daohd = (IDAOHopDong) Naming.lookup(Client.URL + "DAOHopDong"); 
+        	 List<SanPham> listSp = daohd.layDanhSachSanPham(hopDong.getMaHD());
+            for(SanPham sanPham: listSp)
+            {
+            	changeEnityToObject(sanPham);
+            }
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		System.out.print("loi fill hop dong table");
+    	}
+       
     }
 
     /**

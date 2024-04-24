@@ -1,6 +1,7 @@
 package ptud.Entity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -17,10 +18,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-import DAO_Implement.DAOCongDoan;
-import DAO_Implement.DAOCongNhan;
-import DAO_Implement.DAOHopDong;
-import DAO_Implement.DAOSanPham;
+import DAO_Implement.DAO_CongDoan;
+import DAO_Implement.DAO_CongNhan;
+import DAO_Implement.DAO_HopDong;
+import DAO_Implement.DAO_SanPham;
 @NoArgsConstructor
 @Entity
 public class SanPham implements java.io.Serializable
@@ -33,27 +34,13 @@ public class SanPham implements java.io.Serializable
   @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
   @jakarta.persistence.JoinColumn(name = "maHD")
   HopDong hopDong;
-  @Transient
-  String maHD;
-  @Transient
-  ArrayList<CongDoan> congDoans = new ArrayList<>();
   
     public String getMaHD() 
     {
         return hopDong.getMaHD();
     }
 
-    public void setMaHD(String maHD) 
-    {
-    	try {
-    	    this.maHD = maHD;
-            DAOHopDong daoHopDong = new DAOHopDong();
-            hopDong = daoHopDong.timKiemHopDong(maHD);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-    
-    }
+
   @Id
   @Column(name = "maSP")
   String maSanPham;
@@ -64,56 +51,16 @@ public class SanPham implements java.io.Serializable
   @Transient
   int tienDo;
   @OneToMany(mappedBy = "sanPham")
-  Set<CongDoan> congDoan;
+  Set<CongDoan> congDoans;
 	@Column(name ="hinhAnh",columnDefinition = "VARBINARY(MAX)"
 			,nullable = true)
 	private byte[] avatar;
-    public ArrayList<CongDoan> getCongDoans() {
-        return congDoans;
-    }
 
-    public void updateListCongDoans() throws Exception
-    {
-    	DAOCongDoan daocd = new DAOCongDoan();
-       for(CongDoan congDoan : daocd.getAll())
-       {
-           if(congDoan.getMaSP().compareToIgnoreCase(this.maSanPham)==0)
-           {
-               if(!congDoans.contains(congDoan))
-               {
-                   congDoans.add(congDoan);
-               }
-           }
-       }
-    }
 
-    public int getTienDo() {
-        return tienDo;
-    }
+ 
 
-    public void setTienDo() throws Exception
-    {        
-        updateListCongDoans();
-        int tienDo;
-        if (congDoans.size() != 0) {
-            String max = congDoans.get(0).getMaCD();
-            tienDo = congDoans.get(0).getSoLuongHoanThanh();
-            System.out.println(congDoans.get(0).getSoLuongHoanThanh());
-            for (CongDoan congDoan : congDoans) {
-                if (congDoan.getMaCD().compareToIgnoreCase(max) > 0) {
-                    max = congDoan.getMaCD();
-                    tienDo = congDoan.getSoLuongHoanThanh();
-                    System.out.println(congDoan.getSoLuongHoanThanh());
-                }
 
-                this.tienDo = tienDo;              
-            }
-        } 
-        else 
-        {
-             this.tienDo = 0;
-        }
-    }
+    
 
   public String getMaSanPham() 
     {
@@ -124,12 +71,12 @@ public class SanPham implements java.io.Serializable
 		if(stt<10)
 		{
                     String sttString = "0"+stt;
-			this.maSanPham = this.maHD+sttString;
+			this.maSanPham = hopDong.getMaHD()+sttString;
 		}
 		else 
 		{  
                     String sttString = ""+stt;
-                    this.maSanPham = this.maHD+stt;
+                    this.maSanPham =hopDong.getMaHD()+stt;
 		}
 	}
 	public String getTenSanPham() {
@@ -172,23 +119,31 @@ public class SanPham implements java.io.Serializable
         {
             this.maSanPham = maSanPham;
         }
-	public SanPham(String maSanPham, String tenSanPham, int soLuong, double donGia,String maHD) 
+	public SanPham(String maSanPham, String tenSanPham, int soLuong, double donGia,HopDong hopDong) 
 	{
 		super();
 		this.setDonGia(donGia);               
 		this.setMaSanPham(maSanPham);
 		this.setSoLuong(soLuong);
 		this.setTenSanPham(tenSanPham);
-                this.setMaHD(maHD);
+        this.hopDong = hopDong;
 	}
-        public SanPham(int stt, String tenSanPham, int soLuong, double donGia,String maHD) 
+        public SanPham(int stt, String tenSanPham, int soLuong, double donGia,HopDong hopDong) 
 	{
 		super();
-                this.setMaHD(maHD);
+         this.hopDong = hopDong;    
 		this.setDonGia(donGia);               		
 		this.setSoLuong(soLuong);
 		this.setTenSanPham(tenSanPham);
                 this.setMaSanPham(stt);
                
 	}
+
+		public Set<CongDoan> getCongDoans() {
+			return congDoans;
+		}
+
+		public void setCongDoans(Set<CongDoan> congDoans) {
+			this.congDoans = congDoans;
+		}
 }

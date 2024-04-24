@@ -12,18 +12,18 @@ import jakarta.persistence.Query;
 import ptud.Entity.PhieuLuongCongNhan;
 import ptud.Entity.PhieuLuongNhanVien;
 
-public class DAOPhieuLuongNhanVien extends UnicastRemoteObject implements IDAOPhieuLuongNhanVien	{
+public class DAO_PhieuLuongNhanVien extends UnicastRemoteObject implements IDAOPhieuLuongNhanVien	{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5616514017999299218L;
 	private EntityManager em;
 	 
-	public DAOPhieuLuongNhanVien() throws RemoteException {
+	public DAO_PhieuLuongNhanVien() throws RemoteException {
 	        em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	    }
-	public static DAOPhieuLuongNhanVien getInstance() throws RemoteException {
-	        return new DAOPhieuLuongNhanVien();
+	public static DAO_PhieuLuongNhanVien getInstance() throws RemoteException {
+	        return new DAO_PhieuLuongNhanVien();
 	    }
 	@Override
 	public PhieuLuongNhanVien get(String id) throws RemoteException {

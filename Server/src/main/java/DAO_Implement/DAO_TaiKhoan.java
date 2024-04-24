@@ -6,7 +6,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
@@ -14,7 +13,7 @@ import jakarta.persistence.Query;
 
 import ptud.Entity.TaiKhoan;
 
-public class DAOTaiKhoan extends UnicastRemoteObject implements DAO_Interface.IDAOTaiKhoan{
+public class DAO_TaiKhoan extends UnicastRemoteObject implements DAO_Interface.IDAOTaiKhoan{
 
 	/**
 	 * 
@@ -22,15 +21,10 @@ public class DAOTaiKhoan extends UnicastRemoteObject implements DAO_Interface.ID
 	private static final long serialVersionUID = -9127304083126447988L;
 	private EntityManager em;
 	 
-	public DAOTaiKhoan() throws RemoteException {
+	public DAO_TaiKhoan() throws RemoteException {
 	        em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	    }
 	
-	@Override
-	public DAOTaiKhoan getInstance() throws RemoteException {
-		return new DAOTaiKhoan();
-	}
-
 	@Override
 	public String hashPassword(String password, int length) throws RemoteException {
 		 try {

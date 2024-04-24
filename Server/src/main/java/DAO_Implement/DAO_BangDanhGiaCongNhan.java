@@ -4,16 +4,19 @@ import DAO_Interface.IDAOBangDanhGiaCongNhan;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 import ptud.Entity.BangDanhGiaCongNhan;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class DAOBangDanhGiaCongNhan extends UnicastRemoteObject implements IDAOBangDanhGiaCongNhan {
+public class DAO_BangDanhGiaCongNhan extends UnicastRemoteObject implements IDAOBangDanhGiaCongNhan {
 
-    private EntityManager em;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1128846915863922215L;
+	private EntityManager em;
 
-    public DAOBangDanhGiaCongNhan() throws RemoteException {
+    public DAO_BangDanhGiaCongNhan() throws RemoteException {
         em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
     }
 

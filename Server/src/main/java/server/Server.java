@@ -6,26 +6,26 @@ import DAO_Interface.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 public class Server {
-	private static final String URL = "rmi://192.168.1.105:9981/";
+	private static final String URL = "rmi://192.168.137.151:9981/";
 	
 	public static void main(String[] args) {
 		try 
 		{
-			IDAOCongNhan daoCongNhan = new DAOCongNhan();
-			IDAOHopDong daoHopDong = new DAOHopDong();
-			IDAOKhachHang daoKhachHang = new DAOKhachHang();
-			IDAOSanPham daoSanPham = new DAOSanPham();
-			IDAONhanVien daoNhanVien = new DAONhanVien();
-			IDAOBangDanhGiaCongNhan daoBangDanhGiaCongNhan = new DAOBangDanhGiaCongNhan();
-			IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = new DAOPhieuLuongCongNhan();
-			IDAOBangDanhGiaNhanVien ddaoBangDanhGiaNhanVien = new DAOBangDanhGiaNhanVien();
-			IDAOPhieuLuongNhanVien daoPhieuLuongNhanVien = new DAOPhieuLuongNhanVien();
-			IDAOBoPhan daoBoPhan = new DAOBoPhan();
-			IDAOChiTietPhanCong daoChiTietPhanCong = new DAOChiTietPhanCong();
-			IDAOCongDoan daoCongDoan = new DAOCongDoan();
-			IDAOTaiKhoan daoTaiKhoan = new DAOTaiKhoan();
-			IDAOPhieuChamCongCongNhan daoPhieuChamCongCongNhan = new DAOPhieuChamCongCongNhan();
-			IDAOPhieuChamCongNhanVien daoChamCongNhanVien = new DAOPhieuChamCongNhanVien();
+			IDAOCongNhan daoCongNhan = new DAO_CongNhan();
+			IDAOHopDong daoHopDong = new DAO_HopDong();
+			IDAOKhachHang daoKhachHang = new DAO_KhachHang();
+			IDAOSanPham daoSanPham = new DAO_SanPham();
+			IDAONhanVien daoNhanVien = new DAO_NhanVien();
+			IDAOBangDanhGiaCongNhan daoBangDanhGiaCongNhan = new DAO_BangDanhGiaCongNhan();
+			IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = new DAO_PhieuLuongCongNhan();
+			IDAOBangDanhGiaNhanVien ddaoBangDanhGiaNhanVien = new DAO_BangDanhGiaNhanVien();
+			IDAOPhieuLuongNhanVien daoPhieuLuongNhanVien = new DAO_PhieuLuongNhanVien();
+			IDAOBoPhan daoBoPhan = new DAO_BoPhan();
+			IDAOChiTietPhanCong daoChiTietPhanCong = new DAO_ChiTietPhanCong();
+			IDAOCongDoan daoCongDoan = new DAO_CongDoan();
+			IDAOTaiKhoan daoTaiKhoan = new DAO_TaiKhoan();
+			IDAOPhieuChamCongCongNhan daoPhieuChamCongCongNhan = new DAO_PhieuChamCongCongNhan();
+			IDAOPhieuChamCongNhanVien daoChamCongNhanVien = new DAO_PhieuChamCongNhanVien();
 			
 			javax.naming.Context context = new InitialContext();
 			LocateRegistry.createRegistry(9981);

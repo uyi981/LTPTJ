@@ -11,5 +11,5 @@ public interface IDAOSanPham extends Remote{
  public boolean xoaSanPham(String maSanPham) throws  RemoteException;
  public SanPham timKiemSanPham(String maSanPham) throws  RemoteException;
  public List<SanPham> layDanhSachSanPham() throws  RemoteException;
-
+ public int getTienDo(String maSP) throws RemoteException;
 }

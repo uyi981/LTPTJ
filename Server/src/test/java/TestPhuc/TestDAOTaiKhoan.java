@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import DAO_Implement.DAOTaiKhoan;
+import DAO_Implement.DAO_TaiKhoan;
 import DAO_Interface.IDAOTaiKhoan;
 import ptud.Entity.TaiKhoan;
 
@@ -21,7 +21,7 @@ public class TestDAOTaiKhoan {
 	@BeforeAll
 	public void init() {
 		try {
-			daoTaiKhoan = new DAOTaiKhoan();
+			daoTaiKhoan = new DAO_TaiKhoan();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -2,16 +2,15 @@ package DAO_Implement;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
-
-import DAO_Interface.IDAOHopDong;
-import ptud.Entity.HopDong;	
+import ptud.Entity.HopDong;
+import ptud.Entity.SanPham;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.EntityTransaction;
-public class DAOHopDong extends UnicastRemoteObject implements DAO_Interface.IDAOHopDong{
+public class DAO_HopDong extends UnicastRemoteObject implements DAO_Interface.IDAOHopDong{
      EntityManager em;
-	public DAOHopDong() throws RemoteException {
+	public DAO_HopDong() throws RemoteException {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("MSSQL");
 		em = emf.createEntityManager();
 		// TODO Auto-generated constructor stub
@@ -87,6 +86,13 @@ public class DAOHopDong extends UnicastRemoteObject implements DAO_Interface.IDA
 	public List<HopDong> layDanhSachHopDong() throws RemoteException {
 		// TODO Auto-generated method stub
 		return em.createQuery("select hd from HopDong hd").getResultList();
+	}
+
+	@Override
+	public List<SanPham> layDanhSachSanPham(String maHD) throws RemoteException {
+		// TODO Auto-generated method stub
+		List<?> list = em.createNativeQuery("select * from SanPham where maHD = ?", SanPham.class).setParameter(1, maHD).getResultList();
+		return (List<SanPham>) list;
 	}
 
 

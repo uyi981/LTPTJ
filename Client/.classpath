@@ -37,16 +37,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/vohau/OneDrive/Desktop/BigProject3/LTPTJ/Big_Project/lib/swingx-all-1.6.4.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/Server"/>
-	<classpathentry kind="lib" path="C:/Users/vohau/OneDrive/Desktop/BigProject3/LTPTJ/Big_Project/lib/jcalendar-1.4/lib/jcalendar-1.4.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="lib/swingx-all-1.6.4.jar"/>
+	<classpathentry kind="lib" path="lib/jcalendar-1.4/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/sv.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

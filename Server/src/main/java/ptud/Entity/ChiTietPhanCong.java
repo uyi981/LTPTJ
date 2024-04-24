@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
-import DAO_Implement.DAOCongDoan;
-import DAO_Implement.DAOCongNhan;
+import DAO_Implement.DAO_CongDoan;
+import DAO_Implement.DAO_CongNhan;
 import DAO_Interface.IDAOCongDoan;
 import DAO_Interface.IDAOCongNhan;
 import jakarta.persistence.Column;
@@ -71,8 +71,8 @@ public class ChiTietPhanCong implements Serializable {
 
     public ChiTietPhanCong(String maCTPC, String maCD, String maCN, LocalDate ngay, int soLuongCDGiao) {
     	try {
-			daoCongDoan = new DAOCongDoan();
-	    	daoCongNhan = new DAOCongNhan();
+			daoCongDoan = new DAO_CongDoan();
+	    	daoCongNhan = new DAO_CongNhan();
 	    	
 	    	this.congDoan = daoCongDoan.get(maCD);
 	    	this.congNhan = daoCongNhan.timKiemCongNhan(maCN);

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
-import DAO_Implement.DAOPhieuChamCongNhanVien;
+import DAO_Implement.DAO_PhieuChamCongNhanVien;
 import DAO_Interface.IDAOPhieuChamCongNhanVien;
 import ptud.Entity.NhanVien;
 import ptud.Entity.PhieuChamCongCongNhan;
@@ -44,7 +44,7 @@ public class TestDAOPCCNV {
 	@Test
 	void testGetTongGioTangCaTrongThang() {
 		try {
-			daoPhieuChamCongNhanVien = new DAOPhieuChamCongNhanVien();
+			daoPhieuChamCongNhanVien = new DAO_PhieuChamCongNhanVien();
 			System.out.println("dfsdf");
 			float soGioTangCa = daoPhieuChamCongNhanVien.getTongGioTangCaTrongThang("HC01181001", 4, 2024);
 			System.out.println(soGioTangCa);

@@ -11,7 +11,7 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import ptud.Entity.PhieuLuongCongNhan;
 
-public class DAOPhieuLuongCongNhan extends UnicastRemoteObject implements IDAOPhieuLuongCongNhan {
+public class DAO_PhieuLuongCongNhan extends UnicastRemoteObject implements IDAOPhieuLuongCongNhan {
 
 	/**
 	 * 
@@ -19,7 +19,7 @@ public class DAOPhieuLuongCongNhan extends UnicastRemoteObject implements IDAOPh
 	private static final long serialVersionUID = 8525365560857119801L;
 	private EntityManager em;
 	 
-	public DAOPhieuLuongCongNhan() throws RemoteException {
+	public DAO_PhieuLuongCongNhan() throws RemoteException {
 	        em = Persistence.createEntityManagerFactory("MSSQL").createEntityManager();
 	    }
 	
@@ -27,8 +27,8 @@ public class DAOPhieuLuongCongNhan extends UnicastRemoteObject implements IDAOPh
 	public PhieuLuongCongNhan get(String id) throws RemoteException {
 		 return em.find(PhieuLuongCongNhan.class, id);
 	}
-	 public static DAOPhieuLuongCongNhan getInstance() throws RemoteException {
-	        return new DAOPhieuLuongCongNhan();
+	 public static DAO_PhieuLuongCongNhan getInstance() throws RemoteException {
+	        return new DAO_PhieuLuongCongNhan();
 	    }
 
 	@SuppressWarnings("unchecked")

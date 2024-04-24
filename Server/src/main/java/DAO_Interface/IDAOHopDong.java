@@ -3,6 +3,8 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import ptud.Entity.HopDong;
+import ptud.Entity.SanPham;
+
 import java.rmi.Remote;
 public interface IDAOHopDong extends Remote
 {
@@ -11,4 +13,6 @@ public interface IDAOHopDong extends Remote
  public boolean xoaHopDong(String maHD) throws RemoteException;
  public HopDong timKiemHopDong(String maHD) throws RemoteException;
  public List<HopDong> layDanhSachHopDong() throws RemoteException;
+ public List<SanPham> layDanhSachSanPham(String maHD) throws RemoteException;
+
 }

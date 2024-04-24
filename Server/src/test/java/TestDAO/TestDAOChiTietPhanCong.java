@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import DAO_Implement.DAOChiTietPhanCong;
+import DAO_Implement.DAO_ChiTietPhanCong;
 import DAO_Interface.IDAOChiTietPhanCong;
 import ptud.Entity.ChiTietPhanCong;
 
@@ -22,7 +22,7 @@ public class TestDAOChiTietPhanCong {
 	@BeforeAll
 	public void init() {
 			try {
-				daoChiTietPhanCong = new DAOChiTietPhanCong();
+				daoChiTietPhanCong = new DAO_ChiTietPhanCong();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
