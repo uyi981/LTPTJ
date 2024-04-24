@@ -620,8 +620,7 @@ public class GD_ThemNS extends javax.swing.JPanel {
                 byte[] avatar = Files.readAllBytes(path);
 
                 if (rdoCongNhan.isSelected()) {
-                    CongNhan congNhan = new CongNhan(boPhan, ten, rdoNam.isSelected(), ngaySinh, ngayBatDauLam, cccd, dienThoai, true, avatar, true);
-
+                    CongNhan congNhan = new CongNhan(boPhan, ten, rdoNam.isSelected(), ngaySinh, ngayBatDauLam, cccd, dienThoai, true, avatar, true,1);
 //                    DAO_CongNhan daoCongNhan = DAO_CongNhan.getInstance();
                     IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
                     daoCongNhan.themCongNhan(congNhan);

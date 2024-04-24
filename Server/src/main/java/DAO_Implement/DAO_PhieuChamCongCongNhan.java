@@ -52,12 +52,12 @@ public class DAO_PhieuChamCongCongNhan extends UnicastRemoteObject implements DA
 	}
 
 	@Override
-	public float getTongTienPhatTrongThang(String idCN, int thang, int nam) throws RemoteException {
+	public double getTongTienPhatTrongThang(String idCN, int thang, int nam) throws RemoteException {
 		try {
 			String query = "select sum(tienPhat) as tongTienPhat\n"
 	                + "from [dbo].[PhieuChamCongCongNhan]\n"
 	                + "where maPCCCN like ?";
-			return (int) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)+"%").getSingleResult();
+			return (double) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)+"%").getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();	
 			return 0;
@@ -65,7 +65,7 @@ public class DAO_PhieuChamCongCongNhan extends UnicastRemoteObject implements DA
 	}
 
 	@Override
-	public float getTongTienThuongTrongThang(String idCN, int thang, int nam) throws RemoteException {
+	public double getTongTienThuongTrongThang(String idCN, int thang, int nam) throws RemoteException {
 		try {
 			Query query = em.createQuery("select sum(p.tienThuong) as tongTienPhat " + "from PhieuChamCongCongNhan p "
 					+ "where p.maPCCCN like :idCN and p.thang = :thang and p.nam = :nam");
@@ -80,14 +80,14 @@ public class DAO_PhieuChamCongCongNhan extends UnicastRemoteObject implements DA
 	}
 
 	@Override
-	public float getTongTienCongKhongTangCaTrongThang(String idCN, int thang, int nam) throws RemoteException {
+	public double getTongTienCongKhongTangCaTrongThang(String idCN, int thang, int nam) throws RemoteException {
 		try {
 			String query = "select sum(soLuongCD * donGia)\n as tongTien\n"
 	                + "from [dbo].[PhieuChamCongCongNhan] p\n"
 	                + "join [dbo].[ChiTietPhanCong] c on p.maCTPC = c.maCTPC\n"
 	                + "join [dbo].[CongDoan] cd on c.maCD = cd.maCD\n"
 	                + "where maPCCCN like ?";
-			return (float) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)+"%").getSingleResult();
+			return (double) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)+"%").getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();	
 			return 0;
@@ -96,14 +96,14 @@ public class DAO_PhieuChamCongCongNhan extends UnicastRemoteObject implements DA
 
 
 	@Override
-	public float getTongTienCongTangCaTrongThang(String idCN, int thang, int nam) throws RemoteException {
+	public double getTongTienCongTangCaTrongThang(String idCN, int thang, int nam) throws RemoteException {
 		try {
 			String query = "select sum(soLuongCD * donGia * 1.2)\n as tongTien\n"
 	                + "from [dbo].[PhieuChamCongCongNhan] p\n"
 	                + "join [dbo].[ChiTietPhanCong] c on p.maCTPC = c.maCTPC\n"
 	                + "join [dbo].[CongDoan] cd on c.maCD = cd.maCD\n"
 	                + "where maPCCCN like ?";
-			float result = (float) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)+"%").getSingleResult();
+			double result = (double) em.createNativeQuery(query).setParameter(1, "%" + formatChuoi(thang, nam, idCN)+"%").getSingleResult();
 		   if(result>=0) return result;
 		   else
 			    return 0;
@@ -115,13 +115,13 @@ public class DAO_PhieuChamCongCongNhan extends UnicastRemoteObject implements DA
 	}
 
 	@Override
-	public float getTongTienCongTrongThang(String idCN, int thang, int nam) throws RemoteException {
+	public double getTongTienCongTrongThang(String idCN, int thang, int nam) throws RemoteException {
 		return getTongTienCongKhongTangCaTrongThang(idCN, thang, nam)
 				+ getTongTienCongTangCaTrongThang(idCN, thang, nam);
 	}
 
 	@Override
-	public float getTienLuongTrongThang(String idCN, int thang, int nam) throws RemoteException {
+	public double getTienLuongTrongThang(String idCN, int thang, int nam) throws RemoteException {
 		return getTongTienCongTrongThang(idCN, thang, nam) + getTongTienThuongTrongThang(idCN, thang, nam)
 				- getTongTienPhatTrongThang(idCN, thang, nam);
 	}

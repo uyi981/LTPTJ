@@ -453,20 +453,21 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
         jLabelThangNam.setText(plcn.getThang() + "/" + plcn.getNam());
         jLabelMaPhieuLuong.setText(plcn.getMaPL());
 //        CongNhan nv = DAO_CongNhan.getInstance().get(plcn.getMaCN()); 
-        CongNhan nv = null;
         try {
+            CongNhan nv = daoCongNhan.timKiemCongNhan(plcn.getMaCN());
         	nv = daoCongNhan.timKiemCongNhan(plcn.getMaCN());
+        	  jLabelBoPhan.setText(nv.getBoPhan().getTenBP());
+              jLabelTen.setText(nv.getTen());
+              jLabelMaNV.setText(nv.getMaCN());
+              jLabelSoNgayLam.setText(plcn.getSoNgayLam() + "");
+              jLabelThuongNangSuat.setText(decimalFormat.format(plcn.getThuong()));
+              jLabelPhat.setText(decimalFormat.format(plcn.getPhat()));
+              
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        jLabelBoPhan.setText(nv.getBoPhan().getTenBP());
-        jLabelTen.setText(nv.getTen());
-        jLabelMaNV.setText(nv.getMaCN());
-        jLabelSoNgayLam.setText(plcn.getSoNgayLam() + "");
-        jLabelThuongNangSuat.setText(decimalFormat.format(plcn.getThuong()));
-        jLabelPhat.setText(decimalFormat.format(plcn.getPhat()));
-        
+      
 //        ArrayList<ChamCongDTO> dsChamCong = DAO_PhieuChamCongCongNhan.getInstance().getDsCongDoanLamDuocCuaCongNhanTrongThang(plcn.getMaCN(), plcn.getThang(), plcn.getNam());
         ArrayList<ChamCongDTO> dsChamCong = null;
         try {

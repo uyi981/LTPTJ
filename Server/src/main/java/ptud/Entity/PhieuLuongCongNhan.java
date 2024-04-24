@@ -69,7 +69,39 @@ public class PhieuLuongCongNhan implements Serializable{
         setPhat(phat);
     }
 
-    public String getMaPL() {
+    public double getLuong() {
+		return luong;
+	}
+
+	public void setLuong(double luong) {
+		this.luong = luong;
+	}
+
+	public double getThuong() {
+		return thuong;
+	}
+
+	public void setThuong(double thuong) {
+		this.thuong = thuong;
+	}
+
+	public int getSoNgayLam() {
+		return soNgayLam;
+	}
+
+	public void setSoNgayLam(int soNgayLam) {
+		this.soNgayLam = soNgayLam;
+	}
+
+	public double getLuongThucNhan() {
+		return luongThucNhan;
+	}
+
+	public void setLuongThucNhan(double luongThucNhan) {
+		this.luongThucNhan = luongThucNhan;
+	}
+
+	public String getMaPL() {
         return maPL;
     }
 

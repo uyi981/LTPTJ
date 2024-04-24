@@ -55,8 +55,8 @@ public class DAO_PhieuChamCongNhanVien extends UnicastRemoteObject implements DA
 	@Override
 	public int getSoNgayLam(String idNV, int thang, int nam) throws RemoteException {
 		try {
-			Query query = em.createQuery(
-					"SELECT COUNT(*) FROM PhieuChamCongHanhChinh p WHERE p.idCN = :idCN AND month(pc.ngayChamCong) = :thang AND AND  year(pc.ngayChamCong) = :nam ");
+			Query query = em.createNativeQuery(
+					"SELECT COUNT(*) FROM PhieuChamCongHanhChinh p WHERE p.maNV	 = :idCN AND month(p.ngayChamCong) = :thang  AND  year(p.ngayChamCong) = :nam ");
 			query.setParameter("idCN", idNV);
 			query.setParameter("thang", thang);
 			query.setParameter("nam", nam);
@@ -68,20 +68,20 @@ public class DAO_PhieuChamCongNhanVien extends UnicastRemoteObject implements DA
 	}
 
 	@Override
-	public float getTongGioTangCaTrongThang(String idNV, int thang, int nam) throws RemoteException {
+	public int getTongGioTangCaTrongThang(String idNV, int thang, int nam) throws RemoteException {
 		 try {
 		        String query = "SELECT SUM(p.gioTangCa) " +
 		                       "FROM PhieuChamCongHanhChinh p " +
-		                       "WHERE p.maNV = :idNV AND month(pc.ngayChamCong) = :thang AND   year(pc.ngayChamCong) = :nam ";
+		                       "WHERE p.maNV = :idNV AND month(p.ngayChamCong) = :thang AND   year(p.ngayChamCong) = :nam ";
 
-		        Query jpqlQuery = em.createQuery(query);
+		        Query jpqlQuery = em.createNativeQuery(query);
 		        jpqlQuery.setParameter("idNV", idNV);
 		        jpqlQuery.setParameter("thang", thang);
 		        jpqlQuery.setParameter("nam", nam);
 
 		        Object result = jpqlQuery.getSingleResult();
 		        if (result != null) {
-		            return (float) result;
+		            return (int) result;
 		        } else {
 		            return 0;
 		        }
@@ -141,20 +141,20 @@ public class DAO_PhieuChamCongNhanVien extends UnicastRemoteObject implements DA
 	}
 
 	@Override
-	public float getTongTienPhatTrongThang(String idNV, int thang, int nam) throws RemoteException {
+	public double getTongTienPhatTrongThang(String idNV, int thang, int nam) throws RemoteException {
 		  try {
-		        String query = "SELECT SUM(pc.tienPhat) " +
-		                       "FROM PhieuChamCongHanhChinh pc " +
-		                       "WHERE pc.maNV = :idNV AND  month(pc.ngayChamCong) = :thang AND   year(pc.ngayChamCong) = :nam ";
+		        String query = "SELECT SUM(p.tienPhat) " +
+		                       "FROM PhieuChamCongHanhChinh p " +
+		                       "WHERE p.maNV = :idNV AND  month(p.ngayChamCong) = :thang AND   year(p.ngayChamCong) = :nam ";
 
-		        Query jpqlQuery = em.createQuery(query);
+		        Query jpqlQuery = em.createNativeQuery(query);
 		        jpqlQuery.setParameter("idNV", idNV);
 		        jpqlQuery.setParameter("thang", thang);
 		        jpqlQuery.setParameter("nam", nam);
 
 		        Object result = jpqlQuery.getSingleResult();
 		        if (result != null) {
-		            return (float) result;
+		            return (double) result;
 		        } else {
 		            return 0;
 		        }

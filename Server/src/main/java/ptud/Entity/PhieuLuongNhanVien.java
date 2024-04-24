@@ -28,6 +28,38 @@ import jakarta.persistence.Transient;
 @Table(name = "PhieuLuongNhanVien")
 
 public class PhieuLuongNhanVien implements Serializable {
+	public double getThuong() {
+		return thuong;
+	}
+
+	public void setThuong(double thuong) {
+		this.thuong = thuong;
+	}
+
+	public int getSoNgayLam() {
+		return soNgayLam;
+	}
+
+	public void setSoNgayLam(int soNgayLam) {
+		this.soNgayLam = soNgayLam;
+	}
+
+	public double getLuongThucNhan() {
+		return luongThucNhan;
+	}
+
+	public void setLuongThucNhan(double luongThucNhan) {
+		this.luongThucNhan = luongThucNhan;
+	}
+
+	public void setPhuCap(double phuCap) {
+		this.phuCap = phuCap;
+	}
+
+	public void setLuong(double luong) {
+		this.luong = luong;
+	}
+
 	/**
 	 * 
 	 */

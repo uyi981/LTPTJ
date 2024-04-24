@@ -158,15 +158,20 @@ public class GD_TinhLuong extends javax.swing.JPanel {
                     double luong =   daoPhieuChamCongNhanVien.getSoNgayLam(maNV, thang, nam)*luongCoBan/24
                     		-daoPhieuChamCongNhanVien.getTongTienPhatTrongThang(maNV, thang, nam)
                     		+daoPhieuChamCongNhanVien.getTongGioTangCaTrongThang(maNV, thang, nam)*luongCoBan/(24*8)*1.5;
+                 
                     
-            
                     double phuCap = nv.getPhuCap();
+                    plnv.setLuong(luong);
+                    plnv.setPhuCap(phuCap);
+                    plnv.setLuongThucNhan(luong);
+                    plnv.setSoNgayLam(nam);
+                    daoPhieuLuongNhanVien.update(plnv);
                     if (tenBP.equals("Tất cả") || tenBP.equals(tbp1)) {
 
                         Object[] row = { maNV, nv.getTen(),
                                 decimalFormat.format(luongCoBan),
                                 decimalFormat.format(phuCap),
-                                decimalFormat.format(luong)};
+                                decimalFormat.format((int)luong)};
                         model.addRow(row);
                     }
 
@@ -229,16 +234,18 @@ public class GD_TinhLuong extends javax.swing.JPanel {
                     }
                 } else {
                     // thêm data từ dsPhieuLuongNhanVien vào jTablePhieuLuongNhanVien
-                    for (PhieuLuongCongNhan plnv : dsPhieuLuongCongNhan) {
+                    for (PhieuLuongCongNhan plcn : dsPhieuLuongCongNhan) {
                     
-                        String maCN = plnv.getMaCN();
+                        String maCN = plcn.getMaCN();
                         IDAOCongNhan daoCongNhan1 = (IDAOCongNhan) Naming.lookup(Client.URL + "DAOCongNhan");
                         CongNhan nv = daoCongNhan.timKiemCongNhan(maCN);
                         String tenBP2 = daoBoPhan.get(daoCongNhan1.getMaBoPhan(maCN)).getTenBP();
-                        float luong = daoPhieuChamCongCongNhan.getTongTienCongTrongThang(maCN, thang, nam)*1.15f
+                        double luong = daoPhieuChamCongCongNhan.getTongTienCongTrongThang(maCN, thang, nam)*1.15f
                         		- daoPhieuChamCongCongNhan.getTongTienPhatTrongThang(maCN, thang, nam);
-                        		
-                        
+                        plcn.setLuong(luong);
+                        plcn.setLuongThucNhan(luong);
+                        plcn.setSoNgayLam(daoPhieuChamCongCongNhan.getSoNgayLam(maCN, thang, nam));
+                        plcn.setThuong(800000);
                         if (tenBP.equals("Tất cả") || tenBP.equals(tenBP2)) {
                             Object[] row = { maCN, nv.getTen(),
                                     decimalFormat.format( daoPhieuChamCongCongNhan.getTongTienCongTrongThang(maCN, thang, nam)),

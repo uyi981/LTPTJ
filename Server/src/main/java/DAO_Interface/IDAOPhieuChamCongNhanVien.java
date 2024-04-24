@@ -13,13 +13,13 @@ public interface IDAOPhieuChamCongNhanVien extends Remote{
 
 	public int getSoNgayLam(String idNV, int thang, int nam) throws RemoteException;
 
-	public float getTongGioTangCaTrongThang(String idNV, int thang, int nam) throws RemoteException;
+	public int getTongGioTangCaTrongThang(String idNV, int thang, int nam) throws RemoteException;
 
 	public ArrayList<Object[]> getDanhSachThongTinChamCongByIDBoPhan(String maBoPhan) throws RemoteException;
 	
     public Object[] gethongTinChamCongByMaNV(String maNV) throws RemoteException;
     
-    public float getTongTienPhatTrongThang(String idNV, int thang, int nam) throws RemoteException;
+    public double getTongTienPhatTrongThang(String idNV, int thang, int nam) throws RemoteException;
     
     public String getCurrentDateYYYYMMDD() throws RemoteException;
 

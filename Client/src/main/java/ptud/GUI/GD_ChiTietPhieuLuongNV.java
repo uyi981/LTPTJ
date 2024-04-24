@@ -7,6 +7,7 @@ package ptud.GUI;
 import java.text.DecimalFormat;
 
 import DAO_Interface.IDAONhanVien;
+import DAO_Interface.IDAOPhieuChamCongNhanVien;
 import client.Client;
 import ptud.Entity.NhanVien;
 import ptud.Entity.PhieuLuongNhanVien;
@@ -375,6 +376,7 @@ public class GD_ChiTietPhieuLuongNV extends javax.swing.JPanel {
 //        NhanVien nv = DAO_NhanVien.getInstance().get(plnv.getMaNV());
         NhanVien nv = null;
         try {
+        	IDAOPhieuChamCongNhanVien daoPhieuChamCongNhanVien = (IDAOPhieuChamCongNhanVien)Naming.lookup(Client.URL + "DAOPhieuChamCongNhanVien");
 //			daoNhanVien.get(plnv.getMaNV());
         	nv = daoNhanVien.timKiemNhanVien(plnv.getMaNV());
             jLabelTen.setText(nv.getTen());
@@ -388,7 +390,7 @@ public class GD_ChiTietPhieuLuongNV extends javax.swing.JPanel {
             jLabelPhuCap.setText(decimalFormat.format(plnv.getPhuCap())) ;
             jLabelLuongThucNhan.setText(decimalFormat.format(plnv.getLuongThucNhan()));
       
-		} catch (RemoteException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
