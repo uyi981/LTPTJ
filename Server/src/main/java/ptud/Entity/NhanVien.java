@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
-
-import DAO_Implement.DAO_NhanVien;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Column;
@@ -169,8 +167,8 @@ public class NhanVien implements java.io.Serializable {
         this.phuCap = phuCap;
     }
 
-    public NhanVien(BoPhan boPhan, String ten, boolean gioiTinh, LocalDate ngaySinh, LocalDate ngayBatDauLam, String cccd, String dienThoai, boolean trangThai, byte[] avatar, double luongCoBan, double phuCap) throws Exception{
-        this.maNV = genMaNV(boPhan, ngayBatDauLam, gioiTinh);
+    public NhanVien(BoPhan boPhan, String ten, boolean gioiTinh, LocalDate ngaySinh, LocalDate ngayBatDauLam, String cccd, String dienThoai, boolean trangThai, byte[] avatar, double luongCoBan, double phuCap,int stt) throws Exception{
+        this.maNV = genMaNV(boPhan, ngayBatDauLam, gioiTinh,stt);
         this.boPhan = boPhan;
         this.ten = ten;
         this.gioiTinh = gioiTinh;
@@ -184,10 +182,9 @@ public class NhanVien implements java.io.Serializable {
         this.phuCap = phuCap;
     }
 
-    private String genMaNV(BoPhan boPhan,LocalDate ngayBatDauLam, boolean gioiTinh) throws Exception {
-        DAO_NhanVien daoNhanVien = new DAO_NhanVien();
-        int count = daoNhanVien.countAll();
+    private String genMaNV(BoPhan boPhan,LocalDate ngayBatDauLam, boolean gioiTinh,int stt) throws Exception {
 
+        int count = stt;
         // Sử dụng DateTimeFormatter để lấy hai số cuối của năm
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy");
         String lastTwoDigitsOfYear = ngayBatDauLam.format(formatter);

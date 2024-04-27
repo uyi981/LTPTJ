@@ -7,7 +7,6 @@ package ptud.Entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import DAO_Implement.DAO_NhanVien;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -6,12 +6,8 @@ package ptud.Entity;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.sql.SQLException;
-import java.util.Objects;
 
-import DAO_Implement.DAO_CongNhan;
-import DAO_Implement.DAO_NhanVien;
-import DAO_Implement.DAO_PhieuChamCongNhanVien;
+import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -132,10 +128,7 @@ public class PhieuLuongNhanVien implements Serializable {
 
 
     public double getPhat() {
-        double phat2 = 0; 
-        // xử lý tính toán
- 
-        return phat2;
+        return phat;
     }
 
     public void setPhat(double phat) {
@@ -143,22 +136,11 @@ public class PhieuLuongNhanVien implements Serializable {
     }
     
     public double getPhuCap() throws RemoteException {
-    	DAO_NhanVien daoNhanVien = new DAO_NhanVien();
-        double PhuCap = daoNhanVien.timKiemNhanVien(maNV).getPhuCap();
-        return PhuCap;
+        return phuCap;
     }
 
-    public double getLuong() throws RemoteException  {
-    	DAO_NhanVien daoNhanVien = new DAO_NhanVien();
-    	double luong = 0;
-        // xử lý tính toán
-        try {
-            luong = new DAO_PhieuChamCongNhanVien().getSoNgayLam(maNV, thang, nam)*daoNhanVien.timKiemNhanVien(maNV).getLuongCoBan()/24;
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return luong;
+    public double getLuong() throws RemoteException  {   
+      return luong;
     }
 
 

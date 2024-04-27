@@ -6,9 +6,11 @@ package ptud.GUI;
 
 import java.text.DecimalFormat;
 
+import DAO_Interface.IDAOBoPhan;
 import DAO_Interface.IDAONhanVien;
 import DAO_Interface.IDAOPhieuChamCongNhanVien;
 import client.Client;
+import ptud.Entity.BoPhan;
 import ptud.Entity.NhanVien;
 import ptud.Entity.PhieuLuongNhanVien;
 import java.awt.*;
@@ -377,13 +379,15 @@ public class GD_ChiTietPhieuLuongNV extends javax.swing.JPanel {
         NhanVien nv = null;
         try {
         	IDAOPhieuChamCongNhanVien daoPhieuChamCongNhanVien = (IDAOPhieuChamCongNhanVien)Naming.lookup(Client.URL + "DAOPhieuChamCongNhanVien");
-//			daoNhanVien.get(plnv.getMaNV());
+        	IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+            System.out.println(nv);
+          	nv = daoNhanVien.timKiemNhanVien(plnv.getMaNV());
+          	BoPhan boPhan = daoBoPhan.get(daoNhanVien.getMaBoPhan(nv.getMaNV()));
         	nv = daoNhanVien.timKiemNhanVien(plnv.getMaNV());
             jLabelTen.setText(nv.getTen());
             jLabelMaNV.setText(nv.getMaNV());
-            jLabelBoPhan.setText(nv.getBoPhan().getTenBP()); 
+            jLabelBoPhan.setText(boPhan.getTenBP()); 
             jLabelLuongCoBan.setText(decimalFormat.format(nv.getLuongCoBan()));
-
             jLabelSoNgayLam.setText(plnv.getSoNgayLam() + "");
             jLabelThuongNangSuat.setText(decimalFormat.format(plnv.getThuong()));
             jLabelPhat.setText(decimalFormat.format(plnv.getPhat()));

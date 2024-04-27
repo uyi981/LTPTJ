@@ -6,7 +6,7 @@ import DAO_Interface.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 public class Server {
-	private static final String URL = "rmi://192.168.137.151:9981/";
+	private static final String URL = "rmi://26.37.84.202:9981/";
 	
 	public static void main(String[] args) {
 		try 

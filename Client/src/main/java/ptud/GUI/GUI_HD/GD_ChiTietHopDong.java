@@ -130,7 +130,13 @@ public class GD_ChiTietHopDong extends javax.swing.JPanel {
         donGia = Double.parseDouble(rowData[2].toString());
         String tenSP = rowData[0].toString();
         SanPham sanPham = new SanPham(stt, tenSP, soLuong, donGia, hopDong);
-        hopDong.getSanPham().add(sanPham);    
+          
+        try {
+			daohd.suaHopDong(hopDong);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         try 
         {
             daohd.suaHopDong(hopDong);

@@ -14,9 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
-
-import DAO_Implement.DAO_KhachHang;
-import DAO_Implement.DAO_SanPham;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -1,27 +1,15 @@
 package ptud.Entity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import ptud.Entity.CongDoan;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-import DAO_Implement.DAO_CongDoan;
-import DAO_Implement.DAO_CongNhan;
-import DAO_Implement.DAO_HopDong;
-import DAO_Implement.DAO_SanPham;
 @NoArgsConstructor
 @Entity
 public class SanPham implements java.io.Serializable

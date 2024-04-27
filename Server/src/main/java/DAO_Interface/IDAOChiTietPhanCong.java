@@ -21,4 +21,6 @@ public interface IDAOChiTietPhanCong extends Remote {
     public String getMaChiTietPhanCongBymaCN(String maCN) throws Exception;
     public String getMaCongDoanBymaCTPC(String maCTPC) throws Exception;
     public int getSoLuongCongDoanHoanThanhByMaCongNhan(String maCN, LocalDate date) throws Exception;
+    public String getMaCongDoanByChiTietPhanCong(String maCTPC) throws Exception;
+    public String getMaCongNhanByChiTietPhanCong(String maCTPC) throws Exception;
 }

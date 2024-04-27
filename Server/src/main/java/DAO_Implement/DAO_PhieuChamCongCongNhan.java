@@ -213,7 +213,7 @@ public class DAO_PhieuChamCongCongNhan extends UnicastRemoteObject implements DA
 	                    + "join [dbo].[ChiTietPhanCong] cn on c.maCTPC = cn.maCTPC\n"
 	                    + "where cn.maCN = ? and MONTH(ngay) = ? and YEAR(ngay) = ?\n"
 	                    + "group by cn.maCD", ChamCongDTO.class)
-				.setParameter("maCN", maCN).setParameter(nam, thang).setParameter(nam, maCN) .getResultList();
+				.setParameter(1, maCN).setParameter(2, thang).setParameter(3,nam) .getResultList();
 		return resultList;
 		
 	}

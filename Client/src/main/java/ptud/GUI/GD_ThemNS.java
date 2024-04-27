@@ -620,18 +620,18 @@ public class GD_ThemNS extends javax.swing.JPanel {
                 byte[] avatar = Files.readAllBytes(path);
 
                 if (rdoCongNhan.isSelected()) {
-                    CongNhan congNhan = new CongNhan(boPhan, ten, rdoNam.isSelected(), ngaySinh, ngayBatDauLam, cccd, dienThoai, true, avatar, true,1);
-//                    DAO_CongNhan daoCongNhan = DAO_CongNhan.getInstance();
-                    IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
+                	IDAOCongNhan daoCongNhan = (IDAOCongNhan) Naming.lookup(Client.URL + "DaoCongNhan");
+                	int stt = daoCongNhan.countAll();
+                    CongNhan congNhan = new CongNhan(boPhan, ten, rdoNam.isSelected(), ngaySinh, ngayBatDauLam, cccd, dienThoai, true, avatar, true,stt);      
                     daoCongNhan.themCongNhan(congNhan);
                     JOptionPane.showMessageDialog(null, "Thêm công nhân thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
                     Layout.instance.showChiTietCN(congNhan.getMaCN());
                 } else {
                     double luongCoBan = Double.parseDouble(txtLuongCoBan.getText());
                     double thuong = Double.parseDouble(txtThuong.getText());
-                    NhanVien nhanVien = new NhanVien(boPhan, ten, rdoNam.isSelected(), ngaySinh, ngayBatDauLam, cccd, dienThoai, true, avatar, luongCoBan, thuong);
-//                    DAO_NhanVien daoNhanVien = DAO_NhanVien.getInstance();
                     IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DaoNhanVien");
+                    int stt = daoNhanVien.countAll();
+                    NhanVien nhanVien = new NhanVien(boPhan, ten, rdoNam.isSelected(), ngaySinh, ngayBatDauLam, cccd, dienThoai, true, avatar, luongCoBan, thuong,stt);
                     daoNhanVien.themNhanVien(nhanVien);
                     JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
                     Layout.instance.showChiTietNV(nhanVien.getMaNV());

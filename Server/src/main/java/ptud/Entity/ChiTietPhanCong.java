@@ -5,10 +5,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
-import DAO_Implement.DAO_CongDoan;
-import DAO_Implement.DAO_CongNhan;
-import DAO_Interface.IDAOCongDoan;
-import DAO_Interface.IDAOCongNhan;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -63,25 +59,11 @@ public class ChiTietPhanCong implements Serializable {
 
 	public ChiTietPhanCong() {
 	};
-	
-	@Transient
-	private IDAOCongDoan daoCongDoan;
-	@Transient
-	private IDAOCongNhan  daoCongNhan;
 
-    public ChiTietPhanCong(String maCTPC, String maCD, String maCN, LocalDate ngay, int soLuongCDGiao) {
-    	try {
-			daoCongDoan = new DAO_CongDoan();
-	    	daoCongNhan = new DAO_CongNhan();
-	    	
-	    	this.congDoan = daoCongDoan.get(maCD);
-	    	this.congNhan = daoCongNhan.timKiemCongNhan(maCN);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        setMaCD(maCD);
-        setMaCN(maCN);
+
+    public ChiTietPhanCong(String maCTPC, CongDoan maCD, CongNhan maCN, LocalDate ngay, int soLuongCDGiao) {
+    	this.congDoan = maCD;
+    	this.congNhan = maCN;
         setMaCTPC(maCTPC);
         setNgay(ngay);
         setSoLuongCDGiao(soLuongCDGiao);
@@ -96,7 +78,7 @@ public class ChiTietPhanCong implements Serializable {
     }
 
     public String getMaCD() {
-        return congDoan.getMaCD();
+        return maCD;
     }
 
     public void setMaCD(String maCD) {
@@ -104,7 +86,7 @@ public class ChiTietPhanCong implements Serializable {
     }
 
     public String getMaCN() {
-        return congNhan.getMaCN();
+        return maCN;
     }
 
     public void setMaCN(String maCN) {

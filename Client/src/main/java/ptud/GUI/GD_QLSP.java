@@ -6,7 +6,10 @@ package ptud.GUI;
 
 import java.awt.Component;
 import java.io.EOFException;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -259,11 +262,11 @@ public class GD_QLSP extends javax.swing.JPanel {
 					}
 				}
 
-				if (cn.isChoPhanCong()) {
+			
 					// add to jTableCongNhan
 					String tbData[] = { cn.getMaCN(), cn.getTen(), "" };
 					tblModelCongNhan.addRow(tbData);
-				}
+					
 
 			}
 		} catch (Exception e) {
@@ -288,14 +291,15 @@ public class GD_QLSP extends javax.swing.JPanel {
 
 			
 			for (ChiTietPhanCong ctpc : dsCTPC) {
-				CongNhan cn = daoCongNhan.timKiemCongNhan(ctpc.getMaCN());
-				CongDoan cd = daoCongDoan.get(ctpc.getMaCD());
+				System.out.println(daoChiTietPhanCong.getMaCongNhanByChiTietPhanCong(ctpc.getMaCTPC()));
+				CongNhan cn = daoCongNhan.timKiemCongNhan(daoChiTietPhanCong.getMaCongNhanByChiTietPhanCong(ctpc.getMaCTPC()));
+				CongDoan cd = daoCongDoan.get(daoChiTietPhanCong.getMaCongDoanByChiTietPhanCong(ctpc.getMaCTPC()));
 				int soLuongHoanThanh = 0;
 				// get Phieu cham cong cong nhan của cn trong ngày hôm nay
 				LocalDate date = jDateChooser1.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				soLuongHoanThanh = daoChiTietPhanCong.getSoLuongCongDoanHoanThanhByMaCongNhan(cn.getMaCN(), date);
 				IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
-				String tenBP = daoBoPhan.get(daoCongDoan.get(ctpc.getMaCD()).getMaBP()).getTenBP();
+				String tenBP = daoBoPhan.get(daoCongDoan.get(daoChiTietPhanCong.getMaCongDoanByChiTietPhanCong(ctpc.getMaCTPC())).getMaBP()).getTenBP();
 				String tenCD = cd.getTenCD();
 				boolean ok = true;
 				if (!tenBP.equals(bp) && !bp.equals("Tất cả")) {
@@ -1458,7 +1462,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 			int row = jTableSanPham.getSelectedRow();
 			xxxxxxxxxxx = (String) jTableSanPham.getValueAt(row, 0);
 			loadDataJTableCongDoan();
-			loadDataJComboBoxCDTQ();
+			LoadDataJComboBoxCDTQ_V2();
 			jButtonTaoMoi.setEnabled(true);
 			jButtonXoa.setEnabled(false);
 			jButtonSua.setEnabled(false);
@@ -1491,7 +1495,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 				jTextFieldSLCBTT.setText(String.valueOf(congDoan.getSoLuongChuanBiToiThieu()));
 				// loadDataJTableCongDoanTienQuyet(maCD);
 				loadDataJTableCDTQ();
-				loadDataJComboBoxCDTQ();
+				LoadDataJComboBoxCDTQ_V2();
 			}
 		}
 	}// GEN-LAST:event_jTableCongDoanKeyReleased
@@ -1592,8 +1596,14 @@ public class GD_QLSP extends javax.swing.JPanel {
 						int soLuong = Integer.parseInt(sl);
 						if (soLuong == 0)
 							continue;
-						daoChiTietPhanCong
-								.insert(new ChiTietPhanCong(maCTPC, macd, maCN, LocalDate.now(), soLuong));
+						System.out.println("1"+maCTPC);
+						System.out.println("1"+cd.getMaCD());
+						System.out.println("1"+maCN);
+						ChiTietPhanCong ctpc = new ChiTietPhanCong(maCTPC,cd, daoCongNhan.timKiemCongNhan(maCN), LocalDate.now(), soLuong);
+						System.out.print("helloo"+ctpc.getMaCTPC());	
+								daoChiTietPhanCong
+						.insert(ctpc);
+					
 						daoChiTietPhanCong.updateChoPhanCong(maCN, false);
 					}
 					loadDsCongNhan();
@@ -1944,7 +1954,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 			int row = jTableSanPham.getSelectedRow();
 			xxxxxxxxxxx = (String) jTableSanPham.getValueAt(row, 0);
 			loadDataJTableCongDoan();
-			loadDataJComboBoxCDTQ();
+			LoadDataJComboBoxCDTQ_V2();
 			String typeHD = jComboBoxLoaiHopDong.getSelectedItem().toString();
 			if (typeHD.equals("chờ xác nhận"))
 				jButtonTaoMoi.setEnabled(true);
@@ -2099,57 +2109,99 @@ public class GD_QLSP extends javax.swing.JPanel {
 			model.fireTableDataChanged();
 		}
 	}
-
-	private void loadDataJComboBoxCDTQ() {
-		// Lấy ra công đoạn con cháu cua congDoan hien tai
-		ArrayList<CongDoan> dsCha = new ArrayList<CongDoan>();
-		ArrayList<CongDoan> dsCon = new ArrayList<CongDoan>();
-		ArrayList<CongDoan> dsCDTQTrongTable = new ArrayList<CongDoan>();
-
-		if (congDoan != null && !jButtonTaoMoi.getText().equals("Hủy")) {
-			dsCha.add(congDoan);
-			dsCon.add(congDoan);
-			try {
-				while (!dsCha.isEmpty()) {
-					CongDoan cd = dsCha.get(0);
-					dsCha.remove(0);
-					for (String macdhq : daoCongDoan.getDsCDHQ(cd.getMaCD())) {
-						CongDoan cdhq = daoCongDoan.get(macdhq);
-						dsCon.add(cdhq);
-						dsCha.add(cdhq);
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
-		try {
+	private void LoadDataJComboBoxCDTQ_V2()
+	{
+		try 
+		{
+			jComboBoxCDTQ.removeAllItems();
+			ArrayList<CongDoan> dsCD = new ArrayList<CongDoan>();
+			ArrayList<CongDoan> dsCDTQ = new ArrayList<CongDoan>();
 			IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
-			for (int i = 0; i < jTableCDTQ.getRowCount(); i++) {
-				String maCD = (String) jTableCDTQ.getValueAt(i, 0);
-				dsCDTQTrongTable.add(daoCongDoan.get(maCD));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			dsCD = daoCongDoan.getAllByMaSP(xxxxxxxxxxx);
+			dsCDTQ = daoCongDoan.getDsCDTQ(congDoan.getMaCD());
+			for (CongDoan cd : dsCD) 
+			{
+				if (dsCDTQ.contains(cd))
+				{
+					
+				}
+				else if (cd.getMaCD().equals(congDoan.getMaCD()))
+				{
+					
+				}
+				else
+				{
+					jComboBoxCDTQ.addItem(cd.getMaCD().substring(cd.getMaCD().length() - 2) + ". " + cd.getTenCD());
+
+				}				
+			}			
+		} 
+		catch (Exception e)
+		{
 		
-
-		jComboBoxCDTQ.removeAllItems();
-		for (CongDoan cd : dsCongDoan) {
-			if (dsCDTQTrongTable.contains(cd) || dsCon.contains(cd))
-				continue;
-			jComboBoxCDTQ.addItem(cd.getMaCD().substring(cd.getMaCD().length() - 2) + ". " + cd.getTenCD());
 		}
-
-		if (jComboBoxCDTQ.getItemCount() > 0) {
-			jComboBoxCDTQ.setSelectedIndex(0);
-			jButtonThemCDTQ.setEnabled(jButtonLuu.isEnabled());
-		} else {
-			jButtonThemCDTQ.setEnabled(false);
-		}
-
 	}
+	
+//	private void loadDataJComboBoxCDTQ() {
+//		// Lấy ra công đoạn con cháu cua congDoan hien tai
+//		ArrayList<CongDoan> dsCha = new ArrayList<CongDoan>();
+//		ArrayList<CongDoan> dsCon = new ArrayList<CongDoan>();
+//		ArrayList<CongDoan> dsCDTQTrongTable = new ArrayList<CongDoan>();
+//
+//		if (congDoan != null && !jButtonTaoMoi.getText().equals("Hủy")) {
+//			dsCha.add(congDoan);
+//			dsCon.add(congDoan);
+//			try {
+//				while (!dsCha.isEmpty()) {
+//					CongDoan cd = dsCha.get(0);
+//					dsCha.remove(0);
+//					for (String macdhq : daoCongDoan.getDsCDHQ(cd.getMaCD())) {
+//						CongDoan cdhq = daoCongDoan.get(macdhq);
+//						dsCon.add(cdhq);
+//						dsCha.add(cdhq);
+//						
+//					}
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			
+//		}
+//		try {
+//			IDAOCongDoan daoCongDoan = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
+//			for (int i = 0; i < jTableCDTQ.getRowCount(); i++) {
+//				String maCD = (String) jTableCDTQ.getValueAt(i, 0);
+//				dsCDTQTrongTable.add(daoCongDoan.get(maCD));
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		try {
+//			IDAOCongDoan daoCongDoan = (IDAOCongDoan)Naming.lookup(Client.URL + "DAOCongDoan");
+//			ArrayList<CongDoan> dsCongDoan = daoCongDoan.getAllByMaSP(xxxxxxxxxxx);
+//			jComboBoxCDTQ.removeAllItems();
+//			for (CongDoan cd : dsCongDoan) {
+//				if (dsCDTQTrongTable.contains(cd) || dsCon.contains(cd))
+//					continue;
+//				jComboBoxCDTQ.addItem(cd.getMaCD().substring(cd.getMaCD().length() - 2) + ". " + cd.getTenCD());
+//			}
+//
+//			if (jComboBoxCDTQ.getItemCount() > 0) {
+//				jComboBoxCDTQ.setSelectedIndex(0);
+//				jButtonThemCDTQ.setEnabled(jButtonLuu.isEnabled());
+//			} else {
+//				jButtonThemCDTQ.setEnabled(false);
+//			}
+//			
+//			
+//		} catch (Exception e) {
+//			System.out.println("Loi khi them cong doan tiên quyết vào combobox");
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}	
+//
+//	}
 	private int GetSoLuongChuanbi(CongDoan congDoan)
 	{
 		int soLuongChuanBi = 0;
@@ -2205,7 +2257,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 		jComboBoxCDTQ.setEnabled(false);
 		jCheckBoxHoanThanh.setEnabled(false);
 		jTableCDTQ.setEnabled(false);
-		loadDataJComboBoxCDTQ();
+		LoadDataJComboBoxCDTQ_V2();
 	}
 
 	private void editting() {
@@ -2243,7 +2295,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 					jButtonSua.setEnabled(false);
 					jButtonXoa.setEnabled(false);
 					editting();
-					loadDataJComboBoxCDTQ();
+					LoadDataJComboBoxCDTQ_V2();
 				}
 
 				else {
@@ -2275,7 +2327,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 					model.addRow(rowData);
 				}
 			}
-			loadDataJComboBoxCDTQ();
+			LoadDataJComboBoxCDTQ_V2();
 		}
 	}// GEN-LAST:event_jButtonThemCDTQMouseReleased
 
@@ -2298,7 +2350,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 				DefaultTableModel model = (DefaultTableModel) jTableCDTQ.getModel();
 				model.removeRow(selectedRow);
 				model.fireTableDataChanged();
-				loadDataJComboBoxCDTQ();
+				LoadDataJComboBoxCDTQ_V2();
 			}
 			jButtonXoaCDTQ.setEnabled(false);
 		}
@@ -2367,14 +2419,15 @@ public class GD_QLSP extends javax.swing.JPanel {
 							daoCongDoan.insert(congDoan);
 						}					
 						else
-							if(!dsCDTQ.isEmpty())
-							{
+							
+						{
 								IDAOCongDoan daoCongDoan1 = (IDAOCongDoan) Naming.lookup(Client.URL + "DAOCongDoan");
 								daoCongDoan1.update(congDoan);
 								daoCongDoan1.themCongDoanTienQuyet(daoCongDoan1.get(maCD), dsCDTQ);	
-							}
-								
-						} 
+						}
+							
+					}		
+						
 					catch (Exception e) 
 					{
 								e.printStackTrace();
@@ -2383,7 +2436,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 					
 					// update the JComboBox for dsCongDoanTienQuyet
 					loadDataJTableCongDoan();
-					loadDataJComboBoxCDTQ();
+					LoadDataJComboBoxCDTQ_V2();
 					AfterSaveOrCancel();
 					loadDsCongDoan();
 				}
@@ -2423,7 +2476,7 @@ public class GD_QLSP extends javax.swing.JPanel {
 				jTextFieldSLCBTT.setText(String.valueOf(congDoan.getSoLuongChuanBiToiThieu()));
 				// loadDataJTableCongDoanTienQuyet(maCD);
 				loadDataJTableCDTQ();
-				loadDataJComboBoxCDTQ();
+				LoadDataJComboBoxCDTQ_V2();
 			}
 		}
 	}// GEN-LAST:event_jTableCongDoanMouseReleased

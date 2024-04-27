@@ -15,11 +15,13 @@ import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
+import DAO_Interface.IDAOBoPhan;
 import DAO_Interface.IDAOCongDoan;
 import DAO_Interface.IDAOCongNhan;
 import DAO_Interface.IDAONhanVien;
 import DAO_Interface.IDAOPhieuChamCongCongNhan;
 import client.Client;
+import ptud.Entity.BoPhan;
 import ptud.Entity.ChamCongDTO;
 import ptud.Entity.CongDoan;
 import ptud.Entity.CongNhan;
@@ -43,6 +45,7 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
 	private IDAOCongDoan daoCongDoan;
     public GD_ChiTietPhieuLuongCN() {
         initComponents();
+
     }
 
     /**
@@ -452,18 +455,21 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
         DecimalFormat decimalFormat = new DecimalFormat("#,###.##đ");
         jLabelThangNam.setText(plcn.getThang() + "/" + plcn.getNam());
         jLabelMaPhieuLuong.setText(plcn.getMaPL());
-//        CongNhan nv = DAO_CongNhan.getInstance().get(plcn.getMaCN()); 
         try {
+        	System.out.println(plcn.getMaCN());
             CongNhan nv = daoCongNhan.timKiemCongNhan(plcn.getMaCN());
+           IDAOBoPhan daoBoPhan = (IDAOBoPhan) Naming.lookup(Client.URL + "DAOBoPhan");
+            System.out.println(nv);
         	nv = daoCongNhan.timKiemCongNhan(plcn.getMaCN());
-        	  jLabelBoPhan.setText(nv.getBoPhan().getTenBP());
+        	BoPhan boPhan = daoBoPhan.get(daoCongNhan.getMaBoPhan(nv.getMaCN()));
+        	  jLabelBoPhan.setText(boPhan.getTenBP());
               jLabelTen.setText(nv.getTen());
               jLabelMaNV.setText(nv.getMaCN());
               jLabelSoNgayLam.setText(plcn.getSoNgayLam() + "");
               jLabelThuongNangSuat.setText(decimalFormat.format(plcn.getThuong()));
               jLabelPhat.setText(decimalFormat.format(plcn.getPhat()));
               
-		} catch (RemoteException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -473,6 +479,7 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
         try {
 			dsChamCong = daoPhieuChamCongCongNhan.getDsCongDoanLamDuocCuaCongNhanTrongThang(plcn.getMaCN(), plcn.getThang(), plcn.getNam());
 		} catch (RemoteException e) {
+			System.out.println("loi phieu cham cong cong nhan");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -480,10 +487,9 @@ public class GD_ChiTietPhieuLuongCN extends javax.swing.JPanel {
         model.setRowCount(0);
         double sum = 0; 
         for (ChamCongDTO cc : dsChamCong) {
-//            CongDoan cd = DAO_CongDoan.getInstance().get(cc.getMaCD());
         	CongDoan cd = null;
         	try {
-				daoCongDoan.get(cc.getMaCD());
+        		cd = daoCongDoan.get(cc.getMaCD());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

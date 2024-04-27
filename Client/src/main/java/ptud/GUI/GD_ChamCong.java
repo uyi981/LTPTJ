@@ -30,11 +30,9 @@ import DAO_Interface.IDAOPhieuChamCongNhanVien;
 import client.Client;
 
 import ptud.Entity.BoPhan;
-import ptud.Entity.CongDoan;
-import ptud.Entity.NhanVien;
+
 import ptud.Entity.PhieuChamCongCongNhan;
 import ptud.Entity.PhieuChamCongHanhChinh;
-import ptud.Entity.TaiKhoan;
 
 /**
  *
@@ -642,8 +640,15 @@ public class GD_ChamCong extends javax.swing.JPanel {
 			System.out.println("Lỗi ChamCong.java - jButton2MouseClicked");
 		}
 	}// GEN-LAST:event_jButton2MouseClicked
-
-	private void jButton3MouseClicked(java.awt.event.MouseEvent evt) throws Exception {// GEN-FIRST:event_jButton3MouseClicked
+	
+	
+	private void ChamCongCongNhan_V2()
+	{
+		
+		
+	}
+	private void ChamCongCongNhan()
+	{
 		try
 		{
 			IDAOChiTietPhanCong daoChiTietPhanCong = (IDAOChiTietPhanCong) Naming.lookup(Client.URL + "DAOChiTietPhanCong");
@@ -652,8 +657,8 @@ public class GD_ChamCong extends javax.swing.JPanel {
 			PhieuChamCongCongNhan phieuChamCongCongNhan = new PhieuChamCongCongNhan();
 			for (int i = 0; i < row; i++) {
 				String maCN = model.getValueAt(i, 0).toString();
-//				String maCTPC = DAO_ChiTietPhanCong.getMaChiTietPhanCongBymaCN(maCN);
 				String maCTPC = daoChiTietPhanCong.getMaChiTietPhanCongBymaCN(maCN);
+				System.out.print("maCTPC: " + maCTPC);
 				int soCDGiao = (int) model.getValueAt(i, 4);
 				boolean isVang = (Boolean) (jTable3.getValueAt(i, 2));
 				String maCD = daoChiTietPhanCong.getMaCongDoanBymaCTPC(maCTPC);
@@ -679,7 +684,6 @@ public class GD_ChamCong extends javax.swing.JPanel {
 //						boolean kq = DAO_PhieuChamCongCongNhan.getInstance().insert(phieuChamCongCongNhan);
 						boolean kq = daoPhieuChamCongCongNhan.themPhieuChamCongCongNhan(phieuChamCongCongNhan);
 						
-//						DAO_ChiTietPhanCong.getInstance().updateChoPhanCong(maCN, true);
 						daoChiTietPhanCong.updateChoPhanCong(maCN, true);
 					}
 				} catch (SQLException ex) {
@@ -694,6 +698,10 @@ public class GD_ChamCong extends javax.swing.JPanel {
 			System.out.println("Lỗi ChamCong.java - jButton3MouseClicked");
 		}
 	
+	}
+	private void jButton3MouseClicked(java.awt.event.MouseEvent evt) throws Exception {// GEN-FIRST:event_jButton3MouseClicked
+		
+		ChamCongCongNhan();
 	}// GEN-LAST:event_jButton3MouseClicked
 
 	private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_jComboBox3ActionPerformed

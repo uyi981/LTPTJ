@@ -199,4 +199,16 @@ public class DAO_ChiTietPhanCong extends UnicastRemoteObject implements IDAOChiT
 			return null;
 		}
 	}
+
+	@Override
+	public String getMaCongDoanByChiTietPhanCong(String maCTPC) throws Exception {
+		// TODO Auto-generated method stub
+		return em.createNativeQuery("SELECT maCD FROM ChiTietPhanCong WHERE maCTPC = ?").setParameter(1, maCTPC).getSingleResult().toString();
+	}
+
+	@Override
+	public String getMaCongNhanByChiTietPhanCong(String maCTPC) throws Exception {
+		// TODO Auto-generated method stub
+		return em.createNativeQuery("SELECT maCN FROM ChiTietPhanCong WHERE maCTPC = ?").setParameter(1, maCTPC).getSingleResult().toString();
+	}
 }

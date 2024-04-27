@@ -62,7 +62,7 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     public ArrayList<PhieuLuongCongNhan> dsPhieuLuongCongNhan;
 	private IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan;
 
-    private void init() throws Exception {
+    public void init() throws Exception {
 //        dsNhanVien = DAO_NhanVien.getInstance().getAll();
 //        dsCongNhan = DAO_CongNhan.getInstance().getAll();
     	try {
@@ -113,7 +113,7 @@ public class GD_TinhLuong extends javax.swing.JPanel {
     	
     }
 
-    private void loadDataPhieuLuongNhanVien() {
+    public void loadDataPhieuLuongNhanVien() {
         // thêm dsNhanVien vào jTablePhieuLuongNhanVien
         int thang = jMonthChooser1.getMonth() + 1;
         int nam = jYearChooser1.getYear();
@@ -165,7 +165,6 @@ public class GD_TinhLuong extends javax.swing.JPanel {
                     plnv.setPhuCap(phuCap);
                     plnv.setLuongThucNhan(luong);
                     plnv.setSoNgayLam(nam);
-                    daoPhieuLuongNhanVien.update(plnv);
                     if (tenBP.equals("Tất cả") || tenBP.equals(tbp1)) {
 
                         Object[] row = { maNV, nv.getTen(),
@@ -200,7 +199,7 @@ public class GD_TinhLuong extends javax.swing.JPanel {
         
     }
 
-    private void loadDataPhieuLuongCongNhan() throws SQLException {
+    public void loadDataPhieuLuongCongNhan() throws SQLException {
     	try
     	{
     		IDAOPhieuChamCongCongNhan daoPhieuChamCongCongNhan = (IDAOPhieuChamCongCongNhan) Naming.lookup(Client.URL + "DAOPhieuChamCongCongNhan");
@@ -774,33 +773,47 @@ public class GD_TinhLuong extends javax.swing.JPanel {
             Logger.getLogger(GD_TinhLuong.class.getName()).log(Level.SEVERE, null, ex);
         }
     }// GEN-LAST:event_jYearChooser2PropertyChange
+    private void updatePLCN()
+    {
+    	try
+    	{
+    		
+    	}
+    	catch(Exception e)
+    	{
+    		
+    	}
+    	
+    }	
+    	
+//    	try {
+//    		IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
+//            if (jButtonTinhLuong2.isEnabled()) {
+//                int thang = jMonthChooser2.getMonth() + 1;
+//                int nam = jYearChooser2.getYear();
+//                for (CongNhan nv : dsCongNhan) {
+//                    String maPL = thang + "" + nam + nv.getMaCN();
+//                    PhieuLuongCongNhan plcn = new PhieuLuongCongNhan(maPL, thang, nam, nv, 0);
+//                    if( daoPhieuLuongCongNhan.get(maPL) == null){
+//                        daoPhieuLuongCongNhan.insert(plcn);
+//                    } else
+//                        daoPhieuLuongCongNhan.update(plcn);
+//                }
+//                try {
+//                    loadDataPhieuLuongCongNhan();
+//                } catch (SQLException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
     private void jButtonTinhLuong2MouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonTinhLuong2MouseReleased
         // TODO add your handling code here:
         // TODO add your handling code here:
-    	try {
-    		IDAOPhieuLuongCongNhan daoPhieuLuongCongNhan = (IDAOPhieuLuongCongNhan) Naming.lookup(Client.URL + "DAOPhieuLuongCongNhan");
-            if (jButtonTinhLuong2.isEnabled()) {
-                int thang = jMonthChooser2.getMonth() + 1;
-                int nam = jYearChooser2.getYear();
-                for (CongNhan nv : dsCongNhan) {
-                    String maPL = thang + "" + nam + nv.getMaCN();
-                    PhieuLuongCongNhan plcn = new PhieuLuongCongNhan(maPL, thang, nam, nv, 0);
-                    if( daoPhieuLuongCongNhan.get(maPL) == null){
-                        daoPhieuLuongCongNhan.insert(plcn);
-                    } else
-                        daoPhieuLuongCongNhan.update(plcn);
-                }
-                try {
-                    loadDataPhieuLuongCongNhan();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    	updatePLCN();
     	
     }// GEN-LAST:event_jButtonTinhLuong2MouseReleased
 

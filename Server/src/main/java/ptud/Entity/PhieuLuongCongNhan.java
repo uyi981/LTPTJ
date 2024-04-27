@@ -8,9 +8,6 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Objects;
-
-import DAO_Implement.DAO_CongNhan;
-import DAO_Implement.DAO_PhieuChamCongCongNhan;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

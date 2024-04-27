@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import DAO_Implement.DAO_SanPham;
-import DAO_Interface.IDAOBoPhan;
-import DAO_Interface.IDAOSanPham;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

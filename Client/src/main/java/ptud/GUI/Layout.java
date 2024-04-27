@@ -7,6 +7,7 @@ package ptud.GUI;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -592,8 +593,17 @@ public class Layout extends javax.swing.JFrame {
     }//GEN-LAST:event_btnQLHDActionPerformed
 
     private void btnQLSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQLSPActionPerformed
+    
+        try {
+			gD_TinhLuong.loadDataPhieuLuongNhanVien();
+			gD_TinhLuong.loadDataPhieuLuongCongNhan();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         cardLayout.show(body, "tabSP");
         activeMenuItem(btnQLSP);
+       
     }//GEN-LAST:event_btnQLSPActionPerformed
 
     private void btnTinhLuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTinhLuongActionPerformed
