@@ -188,7 +188,10 @@ public class GD_QLTK extends javax.swing.JPanel {
             if (cnt == 6) {
                 userRole = 1;
             }
-            TaiKhoan tk = new TaiKhoan(jTextField1.getText(), jTable1.getValueAt(row, 1).toString(), curPassWord, userRole, true);
+            String maNV = jTable1.getValueAt(row, 1).toString();
+            IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
+            NhanVien nv = daoNhanVien.timKiemNhanVien(maNV);
+            TaiKhoan tk = new TaiKhoan(jTextField1.getText(),nv , curPassWord, userRole, true);
             IDAOTaiKhoan daoTaiKhoan = (IDAOTaiKhoan) Naming.lookup(Client.URL + "DAOTaiKhoan");
             daoTaiKhoan.updateTaiKhoan(tk);
             loadDataTable();
@@ -253,7 +256,9 @@ public class GD_QLTK extends javax.swing.JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        TaiKhoan tk = new TaiKhoan(userName, maNV, passWord, userRole, true);
+        IDAONhanVien daoNhanVien = (IDAONhanVien) Naming.lookup(Client.URL + "DAONhanVien");
+        NhanVien nv = daoNhanVien.timKiemNhanVien(maNV);
+        TaiKhoan tk = new TaiKhoan(userName, nv, passWord, userRole, true);
         
         daoTaiKhoan.createTaiKhoan(tk);      
     }
